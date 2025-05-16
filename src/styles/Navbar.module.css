@@ -1,0 +1,66 @@
+.mainNavbar {
+  background-color: #333;
+  color: white;
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex; /* Alinha os filhos (lista e área de autenticação) */
+  justify-content: space-between; /* Espaça os filhos para as extremidades */
+  align-items: center; /* Alinha verticalmente os itens */
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Alinha os itens da lista horizontalmente */
+  align-items: center;
+}
+
+.navItem {
+  margin-right: 20px; /* Espaço entre os links */
+}
+
+.navItem:last-child {
+  margin-right: 0; /* Remove a margem do último item */
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.navLink:hover {
+  background-color: #555;
+}
+
+.authArea {
+  display: flex; /* Alinha os botões de login/registo horizontalmente */
+  align-items: center;
+  margin-right: 50px;
+}
+
+.loginLink,
+.registerLink {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-left: 10px; /* Espaço entre os botões */
+}
+
+.loginLink:hover,
+.registerLink:hover {
+  background-color: #007bff; /* Cor ao passar o mouse nos botões */
+}
