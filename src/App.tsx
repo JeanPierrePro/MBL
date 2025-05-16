@@ -8,7 +8,7 @@ import Noticias from './pages/Noticias';
 import Equipe from './pages/Equipe';
 import Perfil from './pages/Perfil';
 import Treinos from './pages/Treinos';
-import './index.css'; // Importa os estilos globais
+import './global.css'; // Importa os estilos globais
 
 function App() {
   return (

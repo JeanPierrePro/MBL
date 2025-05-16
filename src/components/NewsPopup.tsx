@@ -1,5 +1,6 @@
 import React from 'react';
-import { News } from '../types/News';
+// import type { News } from 'react-router-dom';
+import type { News } from 'types/News'
 
 interface NewsPopupProps extends News {
   onClose: () => void;

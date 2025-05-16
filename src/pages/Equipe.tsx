@@ -1,7 +1,7 @@
 // src/pages/Equipe.tsx
 import React, { useState, useEffect } from 'react';
 import { getTeamMembers } from '../services/database';
-import { TeamMember } from '../types/TeamMember';
+import type { TeamMember } from '../types/TeamMember';
 
 const Equipe: React.FC = () => {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
