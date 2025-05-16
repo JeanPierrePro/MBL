@@ -4,5 +4,4 @@ export interface News {
   imageUrl: string;
   title: string;
   content: string;
-  // Outras propriedades da notícia
 }

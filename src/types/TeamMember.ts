@@ -5,5 +5,4 @@ export interface TeamMember {
   lane: string;
   partidasGanhas: number;
   tempoDeJogo: string;
-  // Outras propriedades do membro da equipa
 }

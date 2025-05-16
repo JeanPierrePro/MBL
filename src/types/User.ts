@@ -5,5 +5,4 @@ export interface UserProfile {
   line: string;
   status: string;
   fotoPerfil: string;
-  // Outras propriedades do perfil
 }
