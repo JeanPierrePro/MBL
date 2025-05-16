@@ -1,0 +1,69 @@
+.formContainer {
+  max-width: 600px;
+  width: 90%;
+  margin: 50px auto; /* Centraliza horizontalmente */
+  background-color: #242424;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.formTitle {
+  font-size: 2em;
+  line-height: 1.1;
+  color: rgba(255, 255, 255, 0.87);
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.label {
+  font-weight: 500;
+  color: #646cff; /* Cor dos labels */
+}
+
+.input {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 400;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.87);
+  border: 1px solid #333;
+  border-radius: 8px;
+  transition: border-color 0.25s;
+}
+
+.input::placeholder {
+  color: #aaa;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+.submitButton {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #646cff; /* Cor primária do botão */
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.25s, box-shadow 0.25s;
+}
+
+.submitButton:hover {
+  background-color: #535bf2; /* Hover do botão */
+  box-shadow: 0 0 8px rgba(83, 91, 242, 0.5); /* Sombra azul no hover */
+}

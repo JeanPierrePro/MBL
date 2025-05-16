@@ -1,66 +1,70 @@
 .mainNavbar {
-  background-color: #333;
-  color: white;
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
   padding: 15px 20px;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 100;
-  display: flex; /* Alinha os filhos (lista e área de autenticação) */
-  justify-content: space-between; /* Espaça os filhos para as extremidades */
-  align-items: center; /* Alinha verticalmente os itens */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
 }
 
 .navList {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex; /* Alinha os itens da lista horizontalmente */
+  display: flex;
   align-items: center;
 }
 
 .navItem {
-  margin-right: 20px; /* Espaço entre os links */
+  margin-right: 20px;
 }
 
 .navItem:last-child {
-  margin-right: 0; /* Remove a margem do último item */
+  margin-right: 0;
 }
 
 .navLink {
-  color: white;
+  color: #646cff; /* Cor primária dos links */
+  font-weight: 500;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 1.1em;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  transition: color 0.25s, background-color 0.25s;
 }
 
 .navLink:hover {
-  background-color: #555;
+  color: #535bf2; /* Hover dos links */
+  background-color: #333;
 }
 
 .authArea {
-  display: flex; /* Alinha os botões de login/registo horizontalmente */
+  display: flex;
   align-items: center;
-  margin-right: 50px;
 }
 
 .loginLink,
 .registerLink {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.1em;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  margin-left: 10px; /* Espaço entre os botões */
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.87);
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s;
+  margin-left: 10px;
 }
 
 .loginLink:hover,
 .registerLink:hover {
-  background-color: #007bff; /* Cor ao passar o mouse nos botões */
+  border-color: #646cff; /* Hover dos botões */
+  background-color: #333;
 }

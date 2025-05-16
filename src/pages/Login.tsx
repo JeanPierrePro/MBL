@@ -1,7 +1,7 @@
-// src/pages/Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
+import styles from '../styles/AuthForms.module.css'; // Importa o CSS Module comum
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +12,6 @@ const Login: React.FC = () => {
     event.preventDefault();
     const userCredential = await login(email, password);
     if (userCredential) {
-      // Redirecionar para a área de perfil após o login bem-sucedido
       navigate('/perfil');
     } else {
       alert('Credenciais inválidas. Por favor, tente novamente.');
@@ -20,18 +19,18 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="login-page">
-      <h2>Login (Exclusivo a Membros)</h2>
+    <div className={styles.formContainer}>
+      <h2 className={styles.formTitle}>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>Email:</label>
+          <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required className={styles.input} />
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>Password:</label>
+          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={styles.input} />
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit" className={styles.submitButton}>Entrar</button>
       </form>
     </div>
   );

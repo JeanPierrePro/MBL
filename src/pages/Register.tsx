@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/auth';
+import styles from '../styles/AuthForms.module.css'; // Importa o CSS Module comum
 
 const Register: React.FC = () => {
   const [nick, setNick] = useState('');
@@ -15,7 +16,6 @@ const Register: React.FC = () => {
     event.preventDefault();
     const userCredential = await register(nick, email, password, lane, foto);
     if (userCredential) {
-      // Redirecionar para a área de perfil após o registo bem-sucedido
       navigate('/perfil');
     } else {
       alert('Erro ao registar. Por favor, verifique os dados.');
@@ -29,30 +29,30 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="register-page">
-      <h2>Registar (Limitado a emails da equipa)</h2>
+    <div className={styles.formContainer}>
+      <h2 className={styles.formTitle}>Registar</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="nick">Nick de Jogo:</label>
-          <input type="text" id="nick" name="nick" value={nick} onChange={(e) => setNick(e.target.value)} required />
+        <div className={styles.formGroup}>
+          <label htmlFor="nick" className={styles.label}>Nick de Jogo:</label>
+          <input type="text" id="nick" name="nick" value={nick} onChange={(e) => setNick(e.target.value)} required className={styles.input} />
         </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>Email:</label>
+          <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required className={styles.input} />
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>Password:</label>
+          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={styles.input} />
         </div>
-        <div>
-          <label htmlFor="foto">Foto:</label>
-          <input type="file" id="foto" name="foto" onChange={handleFotoChange} />
+        <div className={styles.formGroup}>
+          <label htmlFor="foto" className={styles.label}>Foto:</label>
+          <input type="file" id="foto" name="foto" onChange={handleFotoChange} className={styles.input} />
         </div>
-        <div>
-          <label htmlFor="lane">Lane:</label>
-          <input type="text" id="lane" name="lane" value={lane} onChange={(e) => setLane(e.target.value)} required />
+        <div className={styles.formGroup}>
+          <label htmlFor="lane" className={styles.label}>Lane:</label>
+          <input type="text" id="lane" name="lane" value={lane} onChange={(e) => setLane(e.target.value)} required className={styles.input} />
         </div>
-        <button type="submit">Registar</button>
+        <button type="submit" className={styles.submitButton}>Registar</button>
       </form>
     </div>
   );
