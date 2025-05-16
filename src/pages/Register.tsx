@@ -8,23 +8,15 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [lane, setLane] = useState('');
-  const [foto, setFoto] = useState<File | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const userCredential = await register(nick, email, password, lane, foto);
+    const userCredential = await register(nick, email, password, lane);
     if (userCredential) {
-      // Redirecionar para a área de perfil após o registo bem-sucedido
       navigate('/perfil');
     } else {
       alert('Erro ao registar. Por favor, verifique os dados.');
-    }
-  };
-
-  const handleFotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setFoto(event.target.files[0]);
     }
   };
 
@@ -43,10 +35,6 @@ const Register: React.FC = () => {
         <div>
           <label htmlFor="password">Password:</label>
           <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <div>
-          <label htmlFor="foto">Foto:</label>
-          <input type="file" id="foto" name="foto" onChange={handleFotoChange} />
         </div>
         <div>
           <label htmlFor="lane">Lane:</label>

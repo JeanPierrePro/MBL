@@ -2,13 +2,14 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   updateProfile,
-  signOut
+  signOut,
 } from 'firebase/auth';
-import type { UserCredential } from 'firebase/auth';  // import type para UserCredential
 
-import { auth } from './firebaseConfig';
+import type { UserCredential } from 'firebase/auth';
 
-// Login real com Firebase Auth
+import { auth, db } from './firebaseConfig';
+import { doc, setDoc } from "firebase/firestore";
+
 export const login = async (email: string, password: string): Promise<UserCredential | null> => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -20,37 +21,38 @@ export const login = async (email: string, password: string): Promise<UserCreden
   }
 };
 
-// Registro real com Firebase Auth + updateProfile para nick e foto (simplificado)
 export const register = async (
-  nick: string, 
-  email: string, 
-  password: string, 
-  // Removi lane porque não é usado
-  foto: File | null
+  nick: string,
+  email: string,
+  password: string,
+  lane: string
 ): Promise<UserCredential | null> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     console.log('Usuário registrado:', userCredential.user.uid);
 
-    // Atualiza perfil com displayName e photoURL (foto simplificada)
+    // Atualiza displayName do usuário no Firebase Auth
     if (auth.currentUser) {
       await updateProfile(auth.currentUser, {
         displayName: nick,
-        photoURL: foto ? URL.createObjectURL(foto) : null,
       });
-      console.log('Perfil atualizado com nick e foto');
-    }
 
-    // Aqui você pode adicionar salvar a lane no Firestore, se quiser
+      // Cria documento no Firestore
+      await setDoc(doc(db, "users", auth.currentUser.uid), {
+        nick,
+        email,
+        lane,
+        photoURL: null,  // deixamos null ou remove, se quiser
+      });
+    }
 
     return userCredential;
   } catch (error) {
-    console.error('Erro ao registar:', error);
+    console.error('Erro ao registrar:', error);
     return null;
   }
 };
 
-// Logout real
 export const logout = async (): Promise<void> => {
   try {
     await signOut(auth);
