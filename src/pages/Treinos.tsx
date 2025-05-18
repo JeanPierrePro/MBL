@@ -12,7 +12,6 @@ type DayBookings = Booking[];
 type Bookings = Record<string, DayBookings>;
 type Usernames = Record<string, string>;
 
-const MAX_MEMBERS = 5;
 const HOURS = Array.from({ length: 24 }, (_, i) => `${i < 10 ? '0' + i : i}:00`);
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -103,13 +102,8 @@ const Treinos: React.FC = () => {
     }
 
     const dayBookings = bookings[selectedDay] || [];
-    for (const hour of intervalHours) {
-      const count = dayBookings.filter(b => b.time === hour).length;
-      if (count >= MAX_MEMBERS) {
-        alert(`Horário ${hour} já está cheio.`);
-        return;
-      }
 
+    for (const hour of intervalHours) {
       const alreadyBooked = dayBookings.find(b => b.memberId === user.uid && b.time === hour);
       if (alreadyBooked) {
         alert(`Você já marcou o horário ${hour} neste dia.`);
@@ -152,7 +146,7 @@ const Treinos: React.FC = () => {
     saveBookings(updatedBookings);
   };
 
-  // NOVA FUNÇÃO para remover todos os horários do usuário no dia (botão "Cancelar treino do dia")
+  // Função para remover todos os horários do usuário no dia (botão "Cancelar treino do dia")
   const cancelAllBookingsForDay = (day: string) => {
     if (!user) return;
 
@@ -222,7 +216,8 @@ const Treinos: React.FC = () => {
     const count = dayBookings.length;
 
     if (count === 0) return '';
-    if (count < MAX_MEMBERS) return 'red';
+    // Simplificado sem limite, pode personalizar cores como quiser
+    if (count < 10) return 'red';
 
     const uniqueTimes = new Set(dayBookings.map((b) => b.time));
     if (uniqueTimes.size === 1) return 'green';
@@ -260,17 +255,15 @@ const Treinos: React.FC = () => {
               ) : (
                 groupIntervals(dayBookings).map(({ memberId, start, end }, i) => {
                   const nick = usernames[memberId] || memberId.slice(0, 6);
-                  // Se o intervalo é só uma hora (start === end), mostramos só um horário
                   if (start === end) {
-                    // Se for sua marcação, mostrar botão para remover
                     return (
                       <div key={i} className={styles.timeSlot}>
-                        Jogador {nick} - {start} {' '}
+                        Jogador {nick} - {start}{' '}
                         {memberId === user.uid && (
                           <button
                             className={styles.removeButton}
                             onClick={(e) => {
-                              e.stopPropagation(); // evitar disparar o onClick do dia
+                              e.stopPropagation();
                               removeBooking(day, start);
                             }}
                           >
@@ -280,27 +273,20 @@ const Treinos: React.FC = () => {
                       </div>
                     );
                   } else {
-                    // Intervalo maior, mostrar intervalo completo, mas removendo só por hora pode ser complexo.
-                    // Para simplificar, vamos mostrar o intervalo e um botão para cancelar TODO o intervalo (todos os horários do usuário naquele dia)
                     return (
                       <div key={i} className={styles.timeSlot}>
                         Jogador {nick} - {start} até {end}{' '}
                         {memberId === user.uid && (
-                          <>
-                            <button
-                              className={styles.removeButton}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                // Aqui você pode decidir remover só este horário inicial (removeBooking)
-                                // ou todo o dia (cancelAllBookingsForDay)
-                                // Vou deixar o botão para remover o dia todo:
-                                cancelAllBookingsForDay(day);
-                              }}
-                              title="Cancelar todos os seus treinos deste dia"
-                            >
-                              🗑️ Cancelar treino do dia
-                            </button>
-                          </>
+                          <button
+                            className={styles.removeButton}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              cancelAllBookingsForDay(day);
+                            }}
+                            title="Cancelar todos os seus treinos deste dia"
+                          >
+                            🗑️ Cancelar treino do dia
+                          </button>
                         )}
                       </div>
                     );
@@ -315,9 +301,8 @@ const Treinos: React.FC = () => {
       {selectedDay && (
         <div className={styles.bookingForm}>
           <h3>Marcar treino para {selectedDay}</h3>
-
           <label>
-            Horário inicial:
+            Horário de Início:
             <select value={startTime} onChange={(e) => setStartTime(e.target.value)}>
               <option value="">Selecione</option>
               {HOURS.map((hour) => (
@@ -329,7 +314,7 @@ const Treinos: React.FC = () => {
           </label>
 
           <label>
-            Horário final:
+            Horário de Término:
             <select value={endTime} onChange={(e) => setEndTime(e.target.value)}>
               <option value="">Selecione</option>
               {HOURS.map((hour) => (
@@ -340,9 +325,16 @@ const Treinos: React.FC = () => {
             </select>
           </label>
 
-          <button onClick={addBooking}>Marcar treino</button>
+          <button onClick={addBooking} className={styles.button}>
+            Confirmar Marcação
+          </button>
 
-          <button onClick={() => setSelectedDay(null)}>Cancelar</button>
+          <button
+            onClick={() => setSelectedDay(null)}
+            className={styles.cancelButton}
+          >
+            Cancelar
+          </button>
         </div>
       )}
     </div>
