@@ -109,9 +109,11 @@ const Treinos: React.FC = () => {
 
     const dayBookings = bookings[selectedDay] || [];
 
-    // Verifica se já há agendamento do usuário naquele horário
+    // VERIFICAÇÃO ALTERADA: Agora checamos se o usuário já tem agendamento no mesmo horário
     for (const hour of intervalHours) {
-      const alreadyBooked = dayBookings.find(b => b.memberId === user.uid && b.time === hour);
+      const alreadyBooked = dayBookings.find(
+        b => b.memberId === user.uid && b.time === hour
+      );
       if (alreadyBooked) {
         alert(`Você já marcou o horário ${hour} neste dia.`);
         return;
@@ -289,11 +291,17 @@ const Treinos: React.FC = () => {
                             className={styles.removeButton}
                             onClick={(e) => {
                               e.stopPropagation();
-                              cancelAllBookingsForDay(day);
+                              // Remove todos os horários entre start e end, um por um
+                              const startIndex = HOURS.indexOf(start);
+                              const endIndex = HOURS.indexOf(end);
+                              if (startIndex === -1 || endIndex === -1) return;
+
+                              for (let idx = startIndex; idx <= endIndex; idx++) {
+                                removeBooking(day, HOURS[idx]);
+                              }
                             }}
-                            title="Cancelar todos os seus treinos deste dia"
                           >
-                            🗑️ Cancelar treino do dia
+                            ❌
                           </button>
                         )}
                       </div>
@@ -301,58 +309,58 @@ const Treinos: React.FC = () => {
                   }
                 })
               )}
+
+              {dayBookings.some((b) => b.memberId === user.uid) && (
+                <button
+                  className={styles.cancelAllButton}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    cancelAllBookingsForDay(day);
+                  }}
+                >
+                  Cancelar todos os meus treinos desse dia
+                </button>
+              )}
             </div>
           );
         })}
       </div>
 
       {selectedDay && (
-        <div className={styles.bookingForm}>
+        <div className={styles.form}>
           <h3>Marcar treino para {selectedDay}</h3>
-
           <label>
             Início:
-            <select
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              required
-            >
-              <option value="">Selecione</option>
-              {HOURS.slice(0, HOURS.length - 1).map((hour) => (
+            <select value={startTime} onChange={(e) => setStartTime(e.target.value)}>
+              <option value="">-- Escolha o horário de início --</option>
+              {HOURS.map((hour) => (
                 <option key={hour} value={hour}>
                   {hour}
                 </option>
               ))}
             </select>
           </label>
-
           <label>
             Fim:
-            <select
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-              required
-            >
-              <option value="">Selecione</option>
-              {HOURS.slice(1).map((hour) => (
+            <select value={endTime} onChange={(e) => setEndTime(e.target.value)}>
+              <option value="">-- Escolha o horário de término --</option>
+              {HOURS.map((hour) => (
                 <option key={hour} value={hour}>
                   {hour}
                 </option>
               ))}
             </select>
           </label>
-
-          <button onClick={addBooking} className={styles.addButton}>
+          <button className={styles.addButton} onClick={addBooking}>
             Marcar treino
           </button>
-
           <button
+            className={styles.cancelButton}
             onClick={() => {
               setSelectedDay(null);
               setStartTime('');
               setEndTime('');
             }}
-            className={styles.cancelButton}
           >
             Cancelar
           </button>
