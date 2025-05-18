@@ -1,7 +1,7 @@
 // src/pages/Perfil.tsx
 import React, { useState, useEffect } from 'react';
 import { getUserProfile, updateUserProfile } from '../services/database';
-import { UserProfile } from '../types/User';
+import type { UserProfile } from '../types/User';
 
 const Perfil: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);

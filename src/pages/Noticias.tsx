@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import NewsCard from '../components/NewsCard';
 import NewsPopup from '../components/NewsPopup';
 import { getAllNews } from '../services/database';
-import { News } from '../types/News';
+import type { News } from '../types/News';  // Corrija esse caminho para onde está seu tipo News
+
 
 const Noticias: React.FC = () => {
   const [newsData, setNewsData] = useState<News[]>([]);
