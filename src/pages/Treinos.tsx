@@ -1,5 +1,3 @@
-// Treinos.tsx
-
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Treinos.module.css';
 import { getAuth } from 'firebase/auth';
@@ -136,13 +134,31 @@ const Treinos: React.FC = () => {
     setSelectedDay(null);
   };
 
-  // Função para converter horários "HH:mm" em número para facilitar comparação
+  // Função para remover uma marcação do usuário atual naquele dia e horário
+  const removeBooking = (day: string, time: string) => {
+    if (!user) return;
+
+    const dayBookings = bookings[day] || [];
+    const updatedDayBookings = dayBookings.filter(
+      (b) => !(b.memberId === user.uid && b.time === time)
+    );
+
+    const updatedBookings: Bookings = {
+      ...bookings,
+      [day]: updatedDayBookings,
+    };
+
+    setBookings(updatedBookings);
+    saveBookings(updatedBookings);
+  };
+
+  // Converter horário "HH:mm" para número de minutos
   const timeToNumber = (time: string) => {
     const [h, m] = time.split(':').map(Number);
     return h * 60 + m;
   };
 
-  // Função que agrupa horários consecutivos do mesmo jogador em intervalos
+  // Função que agrupa horários consecutivos do mesmo jogador em intervalos contínuos
   const groupIntervals = (bookings: Booking[]) => {
     const byPlayer: Record<string, string[]> = {};
 
@@ -151,26 +167,33 @@ const Treinos: React.FC = () => {
       byPlayer[memberId].push(time);
     });
 
-    for (const memberId in byPlayer) {
-      byPlayer[memberId].sort();
-    }
-
     const intervals: { memberId: string; start: string; end: string }[] = [];
 
     for (const memberId in byPlayer) {
-      const times = byPlayer[memberId].map(timeToNumber);
-      let startIndex = 0;
+      const sortedTimes = byPlayer[memberId]
+        .map(time => ({ original: time, num: timeToNumber(time) }))
+        .sort((a, b) => a.num - b.num);
 
-      for (let i = 1; i <= times.length; i++) {
-        if (i === times.length || times[i] !== times[i - 1] + 60) {
-          intervals.push({
-            memberId,
-            start: HOURS.find(h => timeToNumber(h) === times[startIndex]) || '',
-            end: HOURS.find(h => timeToNumber(h) === times[i - 1]) || '',
-          });
-          startIndex = i;
+      if (sortedTimes.length === 0) continue;
+
+      let start = sortedTimes[0].original;
+      let end = sortedTimes[0].original;
+
+      for (let i = 1; i < sortedTimes.length; i++) {
+        const current = sortedTimes[i];
+        const prev = sortedTimes[i - 1];
+
+        // Verifica se o horário atual é exatamente 60 minutos após o anterior (consecutivo)
+        if (current.num === prev.num + 60) {
+          end = current.original; // Estende o intervalo
+        } else {
+          intervals.push({ memberId, start, end });
+          start = current.original;
+          end = current.original;
         }
       }
+
+      intervals.push({ memberId, start, end });
     }
 
     return intervals;
@@ -219,11 +242,58 @@ const Treinos: React.FC = () => {
               ) : (
                 groupIntervals(dayBookings).map(({ memberId, start, end }, i) => {
                   const nick = usernames[memberId] || memberId.slice(0, 6);
-                  return (
-                    <div key={i} className={styles.timeSlot}>
-                      Jogador {nick} - {start === end ? start : `${start} até ${end}`}
-                    </div>
-                  );
+                  // Se o intervalo é só uma hora (start === end), mostramos só um horário
+                  if (start === end) {
+                    // Se for sua marcação, mostrar botão para remover
+                    return (
+                      <div key={i} className={styles.timeSlot}>
+                        Jogador {nick} - {start} {' '}
+                        {memberId === user.uid && (
+                          <button
+                            className={styles.removeButton}
+                            onClick={(e) => {
+                              e.stopPropagation(); // evitar disparar o onClick do dia
+                              removeBooking(day, start);
+                            }}
+                          >
+                            ❌
+                          </button>
+                        )}
+                      </div>
+                    );
+                  } else {
+                    // Intervalo maior, mostrar intervalo completo, mas removendo só por hora pode ser complexo.
+                    // Para simplificar, vamos mostrar o intervalo e um botão para remover TODOS os horários do usuário nesse intervalo
+                    return (
+                      <div key={i} className={styles.timeSlot}>
+                        Jogador {nick} - {start} até {end}{' '}
+                        {memberId === user.uid && (
+                          <button
+                            className={styles.removeButton}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              // Remove todas as marcações do intervalo para esse usuário
+                              const timesToRemove = getIntervalHours(start, end);
+                              let updatedDayBookings = bookings[day] || [];
+                              timesToRemove.forEach(time => {
+                                updatedDayBookings = updatedDayBookings.filter(
+                                  b => !(b.memberId === user.uid && b.time === time)
+                                );
+                              });
+                              const updatedBookings: Bookings = {
+                                ...bookings,
+                                [day]: updatedDayBookings,
+                              };
+                              setBookings(updatedBookings);
+                              saveBookings(updatedBookings);
+                            }}
+                          >
+                            ❌
+                          </button>
+                        )}
+                      </div>
+                    );
+                  }
                 })
               )}
             </div>
