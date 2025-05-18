@@ -1,0 +1,124 @@
+.container {
+  padding: 32px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: white;
+  background-color: #111;
+  border-radius: 12px;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #00bfff;
+}
+
+.week {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.day {
+  background-color: #1f1f1f;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 16px;
+  width: 180px;
+  text-align: center;
+  transition: transform 0.2s, border 0.3s;
+  cursor: pointer;
+}
+
+.day:hover {
+  transform: scale(1.05);
+  border: 2px solid #00bfff;
+}
+
+.timeSlot {
+  background-color: #292929;
+  padding: 6px;
+  margin-top: 4px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.empty {
+  color: #666;
+  font-size: 14px;
+}
+
+.bookingArea {
+  margin-top: 32px;
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+.selector {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.select {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: white;
+}
+
+.confirmButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.cancelButton {
+  background-color: #ff4136;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.footerInfo {
+  margin-top: 30px;
+  font-size: 14px;
+  text-align: center;
+  color: #888;
+}
+
+/* Cores de status */
+.green {
+  background-color: #14532d !important;
+}
+
+.yellow {
+  background-color: #92400e !important;
+}
+
+.red {
+  background-color: #7f1d1d !important;
+}
+
+.warning, .loading {
+  color: #f1c40f;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+}

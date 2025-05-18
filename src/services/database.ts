@@ -1,4 +1,4 @@
-import { doc, getDoc, getDocs, collection, updateDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, updateDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 import type { News } from "../types/News";
@@ -39,4 +39,48 @@ export async function getAllNews(): Promise<News[]> {
 export async function getTeamMembers(): Promise<TeamMember[]> {
   const snapshot = await getDocs(collection(db, "teamMembers"));
   return snapshot.docs.map(doc => doc.data() as TeamMember);
+}
+
+// ---------------------------------------------------
+// Novas funções para manipular treinos (trainings)
+// ---------------------------------------------------
+
+type Bookings = Record<string, string[]>; // ex: { Monday: ["15:00", "20:00"], Tuesday: ["17:00"] }
+
+// Buscar os treinos do usuário
+export async function getUserTrainings(uid: string): Promise<Bookings | null> {
+  const docRef = doc(db, "trainings", uid);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) return null;
+
+  const data = docSnap.data();
+  return data.bookings || null;
+}
+
+// Adicionar um treino no dia e horário especificados
+export async function addTrainingBooking(uid: string, day: string, time: string) {
+  const docRef = doc(db, "trainings", uid);
+
+  const userTrainings = await getUserTrainings(uid);
+
+  if (!userTrainings) {
+    // Cria documento se não existir
+    await setDoc(docRef, {
+      bookings: {
+        [day]: [time],
+      },
+    });
+  } else {
+    // Atualiza adicionando novo horário no dia (evita duplicados)
+    const dayTimes = userTrainings[day] || [];
+    if (dayTimes.includes(time)) {
+      throw new Error("Horário já marcado para este dia.");
+    }
+    dayTimes.push(time);
+
+    await updateDoc(docRef, {
+      [`bookings.${day}`]: dayTimes,
+    });
+  }
 }

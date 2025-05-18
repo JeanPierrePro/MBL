@@ -1,46 +1,94 @@
-// src/pages/Register.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // 👈 importar isso
+import styles from '../styles/Register.module.css';
 import { register } from '../services/auth';
 
 const Register: React.FC = () => {
-  const [nick, setNick] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [lane, setLane] = useState('');
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    nick: '',
+    email: '',
+    password: '',
+    lane: '',
+  });
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const userCredential = await register(nick, email, password, lane);
-    if (userCredential) {
-      navigate('/perfil');
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // 👈 inicializar aqui
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    const { nick, email, password, lane } = formData;
+
+    if (!nick || !email || !password || !lane) {
+      setError('Preencha todos os campos.');
+      return;
+    }
+
+    const result = await register(nick, email, password, lane);
+
+    if (result) {
+      navigate('/login'); // 👈 redireciona para login após sucesso
     } else {
-      alert('Erro ao registar. Por favor, verifique os dados.');
+      setError('Erro ao registrar usuário.');
     }
   };
 
   return (
-    <div className="register-page">
-      <h2>Registar (Limitado a emails da equipa)</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="nick">Nick de Jogo:</label>
-          <input type="text" id="nick" name="nick" value={nick} onChange={(e) => setNick(e.target.value)} required />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <div>
-          <label htmlFor="lane">Lane:</label>
-          <input type="text" id="lane" name="lane" value={lane} onChange={(e) => setLane(e.target.value)} required />
-        </div>
-        <button type="submit">Registar</button>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <input
+          type="text"
+          name="nick"
+          placeholder="Nick"
+          value={formData.nick}
+          onChange={handleChange}
+          className={styles.input}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          className={styles.input}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Senha"
+          value={formData.password}
+          onChange={handleChange}
+          className={styles.input}
+          required
+        />
+        <select
+          name="lane"
+          value={formData.lane}
+          onChange={handleChange}
+          className={styles.input}
+          required
+        >
+          <option value="">Selecione sua lane</option>
+          <option value="Top">Top</option>
+          <option value="Mid">Mid</option>
+          <option value="Jungle">Jungle</option>
+          <option value="Gold">Gold</option>
+          <option value="Exp">Exp</option>
+          <option value="Suporte">Suporte</option>
+        </select>
+
+        <button type="submit" className={styles.button}>
+          Registrar
+        </button>
+
+        {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
       </form>
     </div>
   );

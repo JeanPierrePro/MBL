@@ -1,5 +1,3 @@
-// src/App.tsx
-// import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -8,14 +6,14 @@ import Noticias from './pages/Noticias';
 import Equipe from './pages/Equipe';
 import Perfil from './pages/Perfil';
 import Treinos from './pages/Treinos';
-import './global.css'; // Importa os estilos globais
+import './global.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />   {/* PÁGINA PRINCIPAL */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/noticias" element={<Noticias />} />

@@ -1,0 +1,70 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #444;
+}
+
+.intro h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  color: #1a73e8; /* azul */
+}
+
+.intro p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.newsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.featuredNews h2,
+.otherNews h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 3px solid #1a73e8;
+  padding-bottom: 5px;
+  width: fit-content;
+}
+
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.loadMoreBtn {
+  display: block;
+  margin: 30px auto 0 auto;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 8px rgba(26, 115, 232, 0.5);
+}
+
+.loadMoreBtn:hover {
+  background-color: #155ab7;
+}
+
+/* Você pode personalizar o NewsCard para combinar */
