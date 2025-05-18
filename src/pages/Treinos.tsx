@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from '../styles/Treinos.module.css';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, setDoc, collection, getDocs } from 'firebase/firestore';
@@ -28,163 +28,25 @@ const Treinos: React.FC = () => {
 
   const user = auth.currentUser;
 
-  // Carrega agendamentos e usuários do Firestore
-  useEffect(() => {
-    async function loadBookingsAndUsernames() {
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      try {
-        // Pega todos os documentos da coleção 'treinos'
-        const treinosSnapshot = await getDocs(collection(db, 'treinos'));
-        const allBookings: Bookings = {};
-
-        treinosSnapshot.forEach(doc => {
-          const data = doc.data();
-          if (data && data.bookings) {
-            const bookings = data.bookings;
-            for (const day in bookings) {
-              if (!allBookings[day]) allBookings[day] = [];
-              allBookings[day] = allBookings[day].concat(bookings[day]);
-            }
-          }
-        });
-
-        setBookings(allBookings);
-
-        // Pega todos os usuários para mostrar o nick
-        const usersSnapshot = await getDocs(collection(db, 'users'));
-        const usersMap: Usernames = {};
-
-        usersSnapshot.forEach(doc => {
-          const data = doc.data();
-          if (data && data.nick && doc.id) {
-            usersMap[doc.id] = data.nick;
-          }
-        });
-
-        setUsernames(usersMap);
-      } catch (error) {
-        console.error('Erro ao carregar treinos ou usuários:', error);
-      }
-      setLoading(false);
-    }
-
-    loadBookingsAndUsernames();
-  }, [db, user]);
-
-  // Salva agendamentos do usuário atual no Firestore
-  const saveBookings = async (newBookings: Bookings) => {
-    const currentUser = auth.currentUser;
-    if (!currentUser) return;
-
-    try {
-      await setDoc(doc(db, 'treinos', currentUser.uid), { bookings: newBookings });
-    } catch (error) {
-      console.error('Erro ao salvar treinos:', error);
-    }
-  };
+  // Converte horário "HH:mm" para número total de minutos
+  const timeToNumber = useCallback((time: string) => {
+    const [h, m] = time.split(':').map(Number);
+    return h * 60 + m;
+  }, []);
 
   // Retorna array de horários no intervalo selecionado
-  const getIntervalHours = (start: string, end: string) => {
+  const getIntervalHours = useCallback((start: string, end: string) => {
     const startIndex = HOURS.indexOf(start);
     const endIndex = HOURS.indexOf(end);
     if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) return [];
-
     return HOURS.slice(startIndex, endIndex);
-  };
-
-  // Adiciona agendamento para o usuário no dia e intervalo selecionados
-  const addBooking = () => {
-    if (!selectedDay || !startTime || !endTime || !user) return;
-
-    const intervalHours = getIntervalHours(startTime, endTime);
-    if (intervalHours.length === 0) {
-      alert('Horário inválido: o horário de início deve ser antes do de término.');
-      return;
-    }
-
-    const dayBookings = bookings[selectedDay] || [];
-
-    // VERIFICAÇÃO ALTERADA: Agora checamos se o usuário já tem agendamento no mesmo horário
-    for (const hour of intervalHours) {
-      const alreadyBooked = dayBookings.find(
-        b => b.memberId === user.uid && b.time === hour
-      );
-      if (alreadyBooked) {
-        alert(`Você já marcou o horário ${hour} neste dia.`);
-        return;
-      }
-    }
-
-    // Cria novos agendamentos para o intervalo
-    const newEntries = intervalHours.map(hour => ({
-      memberId: user.uid,
-      time: hour,
-    }));
-
-    const updatedTrainings: Bookings = {
-      ...bookings,
-      [selectedDay]: [...dayBookings, ...newEntries],
-    };
-
-    setBookings(updatedTrainings);
-    saveBookings(updatedTrainings);
-    setStartTime('');
-    setEndTime('');
-    setSelectedDay(null);
-  };
-
-  // Remove um agendamento específico do usuário
-  const removeBooking = (day: string, time: string) => {
-    if (!user) return;
-
-    const dayBookings = bookings[day] || [];
-    const updatedDayBookings = dayBookings.filter(
-      (b) => !(b.memberId === user.uid && b.time === time)
-    );
-
-    const updatedBookings: Bookings = {
-      ...bookings,
-      [day]: updatedDayBookings,
-    };
-
-    setBookings(updatedBookings);
-    saveBookings(updatedBookings);
-  };
-
-  // Remove todos os agendamentos do usuário para um dia específico
-  const cancelAllBookingsForDay = (day: string) => {
-    if (!user) return;
-
-    const dayBookings = bookings[day] || [];
-    const updatedDayBookings = dayBookings.filter(
-      (b) => b.memberId !== user.uid
-    );
-
-    const updatedBookings: Bookings = {
-      ...bookings,
-      [day]: updatedDayBookings,
-    };
-
-    setBookings(updatedBookings);
-    saveBookings(updatedBookings);
-  };
-
-  // Converte horário "HH:mm" para número total de minutos
-  const timeToNumber = (time: string) => {
-    const [h, m] = time.split(':').map(Number);
-    return h * 60 + m;
-  };
+  }, []);
 
   // Agrupa horários consecutivos do mesmo usuário em intervalos contínuos
-  const groupIntervals = (bookings: Booking[]) => {
+  const groupIntervals = useCallback((dayBookings: Booking[]) => {
     const byPlayer: Record<string, string[]> = {};
 
-    bookings.forEach(({ memberId, time }) => {
+    dayBookings.forEach(({ memberId, time }) => {
       if (!byPlayer[memberId]) byPlayer[memberId] = [];
       byPlayer[memberId].push(time);
     });
@@ -206,7 +68,6 @@ const Treinos: React.FC = () => {
         const prev = sortedTimes[i - 1];
 
         if (current.num === prev.num + 60) {
-          // Horário consecutivo
           end = current.original;
         } else {
           intervals.push({ memberId, start, end });
@@ -219,6 +80,145 @@ const Treinos: React.FC = () => {
     }
 
     return intervals;
+  }, [timeToNumber]);
+
+  // Carrega agendamentos e usuários do Firestore
+  useEffect(() => {
+    async function loadBookingsAndUsernames() {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        // Pega todos os documentos da coleção 'treinos'
+        const treinosSnapshot = await getDocs(collection(db, 'treinos'));
+        const allBookingsRaw: Record<string, { memberId: string; time: string }[]> = {};
+
+        treinosSnapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data && data.bookings) {
+            const bookingsData = data.bookings as Bookings;
+            for (const day in bookingsData) {
+              if (!allBookingsRaw[day]) allBookingsRaw[day] = [];
+              allBookingsRaw[day] = allBookingsRaw[day].concat(bookingsData[day]);
+            }
+          }
+        });
+
+        // Novo processamento para agrupar os horários ao carregar
+        const groupedBookings: Bookings = {};
+        for (const day in allBookingsRaw) {
+          groupedBookings[day] = groupIntervals(allBookingsRaw[day]).flatMap(interval => {
+            const intervalHours = getIntervalHours(interval.start, interval.end);
+            return intervalHours.map(hour => ({ memberId: interval.memberId, time: hour }));
+          });
+        }
+
+        setBookings(groupedBookings);
+
+        // Pega todos os usuários para mostrar o nick
+        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const usersMap: Usernames = {};
+
+        usersSnapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data && data.nick && docSnap.id) {
+            usersMap[docSnap.id] = data.nick;
+          }
+        });
+
+        setUsernames(usersMap);
+      } catch (error) {
+        console.error('Erro ao carregar treinos ou usuários:', error);
+      }
+      setLoading(false);
+    }
+
+    loadBookingsAndUsernames();
+  }, [db, user, groupIntervals, getIntervalHours]); // groupIntervals e getIntervalHours adicionados aqui
+
+  // Salva agendamentos do usuário atual no Firestore
+  const saveBookings = async (newBookings: Bookings) => {
+    if (!user) return;
+
+    try {
+      await setDoc(doc(db, 'treinos', user.uid), { bookings: newBookings });
+    } catch (error) {
+      console.error('Erro ao salvar treinos:', error);
+    }
+  };
+
+  // Adiciona agendamento para o usuário no dia e intervalo selecionados
+  const addBooking = () => {
+    if (!selectedDay || !startTime || !endTime || !user) return;
+
+    const intervalHours = getIntervalHours(startTime, endTime);
+    if (intervalHours.length === 0) {
+      alert('Horário inválido: o horário de início deve ser antes do de término.');
+      return;
+    }
+
+    const dayBookings = bookings[selectedDay] || [];
+
+    // Verifica se o usuário já tem agendamento no mesmo horário
+    for (const hour of intervalHours) {
+      if (dayBookings.some(b => b.memberId === user.uid && b.time === hour)) {
+        alert(`Você já marcou o horário ${hour} neste dia.`);
+        return;
+      }
+    }
+
+    const newEntries = intervalHours.map(hour => ({
+      memberId: user.uid,
+      time: hour,
+    }));
+
+    const updatedBookings: Bookings = {
+      ...bookings,
+      [selectedDay]: [...dayBookings, ...newEntries],
+    };
+
+    setBookings(updatedBookings);
+    saveBookings(updatedBookings);
+    setStartTime('');
+    setEndTime('');
+    setSelectedDay(null);
+  };
+
+  // Remove um agendamento específico do usuário
+  const removeBooking = (day: string, time: string) => {
+    if (!user) return;
+
+    const dayBookings = bookings[day] || [];
+    const updatedDayBookings = dayBookings.filter(
+      b => !(b.memberId === user.uid && b.time === time)
+    );
+
+    const updatedBookings: Bookings = {
+      ...bookings,
+      [day]: updatedDayBookings,
+    };
+
+    setBookings(updatedBookings);
+    saveBookings(updatedBookings);
+  };
+
+  // Remove todos os agendamentos do usuário para um dia específico
+  const cancelAllBookingsForDay = (day: string) => {
+    if (!user) return;
+
+    const dayBookings = bookings[day] || [];
+    const updatedDayBookings = dayBookings.filter(b => b.memberId !== user.uid);
+
+    const updatedBookings: Bookings = {
+      ...bookings,
+      [day]: updatedDayBookings,
+    };
+
+    setBookings(updatedBookings);
+    saveBookings(updatedBookings);
   };
 
   // Define cor do dia conforme quantidade/agendamentos
@@ -229,7 +229,7 @@ const Treinos: React.FC = () => {
     if (count === 0) return '';
     if (count < 10) return 'red';
 
-    const uniqueTimes = new Set(dayBookings.map((b) => b.time));
+    const uniqueTimes = new Set(dayBookings.map(b => b.time));
     if (uniqueTimes.size === 1) return 'green';
 
     return 'yellow';
@@ -248,7 +248,7 @@ const Treinos: React.FC = () => {
       <h2 className={styles.title}>Agenda de Treinos Semanais</h2>
 
       <div className={styles.week}>
-        {daysOfWeek.map((day) => {
+        {daysOfWeek.map(day => {
           const dayColor = getDayColor(day);
           const dayBookings = bookings[day] || [];
 
@@ -272,7 +272,7 @@ const Treinos: React.FC = () => {
                         {memberId === user.uid && (
                           <button
                             className={styles.removeButton}
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation();
                               removeBooking(day, start);
                             }}
@@ -289,9 +289,8 @@ const Treinos: React.FC = () => {
                         {memberId === user.uid && (
                           <button
                             className={styles.removeButton}
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation();
-                              // Remove todos os horários entre start e end, um por um
                               const startIndex = HOURS.indexOf(start);
                               const endIndex = HOURS.indexOf(end);
                               if (startIndex === -1 || endIndex === -1) return;
@@ -309,16 +308,15 @@ const Treinos: React.FC = () => {
                   }
                 })
               )}
-
-              {dayBookings.some((b) => b.memberId === user.uid) && (
+              {dayBookings.some(b => b.memberId === user.uid) && (
                 <button
                   className={styles.cancelAllButton}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     cancelAllBookingsForDay(day);
                   }}
                 >
-                  Cancelar todos os meus treinos desse dia
+                  Cancelar todos meus treinos neste dia
                 </button>
               )}
             </div>
@@ -331,39 +329,32 @@ const Treinos: React.FC = () => {
           <h3>Marcar treino para {selectedDay}</h3>
           <label>
             Início:
-            <select value={startTime} onChange={(e) => setStartTime(e.target.value)}>
-              <option value="">-- Escolha o horário de início --</option>
-              {HOURS.map((hour) => (
+            <select value={startTime} onChange={e => setStartTime(e.target.value)}>
+              <option value="">Selecionar</option>
+              {HOURS.map(hour => (
                 <option key={hour} value={hour}>
                   {hour}
                 </option>
               ))}
             </select>
           </label>
+
           <label>
             Fim:
-            <select value={endTime} onChange={(e) => setEndTime(e.target.value)}>
-              <option value="">-- Escolha o horário de término --</option>
-              {HOURS.map((hour) => (
+            <select value={endTime} onChange={e => setEndTime(e.target.value)}>
+              <option value="">Selecionar</option>
+              {HOURS.map(hour => (
                 <option key={hour} value={hour}>
                   {hour}
                 </option>
               ))}
             </select>
           </label>
-          <button className={styles.addButton} onClick={addBooking}>
-            Marcar treino
+
+          <button onClick={addBooking} disabled={!startTime || !endTime}>
+            Marcar
           </button>
-          <button
-            className={styles.cancelButton}
-            onClick={() => {
-              setSelectedDay(null);
-              setStartTime('');
-              setEndTime('');
-            }}
-          >
-            Cancelar
-          </button>
+          <button onClick={() => setSelectedDay(null)}>Cancelar</button>
         </div>
       )}
     </div>
