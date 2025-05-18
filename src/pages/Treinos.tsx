@@ -28,6 +28,7 @@ const Treinos: React.FC = () => {
 
   const user = auth.currentUser;
 
+  // Carrega agendamentos e usuários do Firestore
   useEffect(() => {
     async function loadBookingsAndUsernames() {
       if (!user) {
@@ -37,6 +38,7 @@ const Treinos: React.FC = () => {
 
       setLoading(true);
       try {
+        // Pega todos os documentos da coleção 'treinos'
         const treinosSnapshot = await getDocs(collection(db, 'treinos'));
         const allBookings: Bookings = {};
 
@@ -53,6 +55,7 @@ const Treinos: React.FC = () => {
 
         setBookings(allBookings);
 
+        // Pega todos os usuários para mostrar o nick
         const usersSnapshot = await getDocs(collection(db, 'users'));
         const usersMap: Usernames = {};
 
@@ -73,6 +76,7 @@ const Treinos: React.FC = () => {
     loadBookingsAndUsernames();
   }, [db, user]);
 
+  // Salva agendamentos do usuário atual no Firestore
   const saveBookings = async (newBookings: Bookings) => {
     const currentUser = auth.currentUser;
     if (!currentUser) return;
@@ -84,6 +88,7 @@ const Treinos: React.FC = () => {
     }
   };
 
+  // Retorna array de horários no intervalo selecionado
   const getIntervalHours = (start: string, end: string) => {
     const startIndex = HOURS.indexOf(start);
     const endIndex = HOURS.indexOf(end);
@@ -92,6 +97,7 @@ const Treinos: React.FC = () => {
     return HOURS.slice(startIndex, endIndex);
   };
 
+  // Adiciona agendamento para o usuário no dia e intervalo selecionados
   const addBooking = () => {
     if (!selectedDay || !startTime || !endTime || !user) return;
 
@@ -103,6 +109,7 @@ const Treinos: React.FC = () => {
 
     const dayBookings = bookings[selectedDay] || [];
 
+    // Verifica se já há agendamento do usuário naquele horário
     for (const hour of intervalHours) {
       const alreadyBooked = dayBookings.find(b => b.memberId === user.uid && b.time === hour);
       if (alreadyBooked) {
@@ -111,6 +118,7 @@ const Treinos: React.FC = () => {
       }
     }
 
+    // Cria novos agendamentos para o intervalo
     const newEntries = intervalHours.map(hour => ({
       memberId: user.uid,
       time: hour,
@@ -128,7 +136,7 @@ const Treinos: React.FC = () => {
     setSelectedDay(null);
   };
 
-  // Função para remover uma marcação do usuário atual naquele dia e horário
+  // Remove um agendamento específico do usuário
   const removeBooking = (day: string, time: string) => {
     if (!user) return;
 
@@ -146,7 +154,7 @@ const Treinos: React.FC = () => {
     saveBookings(updatedBookings);
   };
 
-  // Função para remover todos os horários do usuário no dia (botão "Cancelar treino do dia")
+  // Remove todos os agendamentos do usuário para um dia específico
   const cancelAllBookingsForDay = (day: string) => {
     if (!user) return;
 
@@ -164,13 +172,13 @@ const Treinos: React.FC = () => {
     saveBookings(updatedBookings);
   };
 
-  // Converter horário "HH:mm" para número de minutos
+  // Converte horário "HH:mm" para número total de minutos
   const timeToNumber = (time: string) => {
     const [h, m] = time.split(':').map(Number);
     return h * 60 + m;
   };
 
-  // Função que agrupa horários consecutivos do mesmo jogador em intervalos contínuos
+  // Agrupa horários consecutivos do mesmo usuário em intervalos contínuos
   const groupIntervals = (bookings: Booking[]) => {
     const byPlayer: Record<string, string[]> = {};
 
@@ -195,9 +203,9 @@ const Treinos: React.FC = () => {
         const current = sortedTimes[i];
         const prev = sortedTimes[i - 1];
 
-        // Verifica se o horário atual é exatamente 60 minutos após o anterior (consecutivo)
         if (current.num === prev.num + 60) {
-          end = current.original; // Estende o intervalo
+          // Horário consecutivo
+          end = current.original;
         } else {
           intervals.push({ memberId, start, end });
           start = current.original;
@@ -211,12 +219,12 @@ const Treinos: React.FC = () => {
     return intervals;
   };
 
+  // Define cor do dia conforme quantidade/agendamentos
   const getDayColor = (day: string): string => {
     const dayBookings = bookings[day] || [];
     const count = dayBookings.length;
 
     if (count === 0) return '';
-    // Simplificado sem limite, pode personalizar cores como quiser
     if (count < 10) return 'red';
 
     const uniqueTimes = new Set(dayBookings.map((b) => b.time));
@@ -301,11 +309,16 @@ const Treinos: React.FC = () => {
       {selectedDay && (
         <div className={styles.bookingForm}>
           <h3>Marcar treino para {selectedDay}</h3>
+
           <label>
-            Horário de Início:
-            <select value={startTime} onChange={(e) => setStartTime(e.target.value)}>
+            Início:
+            <select
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              required
+            >
               <option value="">Selecione</option>
-              {HOURS.map((hour) => (
+              {HOURS.slice(0, HOURS.length - 1).map((hour) => (
                 <option key={hour} value={hour}>
                   {hour}
                 </option>
@@ -314,10 +327,14 @@ const Treinos: React.FC = () => {
           </label>
 
           <label>
-            Horário de Término:
-            <select value={endTime} onChange={(e) => setEndTime(e.target.value)}>
+            Fim:
+            <select
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              required
+            >
               <option value="">Selecione</option>
-              {HOURS.map((hour) => (
+              {HOURS.slice(1).map((hour) => (
                 <option key={hour} value={hour}>
                   {hour}
                 </option>
@@ -325,12 +342,16 @@ const Treinos: React.FC = () => {
             </select>
           </label>
 
-          <button onClick={addBooking} className={styles.button}>
-            Confirmar Marcação
+          <button onClick={addBooking} className={styles.addButton}>
+            Marcar treino
           </button>
 
           <button
-            onClick={() => setSelectedDay(null)}
+            onClick={() => {
+              setSelectedDay(null);
+              setStartTime('');
+              setEndTime('');
+            }}
             className={styles.cancelButton}
           >
             Cancelar
