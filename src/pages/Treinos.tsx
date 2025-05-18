@@ -1,7 +1,9 @@
+// Treinos.tsx
+
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Treinos.module.css';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, doc,  setDoc, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, collection, getDocs } from 'firebase/firestore';
 
 type Booking = {
   memberId: string;
@@ -10,8 +12,6 @@ type Booking = {
 
 type DayBookings = Booking[];
 type Bookings = Record<string, DayBookings>;
-
-// Para armazenar os nicks de cada userId
 type Usernames = Record<string, string>;
 
 const MAX_MEMBERS = 5;
@@ -25,7 +25,8 @@ const Treinos: React.FC = () => {
   const [bookings, setBookings] = useState<Bookings>({});
   const [usernames, setUsernames] = useState<Usernames>({});
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
-  const [selectedTime, setSelectedTime] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [loading, setLoading] = useState(true);
 
   const user = auth.currentUser;
@@ -39,7 +40,6 @@ const Treinos: React.FC = () => {
 
       setLoading(true);
       try {
-        // 1. Buscar todos os treinos
         const treinosSnapshot = await getDocs(collection(db, 'treinos'));
         const allBookings: Bookings = {};
 
@@ -56,7 +56,6 @@ const Treinos: React.FC = () => {
 
         setBookings(allBookings);
 
-        // 2. Buscar todos os users pra pegar nicknames
         const usersSnapshot = await getDocs(collection(db, 'users'));
         const usersMap: Usernames = {};
 
@@ -88,34 +87,93 @@ const Treinos: React.FC = () => {
     }
   };
 
+  const getIntervalHours = (start: string, end: string) => {
+    const startIndex = HOURS.indexOf(start);
+    const endIndex = HOURS.indexOf(end);
+    if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) return [];
+
+    return HOURS.slice(startIndex, endIndex);
+  };
+
   const addBooking = () => {
-    if (!selectedDay || !selectedTime || !user) return;
+    if (!selectedDay || !startTime || !endTime || !user) return;
+
+    const intervalHours = getIntervalHours(startTime, endTime);
+    if (intervalHours.length === 0) {
+      alert('Horário inválido: o horário de início deve ser antes do de término.');
+      return;
+    }
 
     const dayBookings = bookings[selectedDay] || [];
+    for (const hour of intervalHours) {
+      const count = dayBookings.filter(b => b.time === hour).length;
+      if (count >= MAX_MEMBERS) {
+        alert(`Horário ${hour} já está cheio.`);
+        return;
+      }
 
-    const alreadyBooked = dayBookings.find(
-      (b) => b.memberId === user.uid && b.time === selectedTime
-    );
-    if (alreadyBooked) {
-      alert('Você já marcou este horário neste dia.');
-      return;
+      const alreadyBooked = dayBookings.find(b => b.memberId === user.uid && b.time === hour);
+      if (alreadyBooked) {
+        alert(`Você já marcou o horário ${hour} neste dia.`);
+        return;
+      }
     }
 
-    const countSameTime = dayBookings.filter((b) => b.time === selectedTime).length;
-    if (countSameTime >= MAX_MEMBERS) {
-      alert('Este horário já está cheio para este dia.');
-      return;
-    }
+    const newEntries = intervalHours.map(hour => ({
+      memberId: user.uid,
+      time: hour,
+    }));
 
     const updatedTrainings: Bookings = {
       ...bookings,
-      [selectedDay]: [...dayBookings, { memberId: user.uid, time: selectedTime }],
+      [selectedDay]: [...dayBookings, ...newEntries],
     };
 
     setBookings(updatedTrainings);
     saveBookings(updatedTrainings);
-    setSelectedTime('');
+    setStartTime('');
+    setEndTime('');
     setSelectedDay(null);
+  };
+
+  // Função para converter horários "HH:mm" em número para facilitar comparação
+  const timeToNumber = (time: string) => {
+    const [h, m] = time.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  // Função que agrupa horários consecutivos do mesmo jogador em intervalos
+  const groupIntervals = (bookings: Booking[]) => {
+    const byPlayer: Record<string, string[]> = {};
+
+    bookings.forEach(({ memberId, time }) => {
+      if (!byPlayer[memberId]) byPlayer[memberId] = [];
+      byPlayer[memberId].push(time);
+    });
+
+    for (const memberId in byPlayer) {
+      byPlayer[memberId].sort();
+    }
+
+    const intervals: { memberId: string; start: string; end: string }[] = [];
+
+    for (const memberId in byPlayer) {
+      const times = byPlayer[memberId].map(timeToNumber);
+      let startIndex = 0;
+
+      for (let i = 1; i <= times.length; i++) {
+        if (i === times.length || times[i] !== times[i - 1] + 60) {
+          intervals.push({
+            memberId,
+            start: HOURS.find(h => timeToNumber(h) === times[startIndex]) || '',
+            end: HOURS.find(h => timeToNumber(h) === times[i - 1]) || '',
+          });
+          startIndex = i;
+        }
+      }
+    }
+
+    return intervals;
   };
 
   const getDayColor = (day: string): string => {
@@ -159,12 +217,11 @@ const Treinos: React.FC = () => {
               {dayBookings.length === 0 ? (
                 <p className={styles.empty}>Nenhuma marcação</p>
               ) : (
-                dayBookings.map((booking, i) => {
-                  // Pega o nick ou mostra o UID cortado se não achar nick
-                  const nick = usernames[booking.memberId] || booking.memberId.slice(0, 6);
+                groupIntervals(dayBookings).map(({ memberId, start, end }, i) => {
+                  const nick = usernames[memberId] || memberId.slice(0, 6);
                   return (
                     <div key={i} className={styles.timeSlot}>
-                      Jogador {nick} - {booking.time}
+                      Jogador {nick} - {start === end ? start : `${start} até ${end}`}
                     </div>
                   );
                 })
@@ -179,11 +236,21 @@ const Treinos: React.FC = () => {
           <h3>Marcar treino para <strong>{selectedDay}</strong></h3>
           <div className={styles.selector}>
             <select
-              value={selectedTime}
-              onChange={(e) => setSelectedTime(e.target.value)}
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
               className={styles.select}
             >
-              <option value="">Selecione o horário</option>
+              <option value="">Início</option>
+              {HOURS.map((hour) => (
+                <option key={hour} value={hour}>{hour}</option>
+              ))}
+            </select>
+            <select
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Fim</option>
               {HOURS.map((hour) => (
                 <option key={hour} value={hour}>{hour}</option>
               ))}
@@ -191,14 +258,15 @@ const Treinos: React.FC = () => {
             <button onClick={addBooking} className={styles.confirmButton}>Confirmar</button>
             <button onClick={() => {
               setSelectedDay(null);
-              setSelectedTime('');
+              setStartTime('');
+              setEndTime('');
             }} className={styles.cancelButton}>Cancelar</button>
           </div>
         </div>
       )}
 
       <p className={styles.footerInfo}>
-        Toque em um dia da semana para escolher seu horário de treino.
+        Toque em um dia para marcar seus treinos. Até {MAX_MEMBERS} jogadores por hora.
       </p>
     </div>
   );
