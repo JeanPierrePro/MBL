@@ -1,7 +1,6 @@
 // Register.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../styles/Register.module.css'; // Estilos específicos do Register
 import authFormStyles from '../styles/AuthForm.module.css'; // Estilos comuns de autenticação
 import { register } from '../services/auth';
 
