@@ -1,13 +1,17 @@
+// Home.tsx
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AuthArea from '../components/AuthArea';
 import NewsCard from '../components/NewsCard';
 import { getLatestNews } from '../services/database';
-import type { News } from '../types/News';  // <---- import type
+import type { News } from '../types/News';
 import styles from '../styles/Home.module.css';
+import { useLocation } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const [latestNews, setLatestNews] = useState<News[]>([]);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const fetchLatestNews = async () => {
@@ -19,10 +23,17 @@ const Home: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Navbar />
+      {isHomePage ? (
+        <header className={styles.header}>
+          <Navbar />
+        </header>
+      ) : (
+        <></> // Não renderiza o header nem a Navbar em outras páginas
+      )}
+
+      <div className={styles.authAreaWrapper}>
         <AuthArea />
-      </header>
+      </div>
 
       <section className={styles.intro}>
         <h1>Bem-vindo ao MBL - Mundo das Notícias</h1>

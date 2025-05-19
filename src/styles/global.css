@@ -1,0 +1,31 @@
+/* styles/global.css */
+:root {
+  --primary-background: #181A1F;
+  --secondary-background: #22262C;
+  --primary-text: #E0E0E0;
+  --secondary-text: #CCCCCC;
+  --accent-color: #BFA02B;
+  --button-color: #0094cc;
+  --button-hover-color: #006D9C;
+  --input-background: #2A2A2A;
+  --input-border: #0094cc;
+  --input-focus-border: #BFA02B;
+  --box-shadow-color: rgba(0, 191, 255, 0.1);
+  --table-background: #2A2A2A;
+  --table-border: #3A3A3A;
+  --table-header-background: #006D9C;
+  --remove-button-background: #C04040;
+  --remove-button-hover-background: #A03030;
+}
+
+/* Resto do teu reset e estilos do body */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--primary-background);
+  color: var(--primary-text);
+  
+}
+
+* {
+  box-sizing: border-box;
+}
