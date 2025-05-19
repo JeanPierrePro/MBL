@@ -39,7 +39,7 @@ const Home: React.FC = () => {
         <h1>Bem-vindo ao MBL - Mundo das Notícias</h1>
         <p>
           Aqui você encontra as notícias mais fresquinhas, dicas, eventos e tudo que rola de mais legal no nosso universo.
-          Fique ligado e não perca nenhuma novidade!
+          Fique ligado e não perca nenhuma novidade!.
         </p>
       </section>
 
