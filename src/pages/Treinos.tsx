@@ -137,14 +137,14 @@ const Treinos: React.FC = () => {
     }
 
     loadBookingsAndUsernames();
-  }, [db, user, groupIntervals, getIntervalHours]); // groupIntervals e getIntervalHours adicionados aqui
+  }, [db, user, groupIntervals, getIntervalHours]);
 
   // Salva agendamentos do usuário atual no Firestore
-  const saveBookings = async (newBookings: Bookings) => {
+  const saveBookings = async (updatedBookings: Bookings) => {
     if (!user) return;
 
     try {
-      await setDoc(doc(db, 'treinos', user.uid), { bookings: newBookings });
+      await setDoc(doc(db, 'treinos', user.uid), { bookings: updatedBookings });
     } catch (error) {
       console.error('Erro ao salvar treinos:', error);
     }
