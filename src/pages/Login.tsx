@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
-import styles from '../styles/Login.module.css'; // Estilos específicos do Login
 import formStyles from '../styles/AuthForm.module.css'; // Estilos comuns do formulário
 
 const Login: React.FC = () => {
