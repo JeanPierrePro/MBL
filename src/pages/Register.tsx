@@ -1,6 +1,8 @@
+// Register.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 👈 importar isso
-import styles from '../styles/Register.module.css';
+import { useNavigate } from 'react-router-dom';
+import styles from '../styles/Register.module.css'; // Estilos específicos do Register
+import authFormStyles from '../styles/AuthForm.module.css'; // Estilos comuns de autenticação
 import { register } from '../services/auth';
 
 const Register: React.FC = () => {
@@ -12,7 +14,7 @@ const Register: React.FC = () => {
   });
 
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // 👈 inicializar aqui
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,22 +34,23 @@ const Register: React.FC = () => {
     const result = await register(nick, email, password, lane);
 
     if (result) {
-      navigate('/login'); // 👈 redireciona para login após sucesso
+      navigate('/login');
     } else {
       setError('Erro ao registrar usuário.');
     }
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles.form}>
+    <div className={authFormStyles.container}>
+      <h2>Registo (Exclusivo a Membros)</h2>
+      <form onSubmit={handleSubmit} className={authFormStyles.form}>
         <input
           type="text"
           name="nick"
           placeholder="Nick"
           value={formData.nick}
           onChange={handleChange}
-          className={styles.input}
+          className={authFormStyles.input}
           required
         />
         <input
@@ -56,7 +59,7 @@ const Register: React.FC = () => {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          className={styles.input}
+          className={authFormStyles.input}
           required
         />
         <input
@@ -65,14 +68,14 @@ const Register: React.FC = () => {
           placeholder="Senha"
           value={formData.password}
           onChange={handleChange}
-          className={styles.input}
+          className={authFormStyles.input}
           required
         />
         <select
           name="lane"
           value={formData.lane}
           onChange={handleChange}
-          className={styles.input}
+          className={`${authFormStyles.input} ${authFormStyles['select.input']}`}
           required
         >
           <option value="">Selecione sua lane</option>
@@ -84,7 +87,7 @@ const Register: React.FC = () => {
           <option value="Suporte">Suporte</option>
         </select>
 
-        <button type="submit" className={styles.button}>
+        <button type="submit" className={authFormStyles.button}>
           Registrar
         </button>
 

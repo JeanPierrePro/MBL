@@ -5,7 +5,8 @@
   gap: 20px; /* Espaço entre os links */
   padding-top: 10px; /* Reduzindo o padding superior */
   padding-bottom: 20px; /* Mantendo ou ajustando o padding inferior */
-  margin-top: -30px; 
+  margin-top: -20px; 
+  margin-bottom: 20px;
 }
 
 .link {

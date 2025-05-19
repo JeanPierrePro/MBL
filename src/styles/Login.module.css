@@ -1,4 +1,6 @@
 /* Login.module.css */
+@import './AuthForm.module.css';
+
 .container {
   max-width: 400px;
   margin: 60px auto;

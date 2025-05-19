@@ -1,7 +1,9 @@
+// Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../services/auth'; // removido getUserData
-import styles from '../styles/Login.module.css';
+import { login } from '../services/auth';
+import styles from '../styles/Login.module.css'; // Estilos específicos do Login
+import formStyles from '../styles/AuthForm.module.css'; // Estilos comuns do formulário
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -29,11 +31,11 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={formStyles.container}>
       <h2>Login (Exclusivo a Membros)</h2>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+      <form onSubmit={handleSubmit} className={formStyles.form}>
+        <div className={formStyles.formGroup}>
+          <label htmlFor="email" className={formStyles.label}>Email:</label>
           <input
             type="email"
             id="email"
@@ -42,10 +44,11 @@ const Login: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="username"
+            className={formStyles.input}
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="password">Senha:</label>
+        <div className={formStyles.formGroup}>
+          <label htmlFor="password" className={formStyles.label}>Senha:</label>
           <input
             type="password"
             id="password"
@@ -54,9 +57,10 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="current-password"
+            className={formStyles.input}
           />
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit" className={formStyles.button}>Entrar</button>
       </form>
     </div>
   );
