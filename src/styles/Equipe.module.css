@@ -1,0 +1,52 @@
+/* src/pages/Equipe.module.css */
+
+.equipePage {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.teamsList {
+  list-style: none;
+  padding: 0;
+}
+
+.teamItem {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #000000;
+}
+
+.teamItem h3 {
+  margin-top: 0;
+  color: #3498db;
+}
+
+.teamTag {
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.teamLogo {
+  max-width: 100px;
+  max-height: 100px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.membersList {
+  list-style: none;
+  padding: 0;
+}
+
+.memberItem {
+  margin-left: 20px;
+  margin-bottom: 5px;
+  color: #555;
+}

@@ -1,5 +1,5 @@
 // App.tsx
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -9,6 +9,7 @@ import Perfil from './pages/Perfil';
 import Treinos from './pages/Treinos';
 import Navbar from './components/Navbar';
 import './styles/global.css';
+import RegisterTeam from './pages/RegisterTeam'; // Certifique-se de ter esta importação
 
 function App() {
   return (
@@ -23,11 +24,14 @@ function App() {
           <Route path="/equipe" element={<Equipe />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/treinos" element={<Treinos />} />
+          <Route path="/register-team" element={<RegisterTeam />} /> {/* Rota para o registro de equipes */}
         </Routes>
       </div>
     </Router>
   );
 }
+
+import { useLocation } from 'react-router-dom'; // Importe useLocation aqui
 
 function AppNavbar() {
   const location = useLocation();

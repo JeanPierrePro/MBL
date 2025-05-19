@@ -1,11 +1,8 @@
-// Navbar.tsx
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from '../styles/Navbar.module.css';
 
-interface NavbarProps {}
-
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -26,6 +23,9 @@ const Navbar: React.FC<NavbarProps> = () => {
         </li>
         <li className={styles.navItem}>
           <Link to="/perfil">Perfil</Link>
+        </li>
+        <li className={styles.navItem}> {/* 👈 ADICIONE ESTE BLOCO */}
+          <Link to="/register-team">Registar Equipa</Link>
         </li>
       </ul>
       {!isHomePage && (

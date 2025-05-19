@@ -1,9 +1,10 @@
-import { doc, getDoc, getDocs, collection, updateDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, updateDoc, setDoc, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 import type { News } from "../types/News";
 import type { TeamMember } from "../types/TeamMember";
 import type { UserProfile } from "../types/User";
+import type { Team } from "../types/Team"; // Importe o tipo Team
 
 // ✔ Função para buscar perfil de usuário
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
@@ -40,6 +41,37 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
   const snapshot = await getDocs(collection(db, "teamMembers"));
   return snapshot.docs.map(doc => doc.data() as TeamMember);
 }
+
+// ✔ Registrar nova equipe
+export const registerTeam = async (teamData: Omit<Team, 'id' | 'registrationDate'>): Promise<string | null> => {
+  try {
+    const teamsCollectionRef = collection(db, 'teams');
+    const docRef = await addDoc(teamsCollectionRef, {
+      ...teamData,
+      registrationDate: new Date(), // Adiciona a data de registro no servidor
+    });
+    console.log('Equipe registada com o ID: ', docRef.id);
+    return docRef.id; // Retorna o ID do documento criado
+  } catch (error) {
+    console.error('Erro ao registar a equipa:', error);
+    return null; // Retorna null em caso de erro
+  }
+};
+
+// ✔ Buscar todas as equipes
+export const getAllTeams = async (): Promise<Team[]> => {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'teams'));
+    const teams: Team[] = [];
+    querySnapshot.forEach((doc) => {
+      teams.push({ id: doc.id, ...doc.data() } as Team);
+    });
+    return teams;
+  } catch (error) {
+    console.error('Erro ao buscar as equipas:', error);
+    return [];
+  }
+};
 
 // ---------------------------------------------------
 // Novas funções para manipular treinos (trainings)

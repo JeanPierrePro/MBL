@@ -1,61 +1,65 @@
 // src/pages/Equipe.tsx
 import React, { useState, useEffect } from 'react';
-import { getTeamMembers } from '../services/database';
-import type { TeamMember } from '../types/TeamMember';
-
+import { getAllTeams } from '../services/database';
+import type { Team } from '../types/Team';
+import styles from '../styles/Equipe.module.css'; // Ajuste o caminho conforme necessário
 const Equipe: React.FC = () => {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchTeamMembers = async () => {
-      const members = await getTeamMembers();
-      setTeamMembers(members);
+    const fetchTeams = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllTeams();
+        setTeams(data);
+        setLoading(false);
+      } catch (err: any) {
+        console.error('Erro ao carregar as equipas:', err);
+        setError('Erro ao carregar as equipas.');
+        setLoading(false);
+      }
     };
 
-    fetchTeamMembers();
+    fetchTeams();
   }, []);
 
-  // Ordenar por Lane (podes ajustar a lógica de ordenação conforme necessário)
-  const sortedMembers = [...teamMembers].sort((a, b) => {
-    if (a.lane < b.lane) return -1;
-    if (a.lane > b.lane) return 1;
-    return 0;
-  });
+  if (loading) {
+    return <div>A carregar as equipas...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
-    <div className="equipe-page">
-      <h2>Equipe</h2>
-      {teamMembers.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Foto</th>
-              <th>Nick</th>
-              <th>Lane</th>
-              <th>Partidas Ganhas</th>
-              <th>Tempo de Jogo</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedMembers.map((member, index) => (
-              <tr key={index}>
-                <td>
-                  <img
-                    src={member.foto}
-                    alt={member.nick}
-                    style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
-                  />
-                </td>
-                <td>{member.nick}</td>
-                <td>{member.lane}</td>
-                <td>{member.partidasGanhas}</td>
-                <td>{member.tempoDeJogo}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className={styles.equipePage}>
+      <h2>Equipas Registadas</h2>
+      {teams.length > 0 ? (
+        <ul className={styles.teamsList}>
+          {teams.map((team) => (
+            <li key={team.id} className={styles.teamItem}>
+              <h3>{team.name}</h3>
+              {team.tag && <p className={styles.teamTag}>[{team.tag}]</p>}
+              {team.logoURL && <img src={team.logoURL} alt={team.name} className={styles.teamLogo} />}
+              <p>Líder: {team.leaderNickname}</p>
+              <p>Email de Contacto: {team.contactEmail}</p>
+              {team.description && <p>Descrição: {team.description}</p>}
+              <p>Região: {team.region || 'Não especificada'}</p>
+              <h4>Membros:</h4>
+              <ul className={styles.membersList}>
+                {team.members.map((member, index) => (
+                  <li key={index} className={styles.memberItem}>
+                    {member.nickname} {member.lane && `(${member.lane})`}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
       ) : (
-        <p>A carregar informações da equipa...</p>
+        <p>Ainda não há equipas registadas.</p>
       )}
     </div>
   );
