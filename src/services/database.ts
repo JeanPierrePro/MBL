@@ -1,64 +1,101 @@
-import { doc, getDoc, getDocs, collection, updateDoc, setDoc, addDoc } from "firebase/firestore";
+// src/services/database.ts
+import { doc, getDoc, getDocs, collection, updateDoc, setDoc, addDoc, query, orderBy, limit } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 import type { News } from "../types/News";
 import type { TeamMember } from "../types/TeamMember";
 import type { UserProfile } from "../types/User";
-import type { Team } from "../types/Team"; // Importe o tipo Team
+import type { Team } from "../types/Team";
 
-// ✔ Função para buscar perfil de usuário
+// Function to fetch user profile
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   const docRef = doc(db, "users", uid);
-  const snapshot = await getDoc(docRef);
+  try {
+    const snapshot = await getDoc(docRef);
 
-  if (!snapshot.exists()) return null;
+    if (!snapshot.exists()) {
+      console.warn(`No user profile found for UID: ${uid}`);
+      return null;
+    }
 
-  const data = snapshot.data() as UserProfile;
-  return { ...data, uid: snapshot.id };
+    const data = snapshot.data();
+    return { ...data, uid: snapshot.id } as UserProfile;
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
 }
 
-// ✔ Atualizar perfil de usuário
+// Update user profile
 export async function updateUserProfile(uid: string, data: Partial<UserProfile>) {
   const docRef = doc(db, "users", uid);
-  await updateDoc(docRef, data);
+  try {
+    await updateDoc(docRef, data);
+    console.log("Profile updated successfully in Firestore.");
+  } catch (error) {
+    console.error("Error updating profile in Firestore:", error);
+    throw error;
+  }
 }
 
-// ✔ Últimas notícias (ex: 3 últimas)
+// Latest news (e.g., last 3) - Improved to use Firestore query
 export async function getLatestNews(limitCount = 3): Promise<News[]> {
-  const snapshot = await getDocs(collection(db, "news"));
-  const all = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as News));
-  return all.slice(0, limitCount); // Exemplo simples — substitua por query + limit se quiser
+  const q = query(collection(db, "news"), orderBy("publicationDate", "desc"), limit(limitCount));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, publicationDate: doc.data().publicationDate.toDate() } as News));
 }
 
-// ✔ Todas as notícias
+// All news - Improved to use Firestore query
 export async function getAllNews(): Promise<News[]> {
-  const snapshot = await getDocs(collection(db, "news"));
-  return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as News));
+  const q = query(collection(db, "news"), orderBy("publicationDate", "desc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, publicationDate: doc.data().publicationDate.toDate() } as News));
 }
 
-// ✔ Membros da equipe
+// NEW: Add a new news/event (for admins only)
+export async function addNews(newsData: Omit<News, 'id' | 'publicationDate'>): Promise<string | null> {
+  try {
+    const newsCollectionRef = collection(db, 'news');
+    const docRef = await addDoc(newsCollectionRef, {
+      ...newsData,
+      publicationDate: new Date(),
+    });
+    console.log('News/Event added with ID: ', docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error('Error adding news/event:', error);
+    return null;
+  }
+}
+
+// Team members
 export async function getTeamMembers(): Promise<TeamMember[]> {
-  const snapshot = await getDocs(collection(db, "teamMembers"));
-  return snapshot.docs.map(doc => doc.data() as TeamMember);
+  try {
+    const snapshot = await getDocs(collection(db, "teamMembers"));
+    return snapshot.docs.map(doc => doc.data() as TeamMember);
+  } catch (error) {
+    console.error("Error fetching team members:", error);
+    return [];
+  }
 }
 
-// ✔ Registrar nova equipe
+// Register new team
 export const registerTeam = async (teamData: Omit<Team, 'id' | 'registrationDate'>): Promise<string | null> => {
   try {
     const teamsCollectionRef = collection(db, 'teams');
     const docRef = await addDoc(teamsCollectionRef, {
       ...teamData,
-      registrationDate: new Date(), // Adiciona a data de registro no servidor
+      registrationDate: new Date(),
     });
-    console.log('Equipe registada com o ID: ', docRef.id);
-    return docRef.id; // Retorna o ID do documento criado
+    console.log('Team registered with ID: ', docRef.id);
+    return docRef.id;
   } catch (error) {
-    console.error('Erro ao registar a equipa:', error);
-    return null; // Retorna null em caso de erro
+    console.error('Error registering team:', error);
+    return null;
   }
 };
 
-// ✔ Buscar todas as equipes
+// Fetch all teams
 export const getAllTeams = async (): Promise<Team[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, 'teams'));
@@ -68,51 +105,60 @@ export const getAllTeams = async (): Promise<Team[]> => {
     });
     return teams;
   } catch (error) {
-    console.error('Erro ao buscar as equipas:', error);
+    console.error('Error fetching teams:', error);
     return [];
   }
 };
 
 // ---------------------------------------------------
-// Novas funções para manipular treinos (trainings)
+// Functions to manipulate trainings
 // ---------------------------------------------------
 
-type Bookings = Record<string, string[]>; // ex: { Monday: ["15:00", "20:00"], Tuesday: ["17:00"] }
+type Bookings = Record<string, string[]>; // e.g., { Monday: ["15:00", "20:00"], Tuesday: ["17:00"] }
 
-// Buscar os treinos do usuário
+// Fetch user trainings
 export async function getUserTrainings(uid: string): Promise<Bookings | null> {
   const docRef = doc(db, "trainings", uid);
-  const docSnap = await getDoc(docRef);
+  try {
+    const docSnap = await getDoc(docRef);
 
-  if (!docSnap.exists()) return null;
+    if (!docSnap.exists()) return null;
 
-  const data = docSnap.data();
-  return data.bookings || null;
+    const data = docSnap.data();
+    return data.bookings || null;
+  } catch (error) {
+    console.error("Error fetching user trainings:", error);
+    return null;
+  }
 }
 
-// Adicionar um treino no dia e horário especificados
+// Add a training booking on the specified day and time
 export async function addTrainingBooking(uid: string, day: string, time: string) {
   const docRef = doc(db, "trainings", uid);
+  try {
+    const userTrainings = await getUserTrainings(uid);
 
-  const userTrainings = await getUserTrainings(uid);
+    if (!userTrainings) {
+      await setDoc(docRef, {
+        bookings: {
+          [day]: [time],
+        },
+      });
+      console.log(`Training for ${day} at ${time} added for ${uid}.`);
+    } else {
+      const dayTimes = userTrainings[day] || [];
+      if (dayTimes.includes(time)) {
+        throw new Error("Time already booked for this day.");
+      }
+      dayTimes.push(time);
 
-  if (!userTrainings) {
-    // Cria documento se não existir
-    await setDoc(docRef, {
-      bookings: {
-        [day]: [time],
-      },
-    });
-  } else {
-    // Atualiza adicionando novo horário no dia (evita duplicados)
-    const dayTimes = userTrainings[day] || [];
-    if (dayTimes.includes(time)) {
-      throw new Error("Horário já marcado para este dia.");
+      await updateDoc(docRef, {
+        [`bookings.${day}`]: dayTimes,
+      });
+      console.log(`Training for ${day} at ${time} updated for ${uid}.`);
     }
-    dayTimes.push(time);
-
-    await updateDoc(docRef, {
-      [`bookings.${day}`]: dayTimes,
-    });
+  } catch (error) {
+    console.error("Error adding training booking:", error);
+    throw error;
   }
 }

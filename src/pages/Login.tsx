@@ -1,8 +1,8 @@
-// Login.tsx
+// src/pages/Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
-import formStyles from '../styles/AuthForm.module.css'; // Estilos comuns do formulário
+import formStyles from '../styles/AuthForm.module.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,10 +12,10 @@ const Login: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const loginResult = await login(email, password);
+    const loginResult = await login(email, password); // Esta função já retorna o perfil completo, incluindo a role
 
     if (loginResult) {
-      const { nick } = loginResult;
+      const { nick, role } = loginResult; // Pega o nick E a role do resultado do login
 
       if (nick) {
         alert(`Bem-vindo, ${nick}!`);
@@ -23,7 +23,15 @@ const Login: React.FC = () => {
         alert('Bem-vindo!');
       }
 
-      navigate('/');
+      // Redireciona com base na role REAL do usuário (Membro ou Treinador)
+      if (role === 'coach') {
+        navigate('/noticias'); // Ou outra página inicial para treinadores
+      } else { // Role 'member'
+        navigate('/noticias'); // Página inicial para membros
+      }
+      // Se você tiver uma página inicial diferente para treinadores e membros, ajuste os 'navigate' acima.
+      // Por enquanto, ambos vão para /noticias, onde as permissões serão controladas.
+
     } else {
       alert('Credenciais inválidas. Por favor, tente novamente.');
     }
@@ -31,7 +39,7 @@ const Login: React.FC = () => {
 
   return (
     <div className={formStyles.container}>
-      <h2>Login (Exclusivo a Membros)</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit} className={formStyles.form}>
         <div className={formStyles.formGroup}>
           <label htmlFor="email" className={formStyles.label}>Email:</label>
@@ -61,6 +69,9 @@ const Login: React.FC = () => {
         </div>
         <button type="submit" className={formStyles.button}>Entrar</button>
       </form>
+      <p className={formStyles.linkText}>
+        Não tem uma conta? <span onClick={() => navigate('/register')} className={formStyles.link}>Cadastre-se</span>
+      </p>
     </div>
   );
 };

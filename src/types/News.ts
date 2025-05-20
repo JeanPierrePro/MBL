@@ -1,7 +1,9 @@
 // src/types/News.ts
 export interface News {
-  id: string;
-  imageUrl: string;
+  id: string; // The Firestore document ID
   title: string;
-  content: string;
+  description: string;
+  imageUrl: string;
+  publicationDate: Date; // The date the news was published
+  // Additional fields for events can be added here
 }
