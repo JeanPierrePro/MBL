@@ -76,7 +76,7 @@ const Home: React.FC = () => {
             </button>
           </>
         ) : (
-          <p>Carregando as últimas notícias, aguarde...</p>
+          <p>Carregando as últimas notícias, aguarde....</p>
         )}
       </main>
     </div>
