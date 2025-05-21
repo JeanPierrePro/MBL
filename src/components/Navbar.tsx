@@ -50,6 +50,10 @@ const Navbar: React.FC = () => {
         <li className={styles.navItem}>
           <Link to="/noticias" onClick={() => setIsMenuOpen(false)}>Notícias</Link>
         </li>
+        {/* NOVO: Link para a página Meta */}
+        <li className={styles.navItem}>
+          <Link to="/meta" onClick={() => setIsMenuOpen(false)}>Meta</Link>
+        </li>
         <li className={styles.navItem}>
           <Link to="/equipe" onClick={() => setIsMenuOpen(false)}>Equipe</Link>
         </li>

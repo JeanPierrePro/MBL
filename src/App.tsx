@@ -11,6 +11,8 @@ import Navbar from './components/Navbar';
 import './styles/global.css';
 import RegisterTeam from './pages/RegisterTeam';
 import CreateNews from './pages/CreateNews';
+import Meta from './pages/Meta'; // IMPORTANTE: Importe a nova página Meta
+import ChampionDetail from './pages/ChampionDetail'; // IMPORTANTE: Importe a nova página de Detalhes do Personagem
 
 function App() {
   return (
@@ -26,8 +28,10 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/treinos" element={<Treinos />} />
           <Route path="/register-team" element={<RegisterTeam />} />
-          {/* ATUALIZADO: Rota para CreateNews agora é '/create-news' */}
           <Route path="/create-news" element={<CreateNews />} />
+          {/* NOVAS ROTAS PARA A PÁGINA META */}
+          <Route path="/meta" element={<Meta />} /> {/* Lista de personagens */}
+          <Route path="/meta/:championId" element={<ChampionDetail />} /> {/* Detalhes de um personagem específico */}
         </Routes>
       </div>
     </Router>
