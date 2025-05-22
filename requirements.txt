@@ -2,7 +2,7 @@ npm install
 
 npm install firebase
 npm install -g firebase-tools
-npm install @react-firebase/auth fireba
+npm install @react-firebase/auth firebase
 
 npm install react-router-dom
 npm install --save-dev @types/react-router-dom
