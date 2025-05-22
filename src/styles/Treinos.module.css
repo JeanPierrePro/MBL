@@ -1,280 +1,77 @@
+/* styles/Home.module.css */
+
 .container {
-    padding: 32px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    color: white;
-    background-color: #111;
-    border-radius: 12px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-sizing: border-box;
+  width: 90%;
+  margin: auto;
+  background: var(--primary-background); /* Usar o background principal aqui */
+  padding: 25px;
+  border-radius: 12px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */ /* Removido, pode ser adicionado se precisar */
 }
 
-.title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 32px;
-    color: #00bfff;
-    font-weight: 700;
+.header {
+  margin-bottom: 30px;
 }
 
-.week {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+.intro {
+  text-align: center;
+  margin-bottom: 40px;
 }
 
-.day {
-    background-color: #1f1f1f;
-    border: 2px solid transparent; /* Mantém a largura para a transição */
-    border-radius: 12px;
-    padding: 18px 16px;
-    width: 180px;
-    min-height: 130px;
-    text-align: center;
-    transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    outline: none; /* Remove a outline padrão do foco */
+.intro h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  color: var(--primary-text);
+  border-left: 4px solid var(--subtle-accent); /* Destaque subtil */
+  padding-left: 12px;
+  margin-top: 0;
 }
 
-.day:hover {
-    transform: scale(1.05);
-    border-color: #00bfff80; /* Um azul mais suave para a borda */
-    box-shadow: 0 4px 12px #00bfffaa;
+.intro p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7); /* Ligeiramente mais suave que o branco principal */
 }
 
-.day h3 {
-    color: #00bfff; /* Dar mais destaque ao dia */
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-weight: 600; /* Um pouco mais de peso */
+.newsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-.timeSlot {
-    background-color: #292929;
-    padding: 8px 10px; /* Mais padding vertical */
-    margin-top: 8px; /* Um pouco mais de espaço entre os slots */
-    border-radius: 6px;
-    font-size: 13px;
-    color: #ccc;
-    user-select: none;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.1);
-    flex-shrink: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.featuredNews h2,
+.otherNews h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--primary-text);
+  border-left: 4px solid var(--subtle-accent); /* Destaque subtil */
+  padding-left: 12px;
+  margin-top: 0;
+  /* padding-bottom: 0; */ /* Removido, não tem efeito visual significativo sem padding-top */
+  width: fit-content;
 }
 
-.removeButton {
-    background-color: transparent; /* Fundo transparente */
-    color: #ff6b6b; /* Um vermelho mais vivo */
-    border: none;
-    padding: 0; /* Remover padding do botão em si */
-    cursor: pointer;
-    font-size: 1em; /* Manter o tamanho */
-    line-height: 1; /* Ajustar a altura da linha */
-    transition: color 0.3s ease;
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-.removeButton:hover {
-    color: #ff8a80;
+.loadMoreBtn {
+  display: block;
+  margin: 30px auto 0 auto;
+  background-color: var(--secondary-color-a); /* Usar uma das cores secundárias */
+  color: var(--primary-text); /* Texto branco */
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 6px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
 }
 
-.empty {
-    color: #666;
-    font-size: 14px;
-    font-style: italic;
-    margin-top: 12px;
-    user-select: none;
-    flex-grow: 1;
-}
-
-.bookingArea {
-    margin-top: 40px; /* Mais espaço do conteúdo principal */
-    background-color: #1a1a1a;
-    padding: 30px 25px; /* Mais padding interno */
-    border-radius: 14px;
-    border: 1px solid #333;
-    box-shadow: 0 0 10px #00bfff22;
-}
-
-.selector {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: stretch; /* Esticar os selects verticalmente */
-    justify-content: center;
-}
-
-.select {
-    padding: 12px 16px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #444;
-    background-color: #222;
-    color: white;
-    min-width: 180px; /* Aumentar um pouco a largura mínima */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.select:focus {
-    outline: none;
-    border-color: #00bfff;
-    box-shadow: 0 0 8px #00bfffaa;
-}
-
-.confirmButton {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 10px; /* Um pouco mais arredondado */
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 1rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.confirmButton:hover {
-    background-color: #218838;
-    box-shadow: 0 0 12px #28a745aa;
-}
-
-.cancelButton {
-    background-color: #ff4136;
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 10px; /* Um pouco mais arredondado */
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 1rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.cancelButton:hover {
-    background-color: #e0362d;
-    box-shadow: 0 0 12px #ff4136aa;
-}
-
-.footerInfo {
-    margin-top: 36px;
-    font-size: 14px;
-    text-align: center;
-    color: #888;
-    user-select: none;
-}
-
-/* Cores de status */
-.green {
-    background-color: #14532d !important;
-    color: #b9f6ca !important;
-    box-shadow: 0 0 8px #0f4423aa;
-}
-
-.yellow {
-    background-color: #92400e !important;
-    color: #ffe6a7 !important;
-    box-shadow: 0 0 8px #7a350caa;
-}
-
-.red {
-    background-color: #7f1d1d !important;
-    color: #f9b4b4 !important;
-    box-shadow: 0 0 8px #661616aa;
-}
-
-.warning, .loading {
-    color: #f1c40f;
-    text-align: center;
-    font-size: 18px;
-    margin-top: 50px;
-    user-select: none;
-}
-
-.cancelAllButton {
-    background-color: #343a40; /* Um tom de cinza mais escuro */
-    color: #f8f9fa; /* Texto mais claro */
-    border: 1px solid #495057;
-    border-radius: 8px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-top: 15px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.cancelAllButton:hover {
-    background-color: #495057;
-    color: #fff;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .container {
-        padding: 24px 16px;
-    }
-
-    .title {
-        font-size: 2rem;
-        margin-bottom: 24px;
-    }
-
-    .day {
-        width: 140px;
-        min-height: 110px;
-        padding: 14px 12px;
-    }
-
-    .timeSlot {
-        font-size: 12px;
-        padding: 5px 7px;
-    }
-
-    .select {
-        min-width: 120px;
-        padding: 8px 12px;
-        font-size: 14px;
-    }
-
-    .confirmButton, .cancelButton {
-        font-size: 14px;
-        padding: 10px 18px;
-    }
-
-    .footerInfo {
-        font-size: 13px;
-        margin-top: 24px;
-    }
-}
-
-@media (max-width: 480px) {
-    .day {
-        width: 100%;
-        min-height: 100px;
-    }
-
-    .week {
-        gap: 12px;
-    }
-
-    .selector {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .select {
-        min-width: 100%;
-    }
-
-    .confirmButton, .cancelButton {
-        width: 100%;
-    }
+.loadMoreBtn:hover {
+  background-color: var(--button-hover-color);
+  box-shadow: 0 0 8px var(--secondary-color-a); /* Aumentar o brilho no hover */
+  transform: scale(1.02);
 }

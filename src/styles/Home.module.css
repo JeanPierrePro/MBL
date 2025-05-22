@@ -1,77 +1,263 @@
 /* styles/Home.module.css */
 
 .container {
-  width: 90%;
-  margin: auto;
-  background: var(--secondary-background);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px var(--box-shadow-color);
+  max-width: 1200px; /* Definir uma largura máxima para o conteúdo */
+  margin: 0 auto; /* Centraliza o container */
+  background-color: var(--primary-background); /* Fundo principal escuro */
+  min-height: 100vh; /* Para garantir que o fundo cubra toda a altura */
+  color: var(--primary-text); /* Cor de texto padrão */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistente com global.css */
+  padding-bottom: 50px; /* Espaço no fundo */
 }
 
-.header {
-  margin-bottom: 30px; /* Manter a margem */
+.homeHeader {
+  display: flex;
+  justify-content: space-between; /* Alinha Navbar à esquerda e AuthArea à direita */
+  align-items: center; /* Alinha verticalmente */
+  padding: 10px 0; /* Ajuste o padding conforme necessário */
+  position: relative;
+  max-width: 1200px; /* Alinhar com o container e navbar */
+  margin: 0 auto; /* Centralizar */
+  z-index: 1001; /* Maior que a Navbar (1000) para ter controlo sobre ela */
 }
 
-.intro {
-  text-align: center;
-  margin-bottom: 40px;
+.authAreaHomeWrapper {
+  margin-left: auto; /* Empurra a AuthArea para a direita dentro do flexbox do .homeHeader */
+  padding: 10px 15px; /* Espaçamento interno da caixa de destaque */
+  background-color: var(--navbar-background);
+  border-radius: 8px;
+  border: 1px solid var(--secondary-color-a); /* Borda com a cor secundária (azul-petróleo) */
+  box-shadow: 0 0 15px var(--auth-area-glow); /* Brilho da cor secundária para destaque */
+  transition: all 0.3s ease; /* Transição para efeitos futuros, se adicionares */
 }
 
-.intro h1 {
-  font-size: 2.8rem;
-  margin-bottom: 10px;
-  color: var(--primary-text);
-  border-left: 4px solid var(--accent-color);
-  padding-left: 12px;
-  margin-top: 0;
+/* Hero Section - Banner principal */
+.heroSection {
+  position: relative;
+  height: 500px; /* Altura do banner, ajustar conforme necessário */
+  background: url('../assets/MBL_Banner.jpg') no-repeat center center/cover; /* Imagem de fundo */
+  border-radius: 0 0 5px 5px;
+  display: flex;
+  align-items: center; /* Alinha o conteúdo verticalmente */
+  justify-content: flex-end; /* Alinha o conteúdo à direita (onde AuthArea estava antes) */
+  padding: 0 5%; /* Espaçamento lateral */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Sombra suave */
+  margin-top: -80px; /* Compensa a altura do header para a imagem ir para o topo visualmente */
+  padding-top: 80px; /* Adiciona padding para o conteúdo não ficar por baixo do header */
 }
 
-.intro p {
-  font-size: 1rem;
-  line-height: 1.5;
-  color: var(--secondary-text);
+.heroContent {
+  text-align: left; /* Alinhar texto à esquerda */
+  max-width: 600px; /* Limitar largura do texto */
+  padding-right: 20px; /* Espaço entre o texto e a borda da secção */
+  padding: 30px;
+  border-radius: 50px;
+  background-color: rgba(var(--primary-background-rgb), 0.7); /* Usar o primary-background com opacidade */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra mais neutra */
+  border: 1px solid var(--navbar-background); /* Uma pequena borda mais escura ou neutra */
 }
 
-.newsSection {
+.heroTitle {
+  font-size: 3.5rem; /* Título maior e mais impactante */
+  line-height: 1.1;
+  margin-bottom: 15px;
+  color: var(--secondary-color-b); /* Roxo suave para o título da home */  
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8); /* Texto um pouco mais claro para contraste */
+}
+
+.mainContent {
+  padding: 50px 5%; /* Espaçamento para o conteúdo principal */
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 60px; /* Aumentar o espaçamento entre as secções */
 }
 
-.featuredNews h2,
-.otherNews h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: var(--primary-text);
-  border-left: 4px solid var(--accent-color);
-  padding-left: 12px;
-  margin-top: 0;
-  padding-bottom: 0;
-  width: fit-content; /* Ajustar largura ao conteúdo */
+.sectionTitle {
+  font-size: 2.2rem; /* Títulos de secção */
+  margin-bottom: 30px;
+  color: var(--primary-text); /* Branco puro */
+  border-left: 5px solid var(--secondary-color-a); /* Borda azul-petróleo para títulos de secção */
+  padding-left: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  
+  /* Mantido: Fundo vermelho para os títulos das secções ABAIXO do banner principal. */
+  background-color: var(--remove-button-background); /* Vermelho escuro, similar ao do remove-button-background */
+  padding-top: 10px; /* Adiciona algum padding para o fundo vermelho */
+  padding-bottom: 10px; /* Adiciona algum padding para o fundo vermelho */
+  border-radius: 5px; /* Cantos ligeiramente arredondados */
 }
+
+/* Secção de Evento em Destaque */
+.eventSection {
+  background-color: rgba(0, 109, 156, 0.1); /* Um fundo muito suave da cor secundária A */
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--secondary-color-a); /* Borda fina */
+  box-shadow: 0 0 20px rgba(0, 109, 156, 0.3); /* Sombra mais visível */
+}
+
+.eventCard {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background-color: #1A1A1A; /* Fundo mais escuro para o card do evento */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+
+.eventImage {
+  width: 300px; /* Largura fixa para a imagem do evento */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--subtle-accent); /* Borda dourada */
+}
+
+.eventDetails h3 {
+  font-size: 1.8rem;
+  color: var(--subtle-accent); /* Título do evento em destaque (dourado) */
+  margin-bottom: 10px;
+}
+
+.eventDetails p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 15px;
+}
+
+.eventDate {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 15px;
+  display: block;
+}
+
+.eventCtaBtn {
+  background-color: var(--secondary-color-b); /* Botão de ação do evento com a cor roxa */
+  color: var(--primary-text);
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.eventCtaBtn:hover {
+  background-color: #9C7EFC; /* Um roxo ligeiramente mais claro no hover */
+  transform: translateY(-2px);
+}
+
+/* Últimas Notícias */
+.latestNewsSection {} /* Esta secção agora é apenas um wrapper */
 
 .newsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Cards ligeiramente maiores */
+  gap: 25px; /* Mais espaço entre os cards */
 }
 
 .loadMoreBtn {
   display: block;
-  margin: 30px auto 0 auto;
-  background-color: var(--button-color);
-  color: #F0F0F0; /* Cor do texto do botão */
+  margin: 50px auto 0 auto; /* Mais margem */
+  background-color: var(--secondary-color-a); /* Botão de "Ver Mais" azul-petróleo */
+  color: var(--primary-text);
   border: none;
-  padding: 12px 30px;
-  font-size: 1rem;
-  border-radius: 6px; 
+  padding: 15px 40px; /* Botão maior */
+  font-size: 1.1rem;
+  border-radius: 8px; /* Cantos mais arredondados */
   cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.1s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .loadMoreBtn:hover {
   background-color: var(--button-hover-color);
-  box-shadow: 0 0 6px rgba(191, 160, 43, 0.4); 
-  transform: scale(1.02);
+  box-shadow: 0 0 10px var(--secondary-color-a); /* Brilho mais intenso */
+  transform: scale(1.03); /* Ligeiramente maior no hover */
+}
+
+.loadingMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 50px 0;
+}
+
+
+/* Media Queries para Responsividade */
+@media (max-width: 966px) { /* Usei 966px como breakpoint da Navbar */
+  .homeHeader {
+    flex-direction: column; /* Empilha Navbar e AuthArea */
+    align-items: center;
+    padding: 10px;
+    margin-top: 0; /* Remove margem negativa em mobile */
+  }
+
+  .authAreaHomeWrapper {
+    margin-top: 20px; /* Espaço entre Navbar e AuthArea */
+    margin-left: 0; /* Centraliza em mobile */
+  }
+
+  .heroSection {
+    height: 400px;
+    justify-content: center; /* Centralizar conteúdo em ecrãs menores */
+    text-align: center;
+    margin-top: 0; /* Remove margem negativa em mobile */
+    padding-top: 20px; /* Ajusta padding superior */
+  }
+  .heroContent {
+    max-width: 90%;
+    text-align: center;
+    padding: 20px;
+  }
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+  .eventCard {
+    flex-direction: column; /* Empilhar em ecrãs pequenos */
+    text-align: center;
+  }
+  .eventImage {
+    width: 100%; /* Largura total */
+    height: auto;
+    max-height: 200px;
+  }
+  .newsGrid {
+    grid-template-columns: 1fr;
+  }
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 576px) { /* Breakpoint para telemóveis mais pequenos */
+  .heroSection {
+    height: 300px;
+  }
+  .heroTitle {
+    font-size: 2rem;
+  }
+  .heroSubtitle {
+    font-size: 0.9rem;
+  }
+  .eventSection {
+    padding: 20px;
+  }
+  .loadMoreBtn {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
 }

@@ -1,28 +1,37 @@
 /* styles/AuthArea.module.css */
 .authArea {
   display: flex;
-  justify-content: center; /* Centraliza os links horizontalmente */
+  justify-content: center; /* Centraliza os links horizontalmente um em relação ao outro */
   gap: 20px; /* Espaço entre os links */
-  padding-top: 10px; /* Reduzindo o padding superior */
-  padding-bottom: 20px; /* Mantendo ou ajustando o padding inferior */
-  margin-top: -20px; 
-  margin-bottom: 20px;
 }
 
 .link {
   text-decoration: none;
-  color: var(--primary-text); /* Cor do texto principal (branco claro) */
   font-weight: bold;
   padding: 10px 15px;
   border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: var(--accent-color); /* Cor de destaque (dourado) */
-  color: var(--secondary-background); /* Texto escuro para contraste */
+  
+  /* Corrigido: Fundo dos links AGORA é azul-petróleo */
+  background-color: var(--secondary-color-a); /* Fundo dos links azul-petróleo */
+  
+  /* Corrigido: Borda azul-petróleo para dar o efeito de "caixa" sólida */
+  border: 2px solid var(--secondary-color-a); /* Borda da mesma cor do fundo para um look sólido */
+  
+  /* Texto branco para contraste com o fundo azul */
+  color: var(--primary-text);
   font-size: 0.85rem;
+
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.15s ease;
 }
 
 .link:hover {
-  background-color: var(--button-color); /* Azul ao passar o rato */
-  color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  /* Mantém o fundo azul-petróleo no hover, ou pode escurecer ligeiramente */
+  background-color: var(--button-hover-color); /* Usa o azul mais escuro no hover */
+  color: var(--primary-text); /* Mantém o texto branco */
+  
+  /* Brilho da caixa no hover com a nova variável de brilho azul */
+  box-shadow: 0 0 15px var(--auth-area-glow); /* Brilho azul */
+  border-color: var(--auth-area-glow); /* Borda também brilha com azul */
+  
+  transform: scale(1.03); /* Zoom suave */
 }
