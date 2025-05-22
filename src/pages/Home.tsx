@@ -85,7 +85,7 @@ const Home: React.FC = () => {
             </button>
           </section>
         ) : (
-          <p className={styles.loadingMessage}>Carregando as últimas notícias, aguarde...</p>
+          <p>Carregando as últimas notícias, aguarde....</p>
         )}
       </main>
     </div>

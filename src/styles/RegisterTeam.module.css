@@ -1,0 +1,134 @@
+/* src/pages/RegisterTeam.module.css */
+
+.registerTeamPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 600px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+textarea {
+  resize: vertical; /* Permite redimensionar verticalmente */
+}
+
+h3 {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.memberInput {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto; /* Nickname | Lane | Remover */
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+.memberInputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.memberInput label {
+  font-weight: normal;
+}
+
+.memberInput input[type="text"] {
+  width: 100%;
+}
+
+.removeButton {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #e74c3c;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.removeButton:hover {
+  background-color: #c0392b;
+}
+
+.addButton {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  width: fit-content;
+}
+
+.submitButton {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #27ae60;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.addButton:hover,
+.submitButton:hover {
+  opacity: 0.9;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+  font-weight: bold;
+}

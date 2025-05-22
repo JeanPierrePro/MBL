@@ -26,7 +26,7 @@
 }
 
 .navItem a {
-  color: var(--primary-text);
+  color: var(--text-color);
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
@@ -49,7 +49,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  position: sticky;
+  position: sticky; /* ou 'fixed' se preferires que fique sempre no topo */
   top: 0;
   z-index: 1000;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
