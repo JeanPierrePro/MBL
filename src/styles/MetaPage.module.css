@@ -1,36 +1,298 @@
 /* src/styles/MetaPage.module.css */
+
+/*
+ * NOTA: As variáveis de cor são esperadas do seu arquivo global.css ou _app.tsx
+ * Certifique-se de que estão bem definidas para um tema consistente e funcionalidade completa dos efeitos de brilho.
+ * Exemplo de variáveis necessárias:
+ * --primary-background, --primary-background-rgb
+ * --primary-text, --primary-text-rgb
+ * --subtle-accent, --subtle-accent-rgb
+ * --navbar-background, --navbar-background-rgb
+ * --navbar-shadow-color, --navbar-shadow-color-rgb
+ * --secondary-color-a, --secondary-color-a-rgb
+ * --auth-area-glow, --auth-area-glow-rgb
+ * --card-background-dark, --card-background-dark-rgb (usado no ChampionCard.module.css)
+ * --secondary-color-b, --secondary-color-b-rgb (usado no ChampionCard.module.css)
+ * --primary-text-alt, --primary-text-alt-rgb (usado no ChampionCard.module.css)
+ */
+
+/* Recomendações de fontes (importar no global.css ou _app.tsx): */
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Roboto:wght@300;400;700&display=swap'); */
+
+
+/* Container Principal da Página */
 .container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+    padding: 30px 20px; /* Mais padding para respiro */
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px; /* Espaçamento entre os principais blocos (título, filtros, grid) */
+    position: relative; /* Para possíveis efeitos de fundo no futuro */
+    overflow-x: hidden; /* Evita scroll horizontal indesejado */
 }
 
+/* Título da Página */
 .heading {
-  text-align: center;
-  color: #333;
-  margin-bottom: 30px;
-  font-size: 2.5em;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 10px;
+    text-align: center;
+    color: var(--subtle-accent); /* Dourado vibrante */
+    margin-bottom: 0px; /* Removido para usar o gap do container */
+    font-size: 3em; /* Levemente maior */
+    font-family: 'Orbitron', sans-serif; /* Usar uma fonte mais impactante para o título */
+    text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7); /* Brilho mais acentuado */
+    letter-spacing: 2px; /* Espaçamento entre letras */
+    animation: fadeInDown 1s ease-out forwards; /* Animação de entrada */
 }
 
+/* Animação para o título */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Container de Filtros */
+.filtersContainer {
+    margin-bottom: 0px; /* Removido para usar o gap do container */
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens quebrem linha em telas menores */
+    justify-content: center; /* Centraliza os itens quando quebram linha */
+    align-items: center;
+    gap: 25px; /* Mais espaço entre label e select, e entre os itens */
+    background-color: var(--navbar-background);
+    padding: 25px 40px; /* Mais padding para respiro */
+    border-radius: 15px; /* Cantos mais arredondados */
+    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6); /* Sombra mais suave e proeminente */
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2); /* Borda sutil de acento */
+    transition: all 0.4s ease-in-out; /* Transição para hover */
+    position: relative; /* Para efeitos de fundo dinâmicos */
+    overflow: hidden; /* Garante que elementos internos respeitem o border-radius */
+}
+
+/* Efeito de brilho de fundo no container de filtros ao passar o mouse */
+.filtersContainer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center,
+        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
+        transparent 70%
+    );
+    transform: rotate(0deg);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
+    z-index: 0;
+}
+
+.filtersContainer:hover::before {
+    opacity: 1;
+    transform: rotate(360deg); /* Rotação no hover para um efeito sutil */
+}
+
+.filtersContainer:hover {
+    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 30px rgba(var(--auth-area-glow-rgb), 0.5); /* Sombra e brilho mais intensos */
+    border-color: var(--secondary-color-a); /* Borda mais destacada */
+}
+
+/* Label do Filtro */
+.filterLabel {
+    font-size: 1.3em; /* Maior e mais legível */
+    color: var(--subtle-accent); /* Dourado vibrante para label */
+    font-weight: bold;
+    font-family: 'Share Tech Mono', monospace; /* Fonte mais "tech" */
+    text-transform: uppercase; /* Maiúsculas para impacto */
+    letter-spacing: 1.5px; /* Mais espaçamento entre letras */
+    text-shadow: 0 0 5px rgba(var(--subtle-accent-rgb), 0.5); /* Brilho sutil no texto */
+    z-index: 1; /* Garante que o texto fique acima do pseudo-elemento */
+    position: relative;
+}
+
+/* Select do Filtro */
+.filterSelect {
+    padding: 14px 20px; /* Mais padding */
+    border-radius: 8px; /* Cantos arredondados */
+    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4); /* Borda de acento mais visível e espessa */
+    background-color: var(--primary-background); /* Fundo do select */
+    color: var(--primary-text); /* Cor do texto do select */
+    font-size: 1.15em; /* Tamanho maior */
+    cursor: pointer;
+    appearance: none; /* Remove a seta padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FAF9F6%22%20d%3D%22M287%2C197.393a15.8%2C15.8%2C0%2C0%2C1%2C-15.8-15.8l-128.5-128.5a15.8%2C15.8%2C0%2C0%2C1%2C-22.3%2C0L15.8%2C181.593a15.8%2C15.8%2C0%2C0%2C1%2C0%2C22.3c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0l117.2-117.2l117.2%2C117.2c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0C290.4%2C207.393%2C290.4%2C200.793%2C287%2C197.393Z%22%2F%3E%3C%2Fsvg%3E'); /* Cor do fill do SVG mudada para #FAF9F6 (primary-text) */
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* Seta mais centralizada e com espaço */
+    background-size: 16px; /* Seta levemente maior */
+    padding-right: 45px; /* Aumentar o padding para a seta não sobrepor o texto */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Mais transições */
+    z-index: 1; /* Garante que o select fique acima do pseudo-elemento */
+    position: relative;
+    outline: none; /* Remove a outline padrão no focus, usaremos box-shadow */
+}
+
+.filterSelect:hover {
+    border-color: var(--secondary-color-a); /* Acento no hover */
+    background-color: rgba(var(--primary-background-rgb), 0.9); /* Fundo um pouco mais claro no hover */
+    color: var(--subtle-accent); /* Texto do select muda de cor no hover */
+}
+
+.filterSelect:focus {
+    border-color: var(--secondary-color-a);
+    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6); /* Brilho mais intenso no foco */
+    background-color: rgba(var(--primary-background-rgb), 1); /* Fundo sólido no foco */
+    color: var(--subtle-accent); /* Cor do texto no foco */
+}
+
+/* Estilo para as opções dentro do select (opcional, mas recomendado para consistência) */
+.filterSelect option {
+    background-color: var(--primary-background); /* Fundo das opções */
+    color: var(--primary-text); /* Cor do texto das opções */
+    padding: 10px; /* Padding para opções */
+}
+
+.filterSelect option:hover {
+    background-color: var(--navbar-background); /* Fundo das opções no hover */
+    color: var(--subtle-accent); /* Cor do texto das opções no hover */
+}
+
+/* Grid de Campeões */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Ajuste o minmax */
-  gap: 20px;
-  justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Min-width um pouco maior */
+    gap: 25px; /* Mais espaço entre os cards */
+    max-width: 1400px; /* Largura máxima maior para telas grandes */
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px; /* Mais padding */
+    justify-content: center; /* Centraliza os cards no grid */
+    animation: fadeInGrid 1s ease-out forwards; /* Animação de entrada do grid */
+    animation-delay: 0.5s; /* Começa depois do título */
+    opacity: 0; /* Começa invisível para a animação */
 }
 
+@keyframes fadeInGrid {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mensagens de Status (Carregando, Erro, Sem Campeões) */
 .loading, .error, .noChampions {
-  text-align: center;
-  font-size: 1.1em;
-  color: #555;
-  margin-top: 50px;
-  padding: 20px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
+    text-align: center;
+    font-size: 1.3em; /* Tamanho maior */
+    color: var(--secondary-color-a);
+    padding: 60px; /* Mais padding */
+    background-color: var(--navbar-background);
+    border-radius: 12px; /* Cantos arredondados */
+    margin-top: 50px;
+    box-shadow: 0 4px 10px rgba(var(--navbar-shadow-color-rgb), 0.4); /* Sombra suave */
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.3); /* Borda sutil */
+    font-family: 'Share Tech Mono', monospace; /* Fonte consistente */
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.8s ease-out forwards; /* Animação de entrada */
 }
 
-.error {
-  color: #d9534f; /* Cor vermelha para erros */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* --- Responsividade Geral da Página --- */
+
+/* Para telas menores (celulares e tablets em retrato) */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 10px;
+        gap: 30px;
+    }
+
+    .heading {
+        font-size: 2em;
+    }
+
+    /* Filtros responsivos */
+    .filtersContainer {
+        flex-direction: column; /* Empilha label e select */
+        padding: 20px 25px;
+        gap: 15px; /* Reduz o espaço entre eles */
+        width: 90%; /* Ocupa mais largura */
+    }
+
+    .filterLabel {
+        font-size: 1.1em;
+        text-align: center; /* Centraliza o label também */
+        width: 100%; /* Ocupa a largura total */
+    }
+
+    .filterSelect {
+        width: 100%; /* Ocupa a largura total no mobile */
+        font-size: 1.05em;
+        padding: 12px 15px;
+        background-position: right 10px center;
+        background-size: 12px;
+        padding-right: 35px;
+    }
+
+    /* Grid responsivo */
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Cards menores para caber mais */
+        gap: 15px;
+        padding: 10px;
+    }
+
+    /* Mensagens de status responsivas */
+    .loading, .error, .noChampions {
+        font-size: 1em;
+        padding: 30px;
+        margin-top: 30px;
+    }
+}
+
+/* Para telas muito pequenas (celulares em paisagem) */
+@media (max-width: 480px) {
+    .heading {
+        font-size: 1.8em;
+    }
+
+    .filtersContainer {
+        padding: 15px 15px;
+    }
+
+    .filterLabel {
+        font-size: 1em;
+        letter-spacing: 1px;
+    }
+
+    .filterSelect {
+        font-size: 1em;
+        padding: 10px 10px;
+        background-position: right 8px center;
+        background-size: 10px;
+        padding-right: 30px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr; /* Um card por linha */
+        gap: 10px;
+    }
 }

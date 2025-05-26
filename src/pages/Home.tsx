@@ -1,12 +1,12 @@
 // Home.tsx
-import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import React, { useEffect, useState } from 'react';
 import AuthArea from '../components/AuthArea';
+import Navbar from '../components/Navbar';
 import NewsCard from '../components/NewsCard';
-import { getLatestNews } from '../services/database';
-import type { News } from '../types/News';
-import styles from '../styles/Home.module.css';
 import { useLocation } from 'react-router-dom';
+import { getLatestNews } from '../services/database';
+import styles from '../styles/Home.module.css';
+import type { News } from '../types/News';
 
 const Home: React.FC = () => {
   const [latestNews, setLatestNews] = useState<News[]>([]);

@@ -11,7 +11,17 @@ interface ChampionCardProps {
 const ChampionCard: React.FC<ChampionCardProps> = ({ champion, onClick }) => {
   return (
     <div className={styles.card} onClick={() => onClick(champion.id)}>
-      <img src={champion.imageUrl} alt={champion.name} className={styles.image} />
+      {/* ALTERAÇÃO AQUI: Usando um div com background-image */}
+      <div
+        className={styles.image} // Mantém a classe .image para os estilos de tamanho e borda
+        style={{
+          backgroundImage: `url('${champion.imageUrl}')`, // Define a imagem de fundo com a URL do campeão
+          // Você pode adicionar um background-color fallback se quiser:
+          // backgroundColor: '#3b3b6b'
+        }}
+        role="img" // Adiciona semântica para leitores de tela
+        aria-label={`Imagem de ${champion.name}`} // Adiciona texto alternativo para acessibilidade
+      />
       <h3 className={styles.name}>{champion.name}</h3>
       <p className={styles.title}>{champion.title}</p>
       {/* Você pode adicionar mais informações aqui, como a role principal */}
