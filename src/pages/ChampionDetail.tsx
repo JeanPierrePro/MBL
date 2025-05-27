@@ -1,86 +1,83 @@
 // src/pages/ChampionDetail.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getChampionById } from '../services/database'; // Importe a função para buscar um personagem específico
-import type { Champion } from '../types/Champion'; // Importe o tipo Champion
-import detailStyles from '../styles/ChampionDetail.module.css'; // Vamos criar este CSS depois
+import { getChampionByIdFromJson } from '../services/championsJsonService';
+// CORRIGIDO: Removidos Ability e Build, pois já estão implícitos dentro de Champion
+import type { Champion } from '../types/Champion';
+import detailStyles from '../styles/ChampionDetailPage.module.css';
 
 const ChampionDetail: React.FC = () => {
-  const { championId } = useParams<{ championId: string }>(); // Obtém o ID do personagem da URL
+  const { championId } = useParams<{ championId: string }>();
+  const navigate = useNavigate();
   const [champion, setChampion] = useState<Champion | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchChampion = async () => {
-      if (!championId) { // Garante que o ID do personagem existe na URL
-        setError("ID do personagem não fornecido.");
+    const fetchChampionDetails = async () => {
+      if (!championId) {
+        setError("ID do campeão não fornecido na URL.");
         setLoading(false);
         return;
       }
 
       try {
-        const data = await getChampionById(championId);
+        const data = await getChampionByIdFromJson(championId);
         if (data) {
-          setChampion(data); // Define os dados do personagem se encontrado
+          setChampion(data);
         } else {
-          setError("Personagem não encontrado."); // Caso o ID não corresponda a nenhum personagem
+          setError(`Campeão com ID "${championId}" não encontrado no arquivo JSON.`);
         }
       } catch (err) {
-        console.error("Erro ao buscar detalhes do personagem:", err);
-        setError("Não foi possível carregar os detalhes do personagem.");
+        console.error("Erro ao buscar detalhes do campeão:", err);
+        setError("Não foi possível carregar os detalhes do campeão. Verifique o arquivo JSON ou o ID.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchChampion();
-  }, [championId]); // Re-executa este efeito sempre que o championId na URL mudar
+    fetchChampionDetails();
+  }, [championId]);
 
   if (loading) {
-    return <div className={detailStyles.loading}>Carregando detalhes do personagem...</div>;
+    return <div className={detailStyles.loading}>Carregando detalhes do campeão...</div>;
   }
 
   if (error) {
-    return (
-      <div className={detailStyles.error}>
-        <p>{error}</p>
-        <button onClick={() => navigate('/meta')}>Voltar para a lista</button> {/* Botão para voltar */}
-      </div>
-    );
+    return <div className={detailStyles.error}>{error}</div>;
   }
 
-  // Se não estiver carregando e não tiver erro, mas o personagem não foi encontrado
   if (!champion) {
-    return <div className={detailStyles.notFound}>Personagem não encontrado.</div>;
+    return <div className={detailStyles.notFound}>Campeão não encontrado.</div>;
   }
 
-  // Se o personagem foi carregado com sucesso, exibe os detalhes
   return (
     <div className={detailStyles.container}>
       <button className={detailStyles.backButton} onClick={() => navigate('/meta')}>
-        ← Voltar
+        &larr; Voltar para o Catálogo
       </button>
       <div className={detailStyles.header}>
-        <img src={champion.imageUrl} alt={champion.name} className={detailStyles.image} />
-        <h1>{champion.name} <span className={detailStyles.title}>- {champion.title}</span></h1>
-        <p className={detailStyles.role}>Função: {champion.role.join(', ')}</p>
-        <p className={detailStyles.difficulty}>Dificuldade: {champion.difficulty}</p>
+        <img src={champion.imageUrl || "placeholder.png"} alt={champion.name} className={detailStyles.championImage} />
+        <div className={detailStyles.info}>
+          <h1 className={detailStyles.name}>{champion.name}</h1>
+          <h2 className={detailStyles.title}>{champion.title}</h2>
+          <p className={detailStyles.role}>**Função:** {champion.role.join(' / ')}</p>
+          <p className={detailStyles.difficulty}>**Dificuldade:** {champion.difficulty}</p>
+        </div>
       </div>
 
       <div className={detailStyles.section}>
-        <h2>Passiva: {champion.passive.name}</h2>
+        <h3>Passiva: {champion.passive.name}</h3>
         <p>{champion.passive.description}</p>
       </div>
 
       <div className={detailStyles.section}>
-        <h2>Habilidades</h2>
+        <h3>Habilidades</h3>
         <div className={detailStyles.abilitiesGrid}>
           {champion.abilities.map((ability, index) => (
             <div key={index} className={detailStyles.abilityCard}>
               {ability.iconUrl && <img src={ability.iconUrl} alt={ability.name} className={detailStyles.abilityIcon} />}
-              <h3>{ability.name} <span className={detailStyles.abilityType}>({ability.type})</span></h3>
+              <h4>{ability.name} ({ability.type})</h4>
               <p>{ability.description}</p>
             </div>
           ))}
@@ -88,20 +85,20 @@ const ChampionDetail: React.FC = () => {
       </div>
 
       <div className={detailStyles.section}>
-        <h2>Builds Sugeridas</h2>
+        <h3>Builds Sugeridas</h3>
         {champion.builds.map((build, index) => (
           <div key={index} className={detailStyles.buildCard}>
-            <h3>{build.type}</h3>
+            <h4>{build.type}</h4>
+            <p className={detailStyles.buildDescription}>{build.description}</p>
             <p><strong>Itens:</strong> {build.items.join(', ')}</p>
             <p><strong>Runas:</strong> {build.runes.join(', ')}</p>
-            <p>{build.description}</p>
           </div>
         ))}
       </div>
 
       <div className={detailStyles.section}>
-        <h2>Composições de Time</h2>
-        <ul className={detailStyles.compositionsList}>
+        <h3>Composições de Equipe Sugeridas</h3>
+        <ul className={detailStyles.compositionList}>
           {champion.compositions.map((comp, index) => (
             <li key={index}>{comp}</li>
           ))}

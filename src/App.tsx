@@ -29,7 +29,6 @@ function App() {
           <Route path="/treinos" element={<Treinos />} />
           <Route path="/register-team" element={<RegisterTeam />} />
           <Route path="/create-news" element={<CreateNews />} />
-          {/* NOVAS ROTAS PARA A PÁGINA META */}
           <Route path="/meta" element={<Meta />} /> {/* Lista de personagens */}
           <Route path="/meta/:championId" element={<ChampionDetail />} /> {/* Detalhes de um personagem específico */}
         </Routes>
@@ -39,7 +38,6 @@ function App() {
 }
 
 import { useLocation } from 'react-router-dom';
-
 function AppNavbar() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';

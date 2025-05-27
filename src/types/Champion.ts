@@ -15,10 +15,10 @@ export interface Build {
 }
 
 export interface Champion {
-  id: string; // ID do documento no Firestore (ex: "lux", "ezreal")
+  id: string; // ID único do personagem
   name: string; // Nome do personagem (Ex: "Lux")
   title: string; // Título do personagem (Ex: "A Dama da Luz")
-  imageUrl: string; // URL da imagem principal do personagem (do seu Vercel)
+  imageUrl: string; // URL da imagem principal do personagem (do seu Vercel ou placeholder)
   role: string[]; // Papéis no jogo (Ex: ["Mid", "Support"])
   difficulty: string; // Dificuldade (Ex: "Fácil", "Médio", "Difícil")
   passive: {
