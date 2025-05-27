@@ -39,10 +39,10 @@ const Login: React.FC = () => {
 
   return (
     <div className={formStyles.container}>
-      <h2>Login</h2>
+      <h2>Entrar</h2>
       <form onSubmit={handleSubmit} className={formStyles.form}>
         <div className={formStyles.formGroup}>
-          <label htmlFor="email" className={formStyles.label}>Email:</label>
+          <label htmlFor="email" className={formStyles.label}>Email</label>
           <input
             type="email"
             id="email"
@@ -55,16 +55,16 @@ const Login: React.FC = () => {
           />
         </div>
         <div className={formStyles.formGroup}>
-          <label htmlFor="password" className={formStyles.label}>Senha:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-            className={formStyles.input}
+        <label htmlFor="password" className={formStyles.label}>Senha</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+          className={formStyles.input} 
           />
         </div>
         <button type="submit" className={formStyles.button}>Entrar</button>

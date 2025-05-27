@@ -23,7 +23,7 @@ const Register: React.FC = () => {
     // Se a role for 'member' E a 'lane' ainda não foi selecionada (estiver vazia),
     // define um erro e impede o envio do formulário.
     if (role === 'member' && !lane) {
-      setError('Por favor, selecione sua Lane Preferida para se registrar como Membro.');
+      setError('Por favor, selecione sua Lane Preferida para se registar como Membro.');
       return; // Interrompe a execução da função
     }
 
@@ -33,17 +33,17 @@ const Register: React.FC = () => {
       alert('Registro bem-sucedido! Por favor, faça login.');
       navigate('/login');
     } catch (err: unknown) {
-      console.error("Erro ao registrar:", err);
-      setError(err instanceof Error ? err.message : 'Erro ao registrar. Tente novamente.');
+      console.error("Erro ao registar:", err);
+      setError(err instanceof Error ? err.message : 'Erro ao registar. Tente novamente.');
     }
   };
 
   return (
     <div className={formStyles.container}>
-      <h2>Registrar</h2>
+      <h2>Registar</h2>
       <form onSubmit={handleRegister} className={formStyles.form}>
         <div className={formStyles.formGroup}>
-          <label htmlFor="nick" className={formStyles.label}>Nickname:</label>
+          <label htmlFor="nick" className={formStyles.label}>Nickname</label>
           <input
             type="text"
             id="nick"
@@ -53,19 +53,19 @@ const Register: React.FC = () => {
             className={formStyles.input}
           />
         </div>
-        <div className={formStyles.formGroup}>
-          <label htmlFor="email" className={formStyles.label}>Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={formStyles.input}
+          <div className={formStyles.formGroup}>
+            <label htmlFor="email" className={formStyles.label}>Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={formStyles.input}
           />
         </div>
         <div className={formStyles.formGroup}>
-          <label htmlFor="password" className={formStyles.label}>Senha:</label>
+          <label htmlFor="password" className={formStyles.label}>Senha</label>
           <input
             type="password"
             id="password"
@@ -78,7 +78,7 @@ const Register: React.FC = () => {
 
         {/* CAMPO DE SELEÇÃO DE ROLE - SEMPRE VISÍVEL */}
         <div className={formStyles.formGroup}>
-          <label htmlFor="role" className={formStyles.label}>Você é:</label>
+          <label htmlFor="role" className={formStyles.label}>Você é...</label>
           <select
             id="role"
             value={role}
@@ -102,7 +102,7 @@ const Register: React.FC = () => {
         {/* Este bloco DIV INTEIRO só será renderizado se 'role' for 'member' */}
         {role === 'member' && (
           <div className={formStyles.formGroup}>
-            <label htmlFor="lane" className={formStyles.label}>Lane Preferida:</label>
+            <label htmlFor="lane" className={formStyles.label}>Escolha a sua Lane</label>
             <select
               id="lane"
               value={lane}
@@ -123,7 +123,7 @@ const Register: React.FC = () => {
         )}
 
         {error && <p className={formStyles.errorMessage}>{error}</p>}
-        <button type="submit" className={formStyles.button}>Registrar</button>
+        <button type="submit" className={formStyles.button}>registar</button>
       </form>
       <p className={formStyles.linkText}>
         Já tem uma conta? <span onClick={() => navigate('/login')} className={formStyles.link}>Faça Login</span>

@@ -1,77 +1,269 @@
-/* styles/Home.module.css */
+/* styles/Treinos.module.css */
 
 .container {
-  width: 90%;
-  margin: auto;
-  background: var(--primary-background); /* Usar o background principal aqui */
-  padding: 25px;
+  max-width: 1200px; /* Largura máxima para centralizar o conteúdo */
+  margin: 60px auto; /* Margem superior/inferior para espaçamento, centralizado horizontalmente */
+  padding: 30px;
+  background-color: var(--navbar-background); /* Fundo do container principal, mais escuro para destaque */
   border-radius: 12px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */ /* Removido, pode ser adicionado se precisar */
-}
-
-.header {
-  margin-bottom: 30px;
-}
-
-.intro {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.intro h1 {
-  font-size: 2.8rem;
-  margin-bottom: 10px;
-  color: var(--primary-text);
-  border-left: 4px solid var(--subtle-accent); /* Destaque subtil */
-  padding-left: 12px;
-  margin-top: 0;
-}
-
-.intro p {
-  font-size: 1rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.7); /* Ligeiramente mais suave que o branco principal */
-}
-
-.newsSection {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Sombra mais suave e visível */
+  color: var(--primary-text); /* Cor de texto principal (branco) */
+  text-align: center; /* Centraliza o texto dentro do container */
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px; /* Espaçamento entre os elementos principais do container */
 }
 
-.featuredNews h2,
-.otherNews h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: var(--primary-text);
-  border-left: 4px solid var(--subtle-accent); /* Destaque subtil */
-  padding-left: 12px;
-  margin-top: 0;
-  /* padding-bottom: 0; */ /* Removido, não tem efeito visual significativo sem padding-top */
-  width: fit-content;
+.title {
+  font-size: 3rem; /* Título maior */
+  color: var(--secondary-color-a); /* Cor de destaque para o título */
+  margin-bottom: 10px;
+  text-transform: uppercase; /* Título em maiúsculas */
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Pequena sombra no texto para pop */
 }
 
-.newsGrid {
+.description {
+  font-size: 1.1rem;
+  color: rgba(var(--primary-text), 0.7); /* Texto ligeiramente mais suave */
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.warning, .loading {
+  font-size: 1.2rem;
+  color: var(--subtle-accent); /* Ou uma cor mais viva para avisos, tipo laranja */
+  text-align: center;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: rgba(var(--navbar-background), 0.7);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para a grelha da semana */
+.week {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Grelha responsiva */
+  gap: 25px; /* Espaço entre os dias */
+  padding: 15px; /* Padding ao redor da grelha */
 }
 
-.loadMoreBtn {
-  display: block;
-  margin: 30px auto 0 auto;
-  background-color: var(--secondary-color-a); /* Usar uma das cores secundárias */
-  color: var(--primary-text); /* Texto branco */
+.day {
+  background-color: var(--primary-background); /* Fundo dos cartões de dia */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra nos cartões de dia */
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
+  border: 2px solid transparent; /* Borda transparente para o hover */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 180px; /* Altura mínima para os cartões ficarem mais uniformes */
+}
+
+.day:hover {
+  transform: translateY(-5px); /* Efeito de "levantar" no hover */
+  box-shadow: 0 8px 25px rgba(var(--secondary-color-a), 0.3); /* Brilho azul no hover */
+  border-color: var(--secondary-color-a); /* Borda azul no hover */
+}
+
+.day h3 {
+  font-size: 1.5rem;
+  color: var(--secondary-color-b); /* Cor para os nomes dos dias */
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(var(--primary-text), 0.1); /* Linha subtil abaixo do dia */
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.empty {
+  font-style: italic;
+  color: rgba(var(--primary-text), 0.5);
+  margin-top: 10px;
+}
+
+.timeSlot {
+  background-color: rgba(var(--primary-text), 0.05); /* Fundo para cada slot de tempo */
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin-top: 10px; /* Espaço entre os time slots */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--primary-text);
+  width: 100%;
+  border: 1px solid rgba(var(--secondary-color-a), 0.2); /* Borda subtil para os slots */
+}
+
+.removeButton {
+  background: none;
   border: none;
-  padding: 12px 30px;
+  color: var(--subtle-accent); /* Cor para o 'X' */
+  cursor: pointer;
   font-size: 1rem;
-  border-radius: 6px; 
+  margin-left: 10px;
+  transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.removeButton:hover {
+  color: red; /* Vermelho mais forte no hover */
+  transform: scale(1.2);
+}
+
+.cancelAllButton {
+  background-color: var(--secondary-background); /* Cor para o botão de cancelar tudo */
+  color: var(--primary-text);
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 90%; /* Ocupa quase toda a largura do dia */
+  text-align: center;
+}
+
+.cancelAllButton:hover {
+  background-color: var(--button-hover-color); /* Escurece ligeiramente no hover */
+  box-shadow: 0 0 10px rgba(var(--subtle-accent), 0.5);
+}
+
+/* Cores dos dias baseadas na ocupação */
+.red {
+  border-color: var(--subtle-accent); /* Borda vermelha para poucos treinos */
+  box-shadow: 0 4px 15px rgba(var(--subtle-accent), 0.3);
+}
+
+.green {
+  border-color: var(--secondary-color-b); /* Borda verde para treinos preenchidos */
+  box-shadow: 0 4px 15px rgba(var(--secondary-color-b), 0.3);
+}
+
+.yellow {
+  border-color: var(--auth-area-glow); /* Borda amarela para horários variáveis */
+  box-shadow: 0 4px 15px rgba(var(--auth-area-glow), 0.3);
+}
+
+/* Overlay e Modal para o relógio */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que fica por cima de tudo */
+  backdrop-filter: blur(5px); /* Efeito de blur no fundo */
+}
+
+.modal {
+  background-color: var(--primary-background); /* Fundo do modal */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  max-width: 450px; /* Largura máxima do modal */
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid var(--secondary-color-a); /* Borda para o modal */
+}
+
+.modal h3 {
+  color: var(--secondary-color-a);
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.confirmButton, .cancelButton {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+  width: 100%;
 }
 
-.loadMoreBtn:hover {
+.confirmButton {
+  background-color: var(--secondary-color-a);
+  color: var(--primary-text);
+  margin-top: 20px;
+}
+
+.confirmButton:hover {
   background-color: var(--button-hover-color);
-  box-shadow: 0 0 8px var(--secondary-color-a); /* Aumentar o brilho no hover */
-  transform: scale(1.02);
+  box-shadow: 0 0 12px rgba(var(--secondary-color-a), 0.6);
+  transform: translateY(-2px);
+}
+
+.cancelButton {
+  background-color: var(--subtle-accent); /* Uma cor secundária mais neutra */
+  color: var(--primary-text);
+  margin-top: 10px;
+}
+
+.cancelButton:hover {
+  background-color: rgba(var(--subtle-accent), 0.8);
+  box-shadow: 0 0 12px rgba(var(--subtle-accent), 0.4);
+  transform: translateY(-2px);
+}
+
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+  .container {
+    margin: 40px 15px;
+    padding: 20px;
+  }
+  .title {
+    font-size: 2.5rem;
+  }
+  .description {
+    font-size: 1rem;
+  }
+  .week {
+    grid-template-columns: 1fr; /* Uma coluna em ecrãs pequenos */
+    gap: 20px;
+  }
+  .day {
+    min-height: auto; /* Remove altura mínima em mobile */
+  }
+  .modal {
+    padding: 20px;
+  }
+  .modal h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 20px 10px;
+    padding: 15px;
+  }
+  .title {
+    font-size: 2rem;
+  }
+  .day h3 {
+    font-size: 1.3rem;
+  }
+  .timeSlot {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+  .confirmButton, .cancelButton {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
 }

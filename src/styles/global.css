@@ -18,8 +18,6 @@
   /* Cores específicas da Navbar/Sombra */
   --navbar-link-hover: var(--secondary-color-a);
   --navbar-shadow-color: rgba(0, 0, 0, 0.6);
-
-  /* NOVO: Variável para o brilho azul da AuthArea */
   --auth-area-glow: rgba(0, 109, 156, 0.7); /* Brilho baseado em secondary-color-a com 70% de opacidade */
 }
 

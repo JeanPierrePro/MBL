@@ -1,7 +1,7 @@
 // src/components/ChampionCard.tsx
 import React from 'react';
 import type { Champion } from '../types/Champion'; // Importe o tipo Champion
-import styles from '../styles/ChampionCard.module.css'; // Vamos criar este CSS depois
+import styles from '../styles/components/ChampionCard.module.css'; // Vamos criar este CSS depois
 
 interface ChampionCardProps {
   champion: Champion;

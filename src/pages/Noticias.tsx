@@ -20,7 +20,7 @@ const Noticias: React.FC = () => {
     const fetchNewsAndUserRole = async () => {
       // 1. Buscar todas as notícias
       const news = await getAllNews();
-      setNewsData(news);
+      setNewsData(news)
 
       // 2. Verificar o papel do usuário (role)
       if (user) { // Se há um usuário logado

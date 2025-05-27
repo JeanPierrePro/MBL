@@ -1,73 +1,205 @@
-/* Form.module.css */
+/* styles/AuthForm.module.css */
+
 .container {
   max-width: 400px;
-  margin: 60px auto;
-  padding: 25px;
-  background: #1e1e2f;
+  margin: 80px auto;
+  padding: 30px;
+  background: var(--navbar-background);
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  color: #eee;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 1px solid rgba(var(--primary-background), 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  color: var(--primary-text); /* Adicionado: Para garantir que o h2 seja branco */
+}
+
+.container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  color: var(--primary-text);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espaçamento entre os elementos do formulário */
+  gap: 20px;
+  width: 100%;
+  max-width: 350px;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: rgb(var(--primary-background));
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.formGroup { /* Mantemos para o Login */
-  margin-bottom: 20px;
+.formGroup {
+  margin-bottom: 0;
 }
 
-label { /* Mantemos para o Login */
+.label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #ccc;
+  color: var(--primary-text);
+  font-size: 1.05rem;
+  text-align: left;
 }
 
-.input {
+/* Seletores para .input e .select */
+.input, .select { /* Aplica-se a elementos com className={formStyles.input} OU className={formStyles.select} */
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 15px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid var(--primary-text);
   outline: none;
   font-size: 1rem;
-  background-color: #2a2a3d;
-  color: #eee;
-  transition: background-color 0.3s ease;
+  background-color: rgb(var(--primary-background)); /* Fundo escuro */
+  color: var(--primary-text); /* Texto branco */
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.input:focus {
-  background-color: #3c3c5c;
+/* Seletor para o estado de foco */
+.input:focus, .select:focus {
+  background-color: var(--navbar-background);
+  border-color: var(--secondary-color-a); /* Borda azul-petróleo quando em foco */
+  box-shadow: 0 0 0 3px rgba(0, 109, 156, 0.4);
 }
 
-select.input { /* Estilo específico para o select */
-  appearance: none; /* Remove estilos padrão do select */
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23eee" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+/* Seletor para o select (já usa a classe .select) */
+.select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23FAF9F6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 15px center;
   background-size: 1.2em;
 }
 
-select.input::-ms-expand { /* Para navegadores IE */
+.select::-ms-expand {
   display: none;
 }
 
+/* Seletor para o botão */
 .button {
   width: 100%;
-  padding: 12px;
-  background-color: #f0a500;
+  padding: 14px;
+  background-color: var(--secondary-color-a);
   border: none;
   border-radius: 8px;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #1e1e2f;
+  color: var(--primary-text);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  letter-spacing: 0.5px;
 }
 
 .button:hover {
-  background-color: #d18e00;
+  background-color: var(--button-hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 109, 156, 0.6);
+}
+
+.linkText {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.95rem;
+  color: rgba(var(--primary-text), 0.8);
+  border: #FFFFFF;
+}
+
+.link {
+  color: var(--secondary-color-b);
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.link:hover {
+  color: #CCBBFF;
+  text-decoration: underline;
+}
+
+.errorMessage {
+  color: var(--subtle-accent);
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Classe para o botão de remoção */
+.removeButton {
+  background-color: var(--remove-button-background); /* Usa a variável definida em global.css */
+  color: var(--primary-text); /* Mantém o texto branco, ou mude se quiser outra cor */
+  padding: 8px 12px; /* Mais pequeno */
+  font-size: 0.9rem; /* Texto mais pequeno */
+  width: auto; /* Permite que o botão se ajuste ao conteúdo, não 100% da largura */
+  align-self: flex-end; /* Alinha o botão à direita dentro do formGroup do membro */
+  margin-top: 10px; /* Adiciona um pequeno espaço acima */
+}
+
+.removeButton:hover {
+  background-color: var(--remove-button-hover-background); /* Usa a variável para o hover */
+  transform: translateY(-1px); /* Menos movimento no hover */
+  box-shadow: 0 3px 8px rgba(var(--remove-button-background), 0.6); /* Sombra mais subtil */
+}
+
+/* Ajuste para o formGroup dos membros para que o botão "Remover" se alinhe corretamente */
+.memberFormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaço entre os campos de nickname/lane e o botão de remover */
+  border: 1px solid rgba(var(--primary-text), 0.1); /* Uma borda subtil para cada membro */
+  padding: 15px;
+  border-radius: 8px;
+  background-color: rgba(var(--primary-background), 0.5); /* Fundo um pouco mais claro */
+  margin-bottom: 20px; /* Espaço entre os blocos de membros */
+}
+
+.memberFormGroup .formGroup { /* Ajusta os formGroups internos dentro de um membro */
+  margin-bottom: 0; /* Remove margem extra entre nickname e lane */
+}
+
+/* Nova classe para centralizar o h3 de "Membros da Equipa" */
+.centeredHeading {
+  text-align: center;
+  margin-top: 30px; /* Adiciona um espaço acima do título dos membros */
+  margin-bottom: 20px; /* Adiciona um espaço abaixo do título dos membros */
+  color: var(--primary-text); /* Garante que o texto seja branco */
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 600px) {
+  .container {
+    margin: 40px 20px;
+    padding: 20px;
+  }
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  .form {
+    max-width: 100%;
+  }
+  .input, .select, .button {
+    padding: 10px 12px;
+    font-size: 1rem;
+  }
+  .linkText {
+    font-size: 0.9rem;
+    margin-top: 20px;
+  }
 }

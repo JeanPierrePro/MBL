@@ -1,5 +1,6 @@
 // src/App.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './styles/global.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -8,11 +9,10 @@ import Equipe from './pages/Equipe';
 import Perfil from './pages/Perfil';
 import Treinos from './pages/Treinos';
 import Navbar from './components/Navbar';
-import './styles/global.css';
 import RegisterTeam from './pages/RegisterTeam';
 import CreateNews from './pages/CreateNews';
-import Meta from './pages/Meta'; // IMPORTANTE: Importe a nova página Meta
-import ChampionDetail from './pages/ChampionDetail'; // IMPORTANTE: Importe a nova página de Detalhes do Personagem
+import Meta from './pages/Meta'; 
+import ChampionDetail from './pages/ChampionDetail';
 
 function App() {
   return (

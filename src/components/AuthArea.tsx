@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from '../styles/AuthArea.module.css';
+import styles from '../styles/components/AuthArea.module.css';
 
 const AuthArea: React.FC = () => {
   return (

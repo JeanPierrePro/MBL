@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import styles from '../styles/Navbar.module.css';
+import styles from '../styles/components/Navbar.module.css';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
