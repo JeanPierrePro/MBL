@@ -1,206 +1,242 @@
 /* Navbar.module.css */
 
-/* Variáveis (Certifica-te que estas estão definidas globalmente ou no teu :root) */
-:root {
-  --primary-background: #1e1e2f;
-  --text-color: #ffffff;
-  --hover-color: #4b6cb7; /* azul legal */
-  --box-shadow-color: rgba(0, 0, 0, 0.3);
-  --accent-color: gold; /* Exemplo, se não estiver definida */
-  --secondary-background: #333; /* Exemplo, se não estiver definida */
-  --button-color: #4b6cb7; /* Exemplo, se não estiver definida */
-}
+/*
+ * NOTA: As variáveis de cor são esperadas do seu arquivo global.css ou _app.tsx.
+ * Removendo o :root daqui para evitar duplicação e garantir consistência.
+ * As variáveis que você usa aqui devem ser as mesmas definidas globalmente.
+ */
+
+/* Recomendações de fontes (importar no global.css ou _app.tsx): */
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Roboto:wght@300;400;700&display=swap'); */
 
 /* Base Navbar Styles (Home Page - Card) */
 /* Esta barra .nav não terá o comportamento de hambúrguer */
 .nav {
-  background-color: var(--primary-background);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: center;
-  box-shadow: 0 4px 8px var(--box-shadow-color);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  position: relative; /* Necessário para posicionamento de elementos filhos se houver */
-  z-index: 1000;
+    background-color: var(--navbar-background); /* Usar a variável do MetaPage */
+    padding: 1.2rem 2rem; /* Levemente mais padding */
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 5px 12px rgba(var(--navbar-shadow-color-rgb), 0.7); /* Sombra mais acentuada com RGB */
+    font-family: 'Share Tech Mono', monospace; /* Fonte mais "tech" */
+    position: relative;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(var(--secondary-color-a-rgb), 0.2); /* Borda sutil de acento */
+    transition: all 0.4s ease-in-out; /* Para efeitos de hover na navbar */
+}
+
+.nav:hover {
+    box-shadow: 0 7px 18px rgba(var(--navbar-shadow-color-rgb), 0.9), 0 0 25px rgba(var(--auth-area-glow-rgb), 0.4); /* Sombra e brilho mais intensos */
+    border-color: var(--secondary-color-a); /* Borda mais destacada */
 }
 
 .navList {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 2.5rem; /* Mais espaço entre os itens */
+    margin: 0;
+    padding: 0;
 }
 
 .navItem a {
-  color: var(--text-color);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    color: var(--primary-text); /* Usar a variável de texto principal */
+    text-decoration: none;
+    font-weight: 500; /* Um pouco menos bold para os itens normais */
+    font-size: 1.15rem; /* Levemente maior */
+    padding: 0.6rem 1.2rem; /* Mais padding */
+    border-radius: 8px; /* Cantos mais arredondados */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Adicionar transform */
+    text-shadow: 0 0 3px rgba(var(--primary-text-rgb), 0.3); /* Brilho sutil no texto */
+    letter-spacing: 0.5px; /* Espaçamento leve entre letras */
 }
 
 .navItem a:hover {
-  background-color: var(--hover-color);
-  box-shadow: 0 0 10px var(--hover-color);
+    background-color: rgba(var(--secondary-color-a-rgb), 0.2); /* Um brilho mais sutil */
+    color: var(--subtle-accent); /* Cor de acento no hover */
+    box-shadow: 0 0 15px rgba(var(--auth-area-glow-rgb), 0.6), inset 0 0 8px rgba(var(--subtle-accent-rgb), 0.3); /* Brilho externo e interno */
+    transform: translateY(-2px); /* Efeito de "levantar" */
+    text-shadow: 0 0 8px var(--subtle-accent); /* Brilho mais forte no texto */
 }
 
 /* Navbar Full Width Styles (Other Pages) */
-/* Esta é a barra que queremos com hambúrguer responsivo */
 .navFullWidth {
-  background-color: var(--primary-background);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between; /* Espaço entre os grupos de links */
-  align-items: center;
-  width: 100%;
-  position: sticky; /* ou 'fixed' se preferires que fique sempre no topo */
-  top: 0;
-  z-index: 1000;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--navbar-background); /* Usar a variável do MetaPage */
+    padding: 1.2rem 2.5rem; /* Mais padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'Share Tech Mono', monospace; /* Fonte mais "tech" */
+    box-shadow: 0 5px 12px rgba(var(--navbar-shadow-color-rgb), 0.7); /* Sombra mais acentuada com RGB */
+    border-bottom: 1px solid rgba(var(--secondary-color-a-rgb), 0.2); /* Borda sutil de acento */
+    transition: all 0.4s ease-in-out; /* Para efeitos de hover na navbar */
+}
+
+.navFullWidth:hover {
+    box-shadow: 0 7px 18px rgba(var(--navbar-shadow-color-rgb), 0.9), 0 0 25px rgba(var(--auth-area-glow-rgb), 0.4);
+    border-color: var(--secondary-color-a);
 }
 
 .navListFullWidthLeft {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 2rem; /* Mais espaço */
+    margin: 0;
+    padding: 0;
 }
 
 /* Auth Links (Desktop Only - for the "full width" navbar) */
 .authLinks {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1.5rem; /* Mais espaço */
 }
 
 .authLinks a {
-  text-decoration: none;
-  font-weight: bold;
-  padding: 8px 12px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 18px; /* Mais padding */
+    border-radius: 8px; /* Cantos mais arredondados */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border 0.3s ease;
+    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.5); /* Borda para os botões */
+    text-shadow: 0 0 5px rgba(var(--auth-area-glow-rgb), 0.5); /* Brilho sutil no texto */
+    letter-spacing: 1px;
 }
 
 .navFullWidth .authLinks a {
-  color: var(--text-color);
+    color: var(--subtle-accent); /* Cor de acento para os links de autenticação */
+    background-color: transparent;
 }
 
 .navFullWidth .authLinks a:hover {
-  background-color: var(--hover-color);
-  box-shadow: 0 0 10px var(--hover-color);
+    background-color: rgba(var(--auth-area-glow-rgb), 0.2); /* Fundo sutil */
+    box-shadow: 0 0 20px rgba(var(--auth-area-glow-rgb), 0.7), inset 0 0 10px rgba(var(--auth-area-glow-rgb), 0.4); /* Brilho mais intenso */
+    color: var(--primary-text); /* Texto branco no hover */
+    border-color: var(--auth-area-glow); /* Borda também brilhando */
+    transform: translateY(-2px); /* Efeito de "levantar" */
 }
 
 /* Estilos para a navbar na home (card) - Auth links */
-/* Nesta barra .nav, não haverá auth links */
 .nav .authLinks {
-  display: none;
+    display: none;
 }
 
 /* Mobile Menu Icon (Hamburger) - APENAS para .navFullWidth */
-/* Por padrão (desktop) ou em .nav, este ícone está oculto */
 .mobileMenuIcon {
-  display: none;
-  cursor: pointer;
-  z-index: 1001;
-  position: absolute; /* Posição relativa ao pai (.navFullWidth) */
-  right: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 22px;
-  flex-direction: column; /* Necessário para alinhar as linhas */
-  justify-content: space-between; /* Espaçamento entre as linhas */
+    display: none;
+    cursor: pointer;
+    z-index: 1001;
+    position: absolute;
+    right: 2.5rem; /* Ajustar para novo padding */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* Levemente maior */
+    height: 25px; /* Levemente maior */
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .hamburgerLine {
-  width: 100%;
-  height: 3px;
-  background-color: var(--text-color);
-  border-radius: 5px;
-  transition: all 0.3s ease-in-out;
+    width: 100%;
+    height: 4px; /* Mais espessa */
+    background-color: var(--subtle-accent); /* Cor de acento para as linhas */
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 5px rgba(var(--subtle-accent-rgb), 0.7); /* Brilho nas linhas */
 }
 
 /* Menu Open State (Dropdown) - APENAS para .navFullWidth */
-/* Por padrão (desktop) ou em .nav, este menu está oculto */
 .menuOpen {
-  display: flex !important; /* Força a exibição quando aberto */
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: var(--primary-background);
-  box-shadow: 0 8px 16px var(--box-shadow-color);
-  padding: 1rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  animation: slideDown 0.3s ease-out forwards;
-  z-index: 999;
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--navbar-background); /* Consistente com a navbar */
+    box-shadow: 0 10px 20px rgba(var(--navbar-shadow-color-rgb), 0.8); /* Sombra mais proeminente */
+    padding: 1.5rem 0; /* Mais padding */
+    border-top: 1px solid rgba(var(--secondary-color-a-rgb), 0.3); /* Borda consistente */
+    animation: slideDown 0.3s ease-out forwards;
+    z-index: 999;
+    align-items: center; /* Centraliza os itens do menu aberto */
+    gap: 1rem; /* Espaçamento entre os itens do menu */
 }
 
 /* Animation for opening the menu */
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+/* Responsive Styles */
 @media (max-width: 966px) {
-  /* Estilos para .nav (Home Page) em mobile */
-  .nav {
-    flex-direction: column; 
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-  .nav .navList { /* Oculta a lista de links da Home em mobile, se for necessário */
-    flex-direction: column; /* Garante que os itens fiquem na coluna se forem visíveis */
-    /* display: none; /* Descomentar se quiser ocultar a lista principal da Home em mobile */
-  }
+    /* Estilos para .nav (Home Page) em mobile */
+    .nav {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+    .nav .navList {
+        flex-direction: column;
+    }
 
+    /* Estilos para .navFullWidth (Outras Páginas) em mobile */
+    .navFullWidth {
+        padding: 1rem;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: auto;
+    }
 
-  /* Estilos para .navFullWidth (Outras Páginas) em mobile */
-  .navFullWidth {
-    padding: 1rem;
-    flex-direction: row; /* Para o ícone no canto e possível logo */
-    justify-content: space-between;
-    align-items: center;
-    height: auto;
-  }
+    .navFullWidth .navListFullWidthLeft {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        margin-top: 0;
+        padding: 0;
+    }
 
-  /* Esconde a lista de navegação principal por padrão em .navFullWidth (mobile) */
-  .navFullWidth .navListFullWidthLeft {
-    display: none;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 0;
-    padding: 0;
-  }
+    .navFullWidth .mobileMenuIcon {
+        display: flex;
+    }
 
-  /* Mostra o ícone de hambúrguer APENAS em .navFullWidth e em mobile */
-  .navFullWidth .mobileMenuIcon {
-    display: flex; /* Muda de none para flex */
-  }
+    .navFullWidth .navItem a {
+        font-size: 1.2rem;
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem 1rem;
+    }
 
-  /* Ajustes para os itens do menu quando o dropdown está aberto */
-  .navFullWidth .navItem a {
-    font-size: 1.2rem;
-    width: 100%;
-    text-align: center;
-    padding: 0.8rem 1rem;
-  }
+    .navFullWidth .authLinks {
+        display: none; /* Ainda oculto, mas se quiser mostrar no menu mobile, adicione ao .menuOpen */
+    }
 
-  /* Oculta os links de autenticação que estavam separados para desktop na .navFullWidth */
-  .navFullWidth .authLinks {
-    display: none;
-  }
+    /* Adicionar os links de autenticação ao menu mobile quando aberto */
+    .menuOpen .authLinks {
+        display: flex; /* Mostrar os links de autenticação no menu mobile */
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%; /* Ocupar a largura total do menu */
+        margin-top: 1rem; /* Espaçamento do resto dos links */
+    }
+
+    .menuOpen .authLinks a {
+        width: calc(100% - 2rem); /* Ajustar largura para padding */
+        margin: 0 auto; /* Centralizar */
+        text-align: center;
+        padding: 0.8rem 1rem;
+        font-size: 1.1rem;
+    }
 }

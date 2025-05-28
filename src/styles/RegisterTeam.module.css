@@ -1,134 +1,406 @@
-/* src/pages/RegisterTeam.module.css */
+
+
+/* Importar fontes do Google Fonts - Certifique-se que já estão linkadas no seu HTML ou _app.tsx/_document.tsx */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
 
 .registerTeamPage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    background-color: var(--primary-background); /* Fundo como o container da MetaPage */
+    color: var(--primary-text);
+    min-height: 100vh;
+    font-family: 'Share Tech Mono', monospace; /* Fonte principal para texto */
+    gap: 30px; /* Espaçamento entre elementos */
+    position: relative;
+    overflow-x: hidden;
 }
 
 h2 {
-  margin-bottom: 20px;
-  color: #333;
+    text-align: center;
+    color: var(--subtle-accent); /* Cor do título como na MetaPage */
+    margin-bottom: 0px; /* Ajuste para o gap do container */
+    font-size: 3em;
+    font-family: 'Orbitron', sans-serif; /* Fonte do título como na MetaPage */
+    text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7);
+    letter-spacing: 2px;
+    animation: fadeInDown 1s ease-out forwards;
 }
 
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  width: 100%;
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  max-width: 600px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    width: 90%; /* Ajustado para ser mais flexível */
+    max-width: 700px; /* Um pouco maior para formulários */
+    padding: 35px 50px; /* Mais padding para "cardificar" */
+    background-color: var(--navbar-background); /* Fundo como o filtersContainer */
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6);
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2);
+    transition: all 0.4s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    z-index: 1; /* Para garantir que o conteúdo esteja acima do brilho */
+}
+
+form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center,
+        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
+        transparent 70%
+    );
+    transform: rotate(0deg);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
+    z-index: 0;
+}
+
+form:hover::before {
+    opacity: 1;
+    transform: rotate(360deg);
+}
+
+form:hover {
+    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 30px rgba(var(--auth-area-glow-rgb), 0.5);
+    border-color: var(--secondary-color-a);
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Mais espaçamento entre grupos */
+    width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #555;
+    margin-bottom: 8px; /* Mais espaço */
+    font-weight: bold;
+    color: var(--subtle-accent); /* Cor do label como o filterLabel */
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.2px; /* Mais espaçamento */
+    text-shadow: 0 0 4px rgba(var(--subtle-accent-rgb), 0.4); /* Brilho no texto */
 }
 
 input[type="text"],
 input[type="email"],
 input[type="url"],
 textarea {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
+    padding: 14px 20px; /* Padding como o filterSelect */
+    border-radius: 8px;
+    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
+    background-color: var(--primary-background); /* Fundo como o filterSelect */
+    color: var(--primary-text);
+    font-size: 1.15em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    width: 100%; /* Garante que ocupam o espaço disponível */
+    box-sizing: border-box; /* Inclui padding e border na largura */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+    border-color: var(--secondary-color-a);
+    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
+    background-color: rgba(var(--primary-background-rgb), 1);
+    color: var(--subtle-accent);
 }
 
 textarea {
-  resize: vertical; /* Permite redimensionar verticalmente */
+    resize: vertical;
+    min-height: 80px;
 }
 
 h3 {
-  margin-top: 25px;
-  margin-bottom: 10px;
-  color: #333;
+    margin-top: 30px; /* Mais espaço */
+    margin-bottom: 15px;
+    color: var(--subtle-accent); /* Estilo como os labels */
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 6px rgba(var(--subtle-accent-rgb), 0.6);
+    text-align: center;
 }
 
 .memberInput {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto; /* Nickname | Lane | Remover */
-  gap: 10px;
-  margin-bottom: 10px;
-  align-items: center;
-  width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 15px; /* Mais espaçamento */
+    margin-bottom: 15px;
+    align-items: end; /* Alinha os itens na parte inferior */
+    width: 100%;
+    background-color: rgba(var(--navbar-background-rgb), 0.7); /* Um fundo mais suave para cada membro */
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.1);
+    box-shadow: 0 2px 8px rgba(var(--navbar-shadow-color-rgb), 0.3);
+    transition: all 0.3s ease;
+}
+
+.memberInput:hover {
+    box-shadow: 0 4px 12px rgba(var(--navbar-shadow-color-rgb), 0.5);
+    border-color: rgba(var(--secondary-color-a-rgb), 0.3);
 }
 
 .memberInputGroup {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .memberInput label {
-  font-weight: normal;
+    font-weight: normal; /* Manter a fonte bold, mas sem negrito extra */
+    font-size: 0.95em; /* Ligeiramente menor */
+    text-shadow: none; /* Remover brilho dos labels internos */
+    color: var(--primary-text); /* Mais suave */
+    margin-bottom: 5px;
+    letter-spacing: 1px;
 }
 
 .memberInput input[type="text"] {
-  width: 100%;
+    width: 100%;
+    padding: 10px 15px; /* Ajustar padding */
+    font-size: 1em; /* Ajustar tamanho da fonte */
+}
+
+/* Botões Estilo Cyberpunk/Neon */
+.buttonBase {
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.15em;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra padrão */
+}
+
+.buttonBase::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0%;
+    height: 0%;
+    background: rgba(255, 255, 255, 0.15); /* Brilho de clique */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.buttonBase:active::before {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+    transition: 0s;
 }
 
 .removeButton {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  background-color: #e74c3c;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
+    composes: buttonBase; /* Herdar estilos base */
+    background-color: #e74c3c; /* Vermelho vibrante */
+    color: white;
+    box-shadow: 0 0 10px rgba(231, 76, 60, 0.6); /* Brilho vermelho */
 }
 
 .removeButton:hover {
-  background-color: #c0392b;
+    background-color: #c0392b;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
+    transform: translateY(-2px);
 }
 
 .addButton {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  background-color: #3498db;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-  width: fit-content;
+    composes: buttonBase; /* Herdar estilos base */
+    background-color: var(--secondary-color-a); /* Azul vibrante */
+    color: white;
+    margin-top: 20px; /* Mais espaço */
+    width: fit-content;
+    align-self: center; /* Centralizar botão Adicionar Membro */
+    box-shadow: 0 0 10px rgba(var(--secondary-color-a-rgb), 0.6); /* Brilho azul */
+}
+
+.addButton:hover {
+    background-color: #0069d9;
+    box-shadow: 0 0 15px rgba(var(--secondary-color-a-rgb), 0.8);
+    transform: translateY(-2px);
 }
 
 .submitButton {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #27ae60;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  margin-top: 20px;
+    composes: buttonBase; /* Herdar estilos base */
+    background-color: #27ae60; /* Verde vibrante */
+    color: white;
+    margin-top: 30px; /* Mais espaço */
+    font-size: 1.3em; /* Maior para o botão de submissão */
+    align-self: center; /* Centralizar botão de submissão */
+    box-shadow: 0 0 12px rgba(39, 174, 96, 0.7); /* Brilho verde */
 }
 
-.addButton:hover,
 .submitButton:hover {
-  opacity: 0.9;
+    background-color: #229954;
+    box-shadow: 0 0 20px rgba(39, 174, 96, 0.9);
+    transform: translateY(-3px);
+}
+
+.error-message, .success-message {
+    text-align: center;
+    font-size: 1.1em;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 25px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.5s ease-out forwards;
 }
 
 .error-message {
-  color: red;
-  margin-top: 10px;
-  font-weight: bold;
+    color: #ff6347; /* Tom de vermelho mais neon */
+    background-color: rgba(255, 99, 71, 0.1);
+    border: 1px solid rgba(255, 99, 71, 0.4);
+    box-shadow: 0 0 10px rgba(255, 99, 71, 0.5);
 }
 
 .success-message {
-  color: green;
-  margin-top: 10px;
-  font-weight: bold;
+    color: #39ff14; /* Tom de verde neon */
+    background-color: rgba(57, 255, 20, 0.1);
+    border: 1px solid rgba(57, 255, 20, 0.4);
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsividade --- */
+
+@media (max-width: 768px) {
+    .registerTeamPage {
+        padding: 20px 10px;
+        gap: 20px;
+    }
+
+    h2 {
+        font-size: 2.2em;
+    }
+
+    form {
+        padding: 25px 30px;
+        width: 95%;
+    }
+
+    label {
+        font-size: 0.95em;
+        letter-spacing: 1px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    textarea {
+        padding: 12px 15px;
+        font-size: 1em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    .memberInput {
+        grid-template-columns: 1fr; /* Membros em coluna em telas pequenas */
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .memberInput input[type="text"] {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+
+    .buttonBase {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+
+    .submitButton {
+        font-size: 1.1em;
+    }
+
+    .removeButton {
+        margin-top: 10px; /* Adicionar espaço para o botão remover */
+    }
+
+    .error-message, .success-message {
+        font-size: 1em;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1.8em;
+        letter-spacing: 1px;
+    }
+
+    form {
+        padding: 20px 20px;
+    }
+
+    label {
+        font-size: 0.9em;
+        letter-spacing: 0.8px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    textarea {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .buttonBase {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+
+    .submitButton {
+        font-size: 1em;
+    }
+
+    .error-message, .success-message {
+        font-size: 0.9em;
+        padding: 10px;
+    }
 }

@@ -1,73 +1,331 @@
-/* Form.module.css */
+/* src/styles/AuthForm.module.css */
+
+/*
+ * NOTA: As variáveis de cor são esperadas do seu arquivo global.css ou _app.tsx
+ * Certifique-se de que estão bem definidas para um tema consistente.
+ * Variáveis necessárias:
+ * --primary-background, --primary-background-rgb
+ * --primary-text, --primary-text-rgb
+ * --subtle-accent, --subtle-accent-rgb
+ * --navbar-background, --navbar-background-rgb
+ * --navbar-shadow-color, --navbar-shadow-color-rgb
+ * --secondary-color-a, --secondary-color-a-rgb
+ * --auth-area-glow, --auth-area-glow-rgb
+ */
+
+/* Recomendações de fontes (importar no global.css ou _app.tsx): */
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Roboto:wght@300;400;700&display=swap'); */
+
+/* Container Principal do Formulário (similar ao .filtersContainer de MetaPage) */
 .container {
-  max-width: 400px;
-  margin: 60px auto;
-  padding: 25px;
-  background: #1e1e2f;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  color: #eee;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centraliza verticalmente na tela */
+    min-height: calc(100vh - var(--navbar-height, 80px)); /* Ajuste para altura da navbar */
+    padding: 20px;
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    font-family: 'Roboto', sans-serif; /* Fonte padrão para texto */
 }
 
+/* Título do Formulário (similar ao .heading de MetaPage) */
+.container h2 {
+    text-align: center;
+    color: var(--subtle-accent); /* Dourado vibrante */
+    margin-bottom: 30px; /* Espaço abaixo do título */
+    font-size: 2.8em; /* Levemente maior que o padrão */
+    font-family: 'Orbitron', sans-serif; /* Fonte mais impactante */
+    text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7); /* Brilho acentuado */
+    letter-spacing: 1.5px;
+    animation: fadeInDown 1s ease-out forwards;
+}
+
+/* Formulário em si (similar ao .filtersContainer de MetaPage, mas adaptado) */
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Espaçamento entre os elementos do formulário */
+    background-color: var(--navbar-background);
+    padding: 40px 50px; /* Padding generoso */
+    border-radius: 15px; /* Cantos arredondados */
+    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.6); /* Sombra proeminente */
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2); /* Borda sutil */
+    transition: all 0.4s ease-in-out;
+    position: relative;
+    overflow: hidden; /* Garante que elementos internos respeitem o border-radius */
+    width: 100%;
+    max-width: 500px; /* Largura máxima para o formulário */
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Espaçamento entre os grupos de formulário */
+    z-index: 1; /* Garante que o formulário esteja acima do pseudo-elemento */
 }
 
-.formGroup { /* Mantemos para o Login */
-  margin-bottom: 20px;
+/* Efeito de brilho de fundo no formulário ao passar o mouse */
+.form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center,
+        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
+        transparent 70%
+    );
+    transform: rotate(0deg);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
+    z-index: 0;
 }
 
-label { /* Mantemos para o Login */
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #ccc;
+.form:hover::before {
+    opacity: 1;
+    transform: rotate(360deg);
 }
 
-.input {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  background-color: #2a2a3d;
-  color: #eee;
-  transition: background-color 0.3s ease;
+.form:hover {
+    box-shadow: 0 10px 25px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 40px rgba(var(--auth-area-glow-rgb), 0.5); /* Sombra e brilho mais intensos */
+    border-color: var(--secondary-color-a);
 }
 
-.input:focus {
-  background-color: #3c3c5c;
+/* Grupo de Formulário (label + input/select) */
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Espaço entre label e input */
+    position: relative;
+    z-index: 1; /* Garante que o conteúdo fique acima do pseudo-elemento do form */
 }
 
-select.input { /* Estilo específico para o select */
-  appearance: none; /* Remove estilos padrão do select */
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23eee" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 1.2em;
+/* Label (similar ao .filterLabel de MetaPage) */
+.label {
+    font-size: 1.2em;
+    color: var(--subtle-accent);
+    font-weight: bold;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(var(--subtle-accent-rgb), 0.5);
 }
 
-select.input::-ms-expand { /* Para navegadores IE */
-  display: none;
+/* Input e Select (similar ao .filterSelect de MetaPage) */
+.input,
+.select {
+    padding: 14px 20px;
+    border-radius: 8px;
+    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    font-size: 1.1em;
+    font-family: 'Roboto', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    width: 100%; /* Ocupa a largura total do formGroup */
 }
 
+.select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FAF9F6%22%20d%3D%22M287%2C197.393a15.8%2C15.8%2C0%2C0%2C1%2C-15.8-15.8l-128.5-128.5a15.8%2C15.8%2C0%2C0%2C1%2C-22.3%2C0L15.8%2C181.593a15.8%2C15.8%2C0%2C0%2C1%2C0%2C22.3c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0l117.2-117.2l117.2%2C117.2c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0C290.4%2C207.393%2C290.4%2C200.793%2C287%2C197.393Z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 45px;
+    cursor: pointer;
+}
+
+.input:hover,
+.select:hover {
+    border-color: var(--secondary-color-a);
+    background-color: rgba(var(--primary-background-rgb), 0.9);
+    color: var(--subtle-accent); /* Texto muda para a cor de acento no hover */
+}
+
+.input:focus,
+.select:focus {
+    border-color: var(--secondary-color-a);
+    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
+    background-color: rgba(var(--primary-background-rgb), 1);
+    color: var(--subtle-accent); /* Texto muda para a cor de acento no focus */
+}
+
+/* Estilo para as opções dentro do select */
+.select option {
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    padding: 10px;
+}
+
+.select option:hover {
+    background-color: var(--navbar-background);
+    color: var(--subtle-accent);
+}
+
+/* Botão de Envio */
 .button {
-  width: 100%;
-  padding: 12px;
-  background-color: #f0a500;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1e1e2f;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    padding: 15px 30px;
+    background-color: var(--subtle-accent); /* Cor de acento para o botão */
+    color: var(--primary-background); /* Texto escuro no botão vibrante */
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(var(--subtle-accent-rgb), 0.4); /* Sombra do botão */
+    margin-top: 20px; /* Espaço acima do botão */
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .button:hover {
-  background-color: #d18e00;
+    background-color: var(--secondary-color-a); /* Cor secundária no hover */
+    box-shadow: 0 6px 15px rgba(var(--secondary-color-a-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.8);
+    transform: translateY(-2px); /* Efeito de "subir" no hover */
+}
+
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(var(--secondary-color-a-rgb), 0.4);
+}
+
+/* Mensagem de Erro */
+.errorMessage {
+    color: #ff4d4d; /* Um vermelho mais vibrante para erro */
+    background-color: rgba(255, 77, 77, 0.1);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: -10px; /* Puxa um pouco para cima */
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 0.95em;
+    border: 1px solid #ff4d4d;
+    box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Link de Login/Registro */
+.linkText {
+    margin-top: 25px;
+    font-size: 1.05em;
+    color: var(--primary-text);
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.link {
+    color: var(--secondary-color-a); /* Cor de acento para o link */
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.link:hover {
+    color: var(--subtle-accent); /* Link muda para dourado no hover */
+    text-shadow: 0 0 8px rgba(var(--auth-area-glow-rgb), 0.6);
+}
+
+/* Animação para o título (copiada de MetaPage.module.css) */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animação genérica de fadeIn (para mensagens de erro, etc.) */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* --- Responsividade --- */
+
+@media (max-width: 768px) {
+    .container h2 {
+        font-size: 2.2em;
+        margin-bottom: 20px;
+    }
+
+    .form {
+        padding: 30px 30px;
+        max-width: 400px;
+        gap: 20px;
+    }
+
+    .label {
+        font-size: 1.1em;
+    }
+
+    .input,
+    .select {
+        padding: 12px 15px;
+        font-size: 1em;
+    }
+
+    .select {
+        background-position: right 10px center;
+        background-size: 14px;
+        padding-right: 35px;
+    }
+
+    .button {
+        padding: 12px 25px;
+        font-size: 1.1em;
+    }
+
+    .linkText {
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    .container h2 {
+        font-size: 1.8em;
+    }
+
+    .form {
+        padding: 25px 20px;
+        max-width: 300px;
+        gap: 15px;
+    }
+
+    .label {
+        font-size: 1em;
+    }
+
+    .input,
+    .select {
+        padding: 10px 10px;
+        font-size: 0.95em;
+    }
+
+    .select {
+        background-position: right 8px center;
+        background-size: 12px;
+        padding-right: 30px;
+    }
+
+    .button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    .linkText {
+        font-size: 0.9em;
+    }
 }
