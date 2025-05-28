@@ -1,6 +1,5 @@
 /* styles/global.css */
 :root {
-<<<<<<< HEAD
   /* Cores Principais */
   --primary-background: #0A0A0A; /* Fundo principal */
   --primary-background-rgb: 10,10,10; /* Fundo principal em rgb */
@@ -12,22 +11,6 @@
 
   /* Cores Derivadas/Funcionais */
   --button-hover-color: #004F73; /* Escurecido da secondary-color-a */
-=======
-  --primary-background: #0146f5;
-  --secondary-background: #22262C;
-  --primary-text: #E0E0E0;
-  --secondary-text: #CCCCCC;
-  --accent-color: #BFA02B;
-  --button-color: #0094cc;
-  --button-hover-color: #006D9C;
-  --input-background: #2A2A2A;
-  --input-border: #0094cc;
-  --input-focus-border: #BFA02B;
-  --box-shadow-color: rgba(0, 191, 255, 0.1);
-  --table-background: #2A2A2A;
-  --table-border: #3A3A3A;
-  --table-header-background: #006D9C;
->>>>>>> 34a04f361ac578cf1559fffa6c5c2f3da9c0a9d1
   --remove-button-background: #C04040;
   --remove-button-hover-background: #A03030;
   --status-green-suave: #8BC340;

@@ -51,6 +51,9 @@ const Navbar: React.FC = () => {
           <Link to="/noticias" onClick={() => setIsMenuOpen(false)}>Notícias</Link>
         </li>
         <li className={styles.navItem}>
+          <Link to="/meta" onClick={() => setIsMenuOpen(false)}>Meta</Link>
+        </li>
+        <li className={styles.navItem}>
           <Link to="/equipe" onClick={() => setIsMenuOpen(false)}>Equipe</Link>
         </li>
         <li className={styles.navItem}>
@@ -73,6 +76,10 @@ const Navbar: React.FC = () => {
           </>
         )}
       </ul>
+      <div className={styles.authArea}>
+        <Link to="/login" className={styles.loginLink}>Login</Link>
+        <Link to="/register" className={styles.registerLink}>Registar</Link>
+      </div>
     </nav>
   );
 };

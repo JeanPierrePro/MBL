@@ -38,6 +38,7 @@ function App() {
 }
 
 import { useLocation } from 'react-router-dom';
+
 function AppNavbar() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';

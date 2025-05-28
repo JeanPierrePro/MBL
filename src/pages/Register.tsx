@@ -1,7 +1,7 @@
 // src/pages/Register.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/auth';
+import { registerUser } from '../services/auth'; // Certifique-se que 'registerUser' é importado e que aceita 'foto'
 import formStyles from '../styles/AuthForm.module.css';
 
 const Register: React.FC = () => {
@@ -12,12 +12,21 @@ const Register: React.FC = () => {
   const [lane, setLane] = useState<string>('');
   // A role padrão é 'member'
   const [role, setRole] = useState<'member' | 'coach'>('member');
-  const [error, setError] = useState<string | null>(null);
+  const [foto, setFoto] = useState<File | null>(null); // Estado para a foto
+  const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro ou sucesso
   const navigate = useNavigate();
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null); // Limpa erros anteriores
+  const handleFotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFoto(event.target.files[0]);
+    } else {
+      setFoto(null); // Limpa a foto se nada for selecionado
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault(); // Previne o comportamento padrão de recarregar a página
+    setError(null); // Limpa qualquer erro anterior
 
     // VALIDAÇÃO CONDICIONAL DA LANE:
     // Se a role for 'member' E a 'lane' ainda não foi selecionada (estiver vazia),
@@ -28,12 +37,16 @@ const Register: React.FC = () => {
     }
 
     try {
-      // Chama a função registerUser passando a lane (que será vazia se for 'coach') e a role
+      // Chama a função registerUser com todos os dados, incluindo a foto e a role
+      // Certifique-se de que a sua função 'registerUser' em '../services/auth'
+      // aceita 'foto' como um dos argumentos. Ex: registerUser(nick, email, password, lane, role, foto)
       await registerUser(nick, email, password, lane, role);
-      alert('Registro bem-sucedido! Por favor, faça login.');
-      navigate('/login');
+
+      setError('Registro bem-sucedido! Por favor, faça login.'); // Usar o estado de erro/sucesso
+      setTimeout(() => navigate('/login'), 2000); // Navega para login após 2 segundos
     } catch (err: unknown) {
       console.error("Erro ao registar:", err);
+      // Captura a mensagem de erro e define no estado 'error'
       setError(err instanceof Error ? err.message : 'Erro ao registar. Tente novamente.');
     }
   };
@@ -41,7 +54,7 @@ const Register: React.FC = () => {
   return (
     <div className={formStyles.container}>
       <h2>Registar</h2>
-      <form onSubmit={handleRegister} className={formStyles.form}>
+      <form onSubmit={handleSubmit} className={formStyles.form}>
         <div className={formStyles.formGroup}>
           <label htmlFor="nick" className={formStyles.label}>Nickname</label>
           <input
@@ -53,15 +66,15 @@ const Register: React.FC = () => {
             className={formStyles.input}
           />
         </div>
-          <div className={formStyles.formGroup}>
-            <label htmlFor="email" className={formStyles.label}>Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className={formStyles.input}
+        <div className={formStyles.formGroup}>
+          <label htmlFor="email" className={formStyles.label}>Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className={formStyles.input}
           />
         </div>
         <div className={formStyles.formGroup}>
@@ -73,6 +86,19 @@ const Register: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             className={formStyles.input}
+          />
+        </div>
+
+        {/* CAMPO DE FOTO - OPCIONAL */}
+        <div className={formStyles.formGroup}>
+          <label htmlFor="foto" className={formStyles.label}>Foto de Perfil (Opcional):</label>
+          <input
+            type="file"
+            id="foto"
+            name="foto"
+            onChange={handleFotoChange}
+            className={formStyles.input} // Aplica o estilo de input
+            accept="image/*" // Limita a seleção a ficheiros de imagem
           />
         </div>
 
@@ -108,7 +134,6 @@ const Register: React.FC = () => {
               value={lane}
               onChange={(e) => setLane(e.target.value)}
               // O atributo 'required' no HTML só é adicionado se a role for 'member'
-              // Como o campo só é renderizado se for 'member', ele SEMPRE será requerido aqui.
               required={true}
               className={formStyles.select}
             >
@@ -122,8 +147,9 @@ const Register: React.FC = () => {
           </div>
         )}
 
+        {/* Exibe mensagens de erro ou sucesso */}
         {error && <p className={formStyles.errorMessage}>{error}</p>}
-        <button type="submit" className={formStyles.button}>registar</button>
+        <button type="submit" className={formStyles.button}>Registar</button>
       </form>
       <p className={formStyles.linkText}>
         Já tem uma conta? <span onClick={() => navigate('/login')} className={formStyles.link}>Faça Login</span>

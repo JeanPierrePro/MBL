@@ -5,8 +5,8 @@ import styles from '../styles/components/AuthArea.module.css';
 const AuthArea: React.FC = () => {
   return (
     <div className={styles.authArea}>
-      <Link className={styles.link} to="/login">Login</Link>
-      <Link className={styles.link} to="/register">Registrar</Link>
+      <Link to="/login" className={styles.loginLink}>Login</Link>
+      <Link to="/register" className={styles.registerLink}>Registar</Link>
     </div>
   );
 };

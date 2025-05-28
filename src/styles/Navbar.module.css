@@ -1,0 +1,70 @@
+.mainNavbar {
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navItem {
+  margin-right: 20px;
+}
+
+.navItem:last-child {
+  margin-right: 0;
+}
+
+.navLink {
+  color: #646cff; /* Cor primária dos links */
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  transition: color 0.25s, background-color 0.25s;
+}
+
+.navLink:hover {
+  color: #535bf2; /* Hover dos links */
+  background-color: #333;
+}
+
+.authArea {
+  display: flex;
+  align-items: center;
+}
+
+.loginLink,
+.registerLink {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.87);
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s;
+  margin-left: 10px;
+}
+
+.loginLink:hover,
+.registerLink:hover {
+  border-color: #646cff; /* Hover dos botões */
+  background-color: #333;
+}

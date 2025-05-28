@@ -1,5 +1,6 @@
 import React from 'react';
-import type { News } from '../types/News'; // Importa o tipo News do caminho correto
+import type { News } from '../types/News';
+import styles from '../styles/components/NewsPopup.module.css'; // Importa o CSS Module
 
 // Define as props que o componente NewsPopup espera receber.
 // Ele estende o tipo 'News' para incluir todas as propriedades de uma notícia (title, imageUrl, description, etc.)
@@ -16,20 +17,14 @@ const NewsPopup: React.FC<NewsPopupProps> = ({ imageUrl, title, description, onC
   }
 
   return (
-    // O overlay escurece o fundo e captura cliques para fechar o popup.
-    <div className="news-popup-overlay">
-      {/* O conteúdo principal do popup */}
-      <div className="news-popup-content">
-        {/* Botão para fechar o popup */}
-        <button className="news-popup-close" onClick={onClose}>
+    <div className={styles.newsPopup}>
+      <div className={styles.popupContent}>
+        <button className={styles.closeButton} onClick={onClose}>
           X
         </button>
-        {/* Renderiza a imagem da notícia se houver uma URL */}
-        {imageUrl && <img src={imageUrl} alt={title} className="news-popup-image" />}
-        {/* Título da notícia */}
-        <h3>{title}</h3>
-        {/* Descrição da notícia - AGORA USANDO 'description' */}
-        <p>{description}</p>
+        <img src={imageUrl} alt={title} className={styles.popupImage} />
+        <h2 className={styles.popupTitle}>{title}</h2>
+        <p className={styles.popupContentText}>{content}</p>
       </div>
     </div>
   );
