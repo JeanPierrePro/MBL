@@ -35,9 +35,7 @@ const Home: React.FC = () => {
       {isHomePage && (
         <header className={styles.homeHeader}> {/* Nova classe para o header da Home */}
           <Navbar />
-          <div className={styles.authAreaHomeWrapper}> {/* Wrapper para posicionar AuthArea na Home */}
-            <AuthArea />
-          </div>
+ 
         </header>
       )}
 
@@ -74,7 +72,7 @@ const Home: React.FC = () => {
               {latestNews.slice(0, 6).map((newsItem) => (
                 <NewsCard
                   key={newsItem.id}
-                  imageUrl={newsItem.imageUrl || '/assets/images/default-news.jpg'}
+                  imageUrl={newsItem.imageUrl || '/assets/default-news.jpg'}
                   title={newsItem.title}
                   onClick={() => console.log('Abrir notícia', newsItem.id)}
                 />
