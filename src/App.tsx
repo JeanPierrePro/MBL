@@ -7,18 +7,19 @@ import Noticias from './pages/Noticias';
 import Equipe from './pages/Equipe';
 import Perfil from './pages/Perfil';
 import Treinos from './pages/Treinos';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar'; // Este é o seu Navbar
 import './styles/global.css';
 import RegisterTeam from './pages/RegisterTeam';
 import CreateNews from './pages/CreateNews';
-import Meta from './pages/Meta'; // IMPORTANTE: Importe a nova página Meta
-import ChampionDetail from './pages/ChampionDetail'; // IMPORTANTE: Importe a nova página de Detalhes do Personagem
+import Meta from './pages/Meta';
+import ChampionDetail from './pages/ChampionDetail';
+import MapPage from './pages/MapPage'; // Importado corretamente
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <AppNavbar />
+        <AppNavbar /> {/* Renderiza o seu Navbar aqui */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -29,9 +30,10 @@ function App() {
           <Route path="/treinos" element={<Treinos />} />
           <Route path="/register-team" element={<RegisterTeam />} />
           <Route path="/create-news" element={<CreateNews />} />
-          {/* NOVAS ROTAS PARA A PÁGINA META */}
-          <Route path="/meta" element={<Meta />} /> {/* Lista de personagens */}
-          <Route path="/meta/:championId" element={<ChampionDetail />} /> {/* Detalhes de um personagem específico */}
+          <Route path="/meta" element={<Meta />} />
+          <Route path="/meta/:championId" element={<ChampionDetail />} />
+          {/* A ROTA PARA O MAPA ESTÁ CORRETA */}
+          <Route path="/MapPage" element={<MapPage />} />
         </Routes>
       </div>
     </Router>

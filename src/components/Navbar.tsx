@@ -54,6 +54,10 @@ const Navbar: React.FC = () => {
         <li className={styles.navItem}>
           <Link to="/meta" onClick={() => setIsMenuOpen(false)}>Meta</Link>
         </li>
+        
+        <li className={styles.navItem}>
+          <Link to="/MapPage" onClick={() => setIsMenuOpen(false)}>Mapa</Link>
+        </li>
         <li className={styles.navItem}>
           <Link to="/equipe" onClick={() => setIsMenuOpen(false)}>Equipe</Link>
         </li>

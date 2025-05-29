@@ -1,515 +1,189 @@
-/* Seu novo arquivo CSS para a página de agendamento/reservas */
-
-/*
- * NOTA: As variáveis de cor são esperadas do seu arquivo global.css ou _app.tsx.
- * Certifique-se de que estão bem definidas para um tema consistente.
- */
-
-/* Recomendações de fontes (importar no global.css ou _app.tsx): */
-/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Roboto:wght@300;400;700&display=swap'); */
+/* src/styles/Treinos.module.css */
 
 .container {
-    padding: 40px 30px;
-    max-width: 1200px;
-    margin: 40px auto;
-    color: var(--primary-text);
-    background-color: var(--primary-background);
-    border-radius: 15px;
-    font-family: 'Roboto', sans-serif;
-    box-sizing: border-box;
-    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.7), 0 0 30px rgba(var(--auth-area-glow-rgb), 0.3);
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2);
-    animation: fadeInContainer 0.8s ease-out forwards;
-}
-
-@keyframes fadeInContainer {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: sans-serif;
+  color: #333;
 }
 
 .title {
-    text-align: center;
-    font-size: 3.2em;
-    margin-bottom: 40px;
-    color: var(--subtle-accent);
-    font-weight: 700;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7);
-    letter-spacing: 2px;
-    animation: fadeInDown 1s ease-out forwards;
-}
-
-/* Reutilizando a animação fadeInDown do MetaPage para o título */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  text-align: center;
+  color: #0056b3;
+  margin-bottom: 30px;
 }
 
 .week {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    padding: 20px; /* Adicionar padding ao .week para criar um "card" em torno dos dias */
-    background-color: var(--navbar-background); /* Fundo da navbar para este "card" */
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.3);
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2);
-    margin-bottom: 40px; /* Espaçamento com a área de agendamento */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust as needed */
+  gap: 15px;
+  margin-bottom: 30px;
 }
-
 
 .day {
-    background-color: var(--primary-background); /* Usar background primário para o dia individual, contrastando com o .week */
-    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.3);
-    border-radius: 12px;
-    padding: 20px 18px;
-    width: 200px;
-    min-height: 140px;
-    text-align: center;
-    transition: transform 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    box-shadow: 0 4px 10px rgba(var(--navbar-shadow-color-rgb), 0.5);
-    outline: none;
-    position: relative;
-    overflow: hidden;
-    z-index: 1; /* Garantir que o conteúdo do dia fique acima do brilho */
-}
-
-.day::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center,
-        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
-        transparent 70%
-    );
-    transform: rotate(0deg);
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
-    z-index: 0; /* Brilho abaixo do conteúdo */
-}
-
-.day:hover::before {
-    opacity: 1;
-    transform: rotate(360deg);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  min-height: 200px; /* Ensure days have a consistent height */
+  display: flex;
+  flex-direction: column;
 }
 
 .day:hover {
-    transform: scale(1.03);
-    border-color: var(--secondary-color-a);
-    box-shadow: 0 6px 16px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 25px rgba(var(--auth-area-glow-rgb), 0.6);
-    background-color: rgba(var(--primary-background-rgb), 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .day h3 {
-    color: var(--subtle-accent);
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-weight: 600;
-    font-family: 'Share Tech Mono', monospace;
-    text-shadow: 0 0 5px rgba(var(--subtle-accent-rgb), 0.5);
-    letter-spacing: 0.8px;
-    z-index: 1;
-    position: relative;
-}
-
-.timeSlot {
-    background-color: rgba(var(--primary-background-rgb), 0.6);
-    padding: 10px 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    font-size: 0.95em;
-    color: var(--primary-text);
-    user-select: none;
-    box-shadow: inset 0 1px 3px rgba(var(--navbar-shadow-color-rgb), 0.3);
-    flex-shrink: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.1);
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.timeSlot:hover {
-    background-color: rgba(var(--primary-background-rgb), 0.8);
-    border-color: rgba(var(--secondary-color-a-rgb), 0.3);
-    box-shadow: inset 0 1px 5px rgba(var(--navbar-shadow-color-rgb), 0.5);
-}
-
-.removeButton {
-    background-color: transparent;
-    color: var(--secondary-color-b);
-    border: none;
-    padding: 0 5px;
-    cursor: pointer;
-    font-size: 1.1em;
-    line-height: 1;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-    text-shadow: 0 0 5px rgba(var(--secondary-color-b-rgb), 0.5);
-}
-
-.removeButton:hover {
-    color: rgba(var(--secondary-color-b-rgb), 0.8);
-    text-shadow: 0 0 10px rgba(var(--secondary-color-b-rgb), 1);
+  text-align: center;
+  margin-top: 0;
+  color: #007bff;
+  margin-bottom: 10px;
 }
 
 .empty {
-    color: rgba(var(--primary-text-rgb), 0.6);
-    font-size: 1em;
-    font-style: italic;
-    margin-top: 15px;
-    user-select: none;
-    flex-grow: 1;
-    font-family: 'Roboto', sans-serif;
+  text-align: center;
+  color: #888;
+  font-style: italic;
 }
 
-.bookingArea {
-    margin-top: 60px;
-    background-color: var(--navbar-background); /* Fundo da navbar para este "card" */
-    padding: 40px 30px;
-    border-radius: 15px;
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.3);
-    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.4);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease-in-out;
+.timeSlot {
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+  word-break: break-word; /* Prevents long names from overflowing */
 }
 
-.bookingArea::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center,
-        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
-        transparent 70%
-    );
-    transform: rotate(0deg);
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
-    z-index: 0;
+/* Color classes based on booking occupancy */
+.day.green {
+  background-color: #d4edda; /* Light green for full days */
+  border-color: #28a745;
 }
 
-.bookingArea:hover::before {
-    opacity: 1;
-    transform: rotate(360deg);
+.day.yellow {
+  background-color: #fff3cd; /* Light yellow for moderately busy days */
+  border-color: #ffc107;
 }
 
-.bookingArea:hover {
-    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 30px rgba(var(--auth-area-glow-rgb), 0.5);
-    border-color: var(--secondary-color-a);
+.day.red {
+  background-color: #f8d7da; /* Light red for empty/few bookings */
+  border-color: #dc3545;
 }
 
-.selector {
-    margin-top: 25px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    align-items: stretch;
-    justify-content: center;
+.removeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 0;
+  margin-left: 5px;
+  color: #dc3545; /* Red color for the 'X' */
+  transition: transform 0.1s ease-in-out;
 }
 
-.select {
-    padding: 14px 20px;
-    font-size: 1.1em;
-    border-radius: 8px;
-    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
-    background-color: var(--primary-background);
-    color: var(--primary-text);
-    min-width: 200px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FAF9F6%22%20d%3D%22M287%2C197.393a15.8%2C15.8%2C0%2C0%2C1%2C-15.8-15.8l-128.5-128.5a15.8%2C15.8%2C0%2C0%2C1%2C-22.3%2C0L15.8%2C181.593a15.8%2C15.8%2C0%2C0%2C1%2C0%2C22.3c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0l117.2-117.2l117.2%2C117.2c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0C290.4%2C207.393%2C290.4%2C200.793%2C287%2C197.393Z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 16px;
-    padding-right: 45px;
-    z-index: 1;
-    position: relative;
-    outline: none;
-}
-
-.select:hover {
-    border-color: var(--secondary-color-a);
-    background-color: rgba(var(--primary-background-rgb), 0.9);
-    color: var(--subtle-accent);
-}
-
-.select:focus {
-    border-color: var(--secondary-color-a);
-    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
-    background-color: rgba(var(--primary-background-rgb), 1);
-    color: var(--subtle-accent);
-}
-
-/* Opções do select */
-.select option {
-    background-color: var(--primary-background);
-    color: var(--primary-text);
-    padding: 10px;
-}
-.select option:hover {
-    background-color: var(--navbar-background);
-    color: var(--subtle-accent);
-}
-
-
-.confirmButton, .cancelButton {
-    background-color: var(--secondary-color-a);
-    color: var(--primary-text);
-    border: none;
-    padding: 16px 30px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    text-shadow: 0 0 5px rgba(var(--auth-area-glow-rgb), 0.5);
-    letter-spacing: 0.5px;
-    border: 2px solid transparent;
-}
-
-.confirmButton:hover {
-    background-color: rgba(var(--secondary-color-a-rgb), 0.8);
-    box-shadow: 0 0 15px rgba(var(--auth-area-glow-rgb), 0.7), 0 0 25px rgba(var(--secondary-color-a-rgb), 0.5);
-    color: var(--subtle-accent);
-    transform: translateY(-2px);
-    border-color: var(--subtle-accent);
-}
-
-.cancelButton {
-    background-color: rgba(var(--navbar-shadow-color-rgb), 0.6);
-    border: 2px solid rgba(var(--navbar-shadow-color-rgb), 0.8);
-}
-
-.cancelButton:hover {
-    background-color: rgba(var(--navbar-shadow-color-rgb), 0.8);
-    box-shadow: 0 0 15px rgba(var(--navbar-shadow-color-rgb), 0.9), 0 0 25px rgba(var(--auth-area-glow-rgb), 0.3);
-    color: var(--subtle-accent);
-    transform: translateY(-2px);
-    border-color: var(--subtle-accent);
-}
-
-.footerInfo {
-    margin-top: 40px;
-    font-size: 0.95em;
-    text-align: center;
-    color: rgba(var(--primary-text-rgb), 0.5);
-    user-select: none;
-    font-family: 'Roboto', sans-serif;
-}
-
-/* Cores de status - Adaptar para o tema de brilho */
-.green {
-    background-color: rgba(var(--auth-area-glow-rgb), 0.2) !important;
-    color: var(--subtle-accent) !important;
-    border-color: rgba(var(--auth-area-glow-rgb), 0.5) !important;
-    box-shadow: 0 0 10px rgba(var(--auth-area-glow-rgb), 0.7) !important;
-}
-
-.yellow {
-    background-color: rgba(255, 165, 0, 0.2) !important;
-    color: #ffb74d !important;
-    border-color: rgba(255, 165, 0, 0.5) !important;
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.7) !important;
-}
-
-.red {
-    background-color: rgba(255, 0, 0, 0.2) !important;
-    color: #ff7961 !important;
-    border-color: rgba(255, 0, 0, 0.5) !important;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7) !important;
-}
-
-.warning, .loading {
-    color: var(--subtle-accent);
-    text-align: center;
-    font-size: 1.4em;
-    margin-top: 50px;
-    user-select: none;
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 1px;
-    text-shadow: 0 0 8px rgba(var(--subtle-accent-rgb), 0.7);
-    padding: 30px; /* Adicionar padding para o card */
-    background-color: var(--navbar-background); /* Fundo da navbar */
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.3);
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.3);
-    width: fit-content;
-    max-width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+.removeButton:hover {
+  transform: scale(1.1);
 }
 
 .cancelAllButton {
-    background-color: rgba(var(--primary-background-rgb), 0.8);
-    color: var(--primary-text);
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.3);
-    border-radius: 8px;
-    padding: 12px 18px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 20px;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    text-shadow: 0 0 3px rgba(var(--primary-text-rgb), 0.3);
+  margin-top: auto; /* Pushes the button to the bottom */
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.8em;
+  align-self: center; /* Centers the button horizontally */
+  transition: background-color 0.2s ease;
 }
 
 .cancelAllButton:hover {
-    background-color: rgba(var(--navbar-background-rgb), 0.9);
-    color: var(--subtle-accent);
-    border-color: var(--subtle-accent);
-    box-shadow: 0 0 10px rgba(var(--subtle-accent-rgb), 0.5);
+  background-color: #c82333;
 }
 
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .container {
-        padding: 30px 20px;
-        margin: 20px auto;
-    }
-
-    .title {
-        font-size: 2.5em;
-        margin-bottom: 30px;
-    }
-
-    .week {
-        padding: 15px; /* Ajuste padding para mobile */
-        margin-bottom: 30px;
-    }
-
-    .day {
-        width: 160px;
-        min-height: 120px;
-        padding: 16px 14px;
-        gap: 8px;
-    }
-
-    .day h3 {
-        font-size: 1.2em;
-        margin-bottom: 8px;
-    }
-
-    .timeSlot {
-        font-size: 0.85em;
-        padding: 8px 10px;
-        margin-top: 6px;
-    }
-
-    .bookingArea {
-        margin-top: 40px;
-        padding: 30px 20px;
-    }
-
-    .selector {
-        gap: 20px;
-    }
-
-    .select {
-        min-width: 150px;
-        padding: 12px 16px;
-        font-size: 1em;
-        background-position: right 10px center;
-        background-size: 14px;
-        padding-right: 40px;
-    }
-
-    .confirmButton, .cancelButton {
-        font-size: 1em;
-        padding: 12px 20px;
-    }
-
-    .footerInfo {
-        font-size: 0.9em;
-        margin-top: 30px;
-    }
-
-    .warning, .loading {
-        font-size: 1.2em;
-        margin-top: 40px;
-        padding: 25px; /* Ajuste padding para mobile */
-        max-width: 90%;
-    }
+.form {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-@media (max-width: 480px) {
-    .container {
-        padding: 20px 15px;
-        margin: 15px auto;
-    }
+.form h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0056b3;
+}
 
-    .title {
-        font-size: 2em;
-        margin-bottom: 25px;
-    }
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
 
-    .day {
-        width: 100%;
-        min-height: auto;
-        padding: 15px;
-        gap: 10px;
-    }
+.form select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+  width: 100%;
+}
 
-    .week {
-        gap: 15px;
-        padding: 10px; /* Ajuste padding para mobile muito pequeno */
-    }
+.form button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+}
 
-    .selector {
-        flex-direction: column;
-        gap: 15px;
-    }
+.confirmButton {
+  background-color: #28a745;
+  color: white;
+}
 
-    .select {
-        min-width: 100%;
-        padding: 10px 15px;
-        font-size: 0.95em;
-        background-position: right 10px center;
-        background-size: 12px;
-        padding-right: 35px;
-    }
+.confirmButton:hover {
+  background-color: #218838;
+}
 
-    .confirmButton, .cancelButton {
-        width: 100%;
-        font-size: 0.95em;
-        padding: 10px 15px;
-    }
+.confirmButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
 
-    .cancelAllButton {
-        padding: 10px 15px;
-        font-size: 0.9em;
-    }
+.cancelButton {
+  background-color: #6c757d;
+  color: white;
+}
 
-    .warning, .loading {
-        font-size: 1em;
-        margin-top: 30px;
-        padding: 20px; /* Ajuste padding para mobile muito pequeno */
-    }
+.cancelButton:hover {
+  background-color: #5a6268;
+}
+
+.warning, .loading {
+  text-align: center;
+  font-size: 1.2em;
+  color: #dc3545; /* Red for warnings */
+  padding: 20px;
+  margin-top: 50px;
+}
+
+.loading {
+  color: #007bff; /* Blue for loading */
 }
