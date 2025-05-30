@@ -37,10 +37,8 @@ const Register: React.FC = () => {
     }
 
     try {
-      // Chama a função registerUser com todos os dados, incluindo a foto e a role
-      // Certifique-se de que a sua função 'registerUser' em '../services/auth'
-      // aceita 'foto' como um dos argumentos. Ex: registerUser(nick, email, password, lane, role, foto)
-      await registerUser(nick, email, password, lane, role);
+      // **AQUI ESTÁ A CORREÇÃO:** Passe a variável 'foto' como o último argumento.
+      await registerUser(nick, email, password, lane, role, foto);
 
       setError('Registro bem-sucedido! Por favor, faça login.'); // Usar o estado de erro/sucesso
       setTimeout(() => navigate('/login'), 2000); // Navega para login após 2 segundos

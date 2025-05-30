@@ -6,7 +6,8 @@ import {
   signOut,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from './firebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // <-- ESSENCIAL: Adicione esta importação
+import { auth, db, storage } from './firebaseConfig'; // <-- ESSENCIAL: Garanta que 'storage' é importado daqui
 import { FirebaseError } from 'firebase/app';
 import type { UserProfile } from '../types/User';
 
@@ -57,27 +58,40 @@ export const registerUser = async (
   email: string,
   password: string,
   lane: string, // Pode vir vazia se for coach
-  role: 'member' | 'coach'
+  role: 'member' | 'coach',
+  foto: File | null // <-- ESTE É O SEXTO ARGUMENTO!
 ): Promise<UserProfile | null> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
+
+    let photoURL: string | null = null;
+
+    // Lógica para upload da foto
+    if (foto && user) { // Certifique-se que o 'user' existe antes de tentar carregar a foto
+      const storageRef = ref(storage, `profile_pictures/${user.uid}/${foto.name}`);
+      const snapshot = await uploadBytes(storageRef, foto);
+      photoURL = await getDownloadURL(snapshot.ref);
+      console.log('Foto de perfil carregada:', photoURL);
+    }
 
     const userDocRef = doc(db, 'users', user.uid);
     const newProfile: UserProfile = {
       uid: user.uid,
       nick: nick,
       email: email,
-      // Se a role for 'coach', a lane será uma string vazia, caso contrário, será a selecionada.
-      lane: role === 'coach' ? '' : lane, // Salvando lane vazia para coaches
-      fotoPerfil: user.photoURL || null,
+      lane: role === 'coach' ? '' : lane,
+      fotoPerfil: photoURL, // Use a URL obtida do Storage
       status: 'Online',
       role: role,
     };
     await setDoc(userDocRef, newProfile);
 
     if (auth.currentUser) {
-      await updateProfile(auth.currentUser, { displayName: nick });
+      await updateProfile(auth.currentUser, {
+        displayName: nick,
+        photoURL: photoURL, // Atualiza também a foto de perfil no Firebase Auth
+      });
     }
 
     console.log('Usuário registrado e perfil criado:', nick);

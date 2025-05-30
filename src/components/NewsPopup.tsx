@@ -24,7 +24,7 @@ const NewsPopup: React.FC<NewsPopupProps> = ({ imageUrl, title, description, onC
         </button>
         <img src={imageUrl} alt={title} className={styles.popupImage} />
         <h2 className={styles.popupTitle}>{title}</h2>
-        <p className={styles.popupContentText}>{content}</p>
+        <p className={styles.popupContentText}>{description}</p> {/* Changed 'content' to 'description' */}
       </div>
     </div>
   );
