@@ -1,0 +1,100 @@
+[
+  {
+    "id": "arma-malefica",
+    "name": "Arma Maléfica",
+    "category": "Físico",
+    "imageUrl": "https://fotos-mlb.vercel.app/images/items/Fisico/Arma%20Malefica.webp",
+    "stats": {
+      "physicalAttack": "40",
+      "attackSpeed": "20%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Destruidor de Armadura: Aumenta a Penetração Física em 30%. Energia Maléfica: Aumenta o alcance do Ataque Básico em 12%. Ao atingir um alvo, ganha 10% de Velocidade de Movimento por 0.5 segundos."
+    },
+    "cost": 2060,
+    "passiveUnique": true,
+    "lore": "Uma arma imbuída com energias sombrias, capaz de quebrar defesas e aumentar a distância de ataque.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "lanca-do-grande-dragao",
+    "name": "Lança do Grande Dragão",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Lan%C3%A7a%20do%20Grande%20Drag%C3%A3o.webp",
+    "stats": {
+      "physicalAttack": "70",
+      "cooldownReduction": "10%",
+      "criticalChance": "20%"
+    },
+    "effect": {
+      "name": "Guerreiro Supremo",
+      "description": "Após usar uma Habilidade Suprema (Ultimate), aumenta a Velocidade de Movimento em 30% por 7.5 segundos. Este efeito tem um Tempo de Recarga de 15 segundos."
+    },
+    "cost": 2350,
+    "passiveUnique": true,
+    "lore": "Uma lança lendária que concede ao seu portador a agilidade e o poder de um dragão após liberar sua força máxima.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "alabardas-dos-mares",
+    "name": "Alabardas dos Mares",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Alabardas%20dos%20Mares.webp",
+    "stats": {
+      "physicalAttack": "80",
+      "attackSpeed": "20%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Praga da Vida: Causar dano a um alvo reduz os efeitos de Escudo e Regeneração de HP dele para 50% do normal por 3 segundos. Punir: Aumenta o dano em 8% contra heróis inimigos com HP extra maior."
+    },
+    "cost": 2080,
+    "passiveUnique": true,
+    "lore": "Armas rituais forjadas com corais profundos, usadas para caçar criaturas marinhas e drenar sua vitalidade.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "meteoro-rosa-de-ouro",
+    "name": "Meteoro Rosa de Ouro",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Meteoro%20Rosa%20de%20Ouro.webp",
+    "stats": {
+      "physicalAttack": "40",
+      "attackSpeed": "20%",
+      "lifesteal": "10%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Escama de Dragão: Cada 1% de Roubo de Vida aumenta a Defesa Híbrida em 1, até um máximo de 50 (efeito reduzido pela metade para heróis que não são Lutadores). Linha da Vida: Ao receber dano que reduz o HP para menos de 30%, ganha um Escudo de 770(+70*Nível do Herói) (aumenta com o nível do herói) e 50% de Velocidade de Movimento que decai rapidamente ao longo de 3 segundos. Este efeito tem um Tempo de Recarga de 60 segundos."
+    },
+    "cost": 2120,
+    "passiveUnique": true,
+    "lore": "Um fragmento de meteoro infundido com magia, que oferece proteção e sustento em momentos críticos de batalha.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "ataque-do-cacador",
+    "name": "Ataque do Caçador",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Ataque%20do%20Ca%C3%A7ador.webp",
+    "stats": {
+      "physicalAttack": "80",
+      "cooldownReduction": "10%",
+      "physicalPenetration": "15"
+    },
+    "effect": {
+      "name": "Retribuição",
+      "description": "Causar dano ao mesmo herói inimigo ou monstro da selva 5 vezes seguidas concede 50% de Velocidade de Movimento extra que decai ao longo de 3 segundos (Tempo de Recarga de 8 segundos)."
+    },
+    "cost": 2350,
+    "passiveUnique": true,
+    "lore": "Uma arma ágil, preferida por caçadores que buscam velocidade e precisão para abater suas presas.",
+    "buildsInto": [],
+    "builtFrom": []
+  }
+]

@@ -1,0 +1,282 @@
+/* src/styles/MetaPage.module.css */
+
+/* ... (Variáveis e imports de fonte - Mantenha as mesmas notas) ... */
+
+/* Container Principal da Página (Manter como está, funciona como o "papel de parede") */
+.container {
+    padding: 30px 20px;
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Título da Página (Manter como está) */
+.heading {
+    text-align: center;
+    color: var(--subtle-accent);
+    margin-bottom: 0px;
+    font-size: 3em;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7);
+    letter-spacing: 2px;
+    animation: fadeInDown 1s ease-out forwards;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Container de Filtros (Já está bem cardificado, manter assim) */
+.filtersContainer {
+    margin-bottom: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    background-color: var(--navbar-background);
+    padding: 25px 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6);
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2);
+    transition: all 0.4s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.filtersContainer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center,
+        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
+        transparent 70%
+    );
+    transform: rotate(0deg);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
+    z-index: 0;
+}
+
+.filtersContainer:hover::before {
+    opacity: 1;
+    transform: rotate(360deg);
+}
+
+.filtersContainer:hover {
+    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 30px rgba(var(--auth-area-glow-rgb), 0.5);
+    border-color: var(--secondary-color-a);
+}
+
+/* Label do Filtro (Manter como está) */
+.filterLabel {
+    font-size: 1.3em;
+    color: var(--subtle-accent);
+    font-weight: bold;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 5px rgba(var(--subtle-accent-rgb), 0.5);
+    z-index: 1;
+    position: relative;
+}
+
+/* Select do Filtro (Manter como está) */
+.filterSelect {
+    padding: 14px 20px;
+    border-radius: 8px;
+    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    font-size: 1.15em;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FAF9F6%22%20d%3D%22M287%2C197.393a15.8%2C15.8%2C0%2C0%2C1%2C-15.8-15.8l-128.5-128.5a15.8%2C15.8%2C0%2C0%2C1%2C-22.3%2C0L15.8%2C181.593a15.8%2C15.8%2C0%2C0%2C1%2C0%2C22.3c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0l117.2-117.2l117.2%2C117.2c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0C290.4%2C207.393%2C290.4%2C200.793%2C287%2C197.393Z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 45px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    z-index: 1;
+    position: relative;
+    outline: none;
+}
+
+.filterSelect:hover {
+    border-color: var(--secondary-color-a);
+    background-color: rgba(var(--primary-background-rgb), 0.9);
+    color: var(--subtle-accent);
+}
+
+.filterSelect:focus {
+    border-color: var(--secondary-color-a);
+    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
+    background-color: rgba(var(--primary-background-rgb), 1);
+    color: var(--subtle-accent);
+}
+
+/* Estilo para as opções dentro do select (Manter como está) */
+.filterSelect option {
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    padding: 10px;
+}
+
+.filterSelect option:hover {
+    background-color: var(--navbar-background);
+    color: var(--subtle-accent);
+}
+
+/* Grid de Campeões (Manter como está) */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    justify-content: center;
+    animation: fadeInGrid 1s ease-out forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+@keyframes fadeInGrid {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mensagens de Status (Carregando, Erro, Sem Campeões) - Reforçar como cards */
+.loading, .error, .noChampions {
+    text-align: center;
+    font-size: 1.3em;
+    color: var(--subtle-accent); /* Mudar para a cor de acento */
+    padding: 40px; /* Mais padding */
+    background-color: var(--navbar-background); /* Fundo da navbar para card */
+    border-radius: 12px;
+    margin-top: 50px;
+    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.3); /* Sombra e brilho */
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.3); /* Borda sutil */
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.8px; /* Mais espaçamento */
+    animation: fadeIn 0.8s ease-out forwards;
+    text-shadow: 0 0 5px rgba(var(--subtle-accent-rgb), 0.5); /* Brilho no texto */
+    width: fit-content; /* Ajustar largura ao conteúdo */
+    max-width: 80%; /* Limitar largura para não esticar demais */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* --- Responsividade Geral da Página --- */
+
+/* Para telas menores (celulares e tablets em retrato) */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 10px;
+        gap: 30px;
+    }
+
+    .heading {
+        font-size: 2em;
+    }
+
+    /* Filtros responsivos */
+    .filtersContainer {
+        flex-direction: column;
+        padding: 20px 25px;
+        gap: 15px;
+        width: 90%;
+    }
+
+    .filterLabel {
+        font-size: 1.1em;
+        text-align: center;
+        width: 100%;
+    }
+
+    .filterSelect {
+        width: 100%;
+        font-size: 1.05em;
+        padding: 12px 15px;
+        background-position: right 10px center;
+        background-size: 12px;
+        padding-right: 35px;
+    }
+
+    /* Grid responsivo */
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 10px;
+    }
+
+    /* Mensagens de status responsivas */
+    .loading, .error, .noChampions {
+        font-size: 1em;
+        padding: 30px;
+        margin-top: 30px;
+        max-width: 90%; /* Ajuste para mobile */
+    }
+}
+
+/* Para telas muito pequenas (celulares em paisagem) */
+@media (max-width: 480px) {
+    .heading {
+        font-size: 1.8em;
+    }
+
+    .filtersContainer {
+        padding: 15px 15px;
+    }
+
+    .filterLabel {
+        font-size: 1em;
+        letter-spacing: 1px;
+    }
+
+    .filterSelect {
+        font-size: 1em;
+        padding: 10px 10px;
+        background-position: right 8px center;
+        background-size: 10px;
+        padding-right: 30px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
