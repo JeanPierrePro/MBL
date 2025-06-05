@@ -1,17 +1,17 @@
 // src/pages/ItemsCatalog.tsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom'; // Já está importado
-import { getAllItemsFromJson } from '../services/itemsJsonService'; 
-import ItemCard from '../components/ItemCard'; 
-import type { Item } from '../types/Item'; 
-import pageStyles from '../styles/ItemsCatalogPage.module.css'; 
+import { useNavigate } from 'react-router-dom';
+import { getAllItemsFromJson } from '../services/itemsJsonService';
+import ItemCard from '../components/ItemCard';
+import type { Item } from '../types/Item';
+import pageStyles from '../styles/ItemsCatalogPage.module.css';
 
 const ItemsCatalog: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All'); 
-  const navigate = useNavigate(); // <-- 'navigate' declarado aqui
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -48,12 +48,11 @@ const ItemsCatalog: React.FC = () => {
     items.forEach(item => {
       categories.add(item.category);
     });
-    return ['All', ...Array.from(categories).sort()]; 
+    return ['All', ...Array.from(categories).sort()];
   }, [items]);
 
-  // CORRIGIDO: Use 'navigate' para ir para a página de detalhes do item
   const handleItemClick = (itemId: string) => {
-    navigate(`/items/${itemId}`); // <-- Agora 'navigate' é usado aqui!
+    navigate(`/items/${itemId}`);
   };
 
   if (loading) {
@@ -83,15 +82,17 @@ const ItemsCatalog: React.FC = () => {
       </div>
 
       <div className={pageStyles.grid}>
-        {filteredAndSortedItems.map((item) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            onClick={handleItemClick}
-          />
-        ))}
-        {filteredAndSortedItems.length === 0 && !loading && !error && (
-            <p className={pageStyles.noItems}>Nenhum equipamento encontrado com os filtros aplicados.</p>
+        {filteredAndSortedItems.length > 0 ? ( // Adiciona a verificação aqui
+          filteredAndSortedItems.map((item) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              onClick={handleItemClick}
+            />
+          ))
+        ) : (
+          // Nova mensagem para quando não há itens após a filtragem
+          <p className={pageStyles.noItems}>Nenhum equipamento encontrado com os filtros aplicados.</p>
         )}
       </div>
     </div>
