@@ -1,33 +1,32 @@
-// src/types/Item.ts
+// src/types/Item.ts (depois da correção - ADICIONE 'description')
+
+export interface ItemStats {
+  physicalAttack?: number;
+  attackSpeed?: number;
+  physicalDefense?: number;
+  magicDefense?: number;
+  hp?: number;
+  cooldownReduction?: number;
+  movementSpeed?: number;
+  mana?: number;
+}
+
+export interface ItemEffect {
+  name: string;
+  description: string;
+}
 
 export interface Item {
   id: string;
   name: string;
   category: string;
-  imageUrl: string;
+  imageUrl?: string;
+  stats: ItemStats;
+  description?: string; // <--- **ADICIONE ESTA LINHA**
+  effect?: ItemEffect;
   cost: number;
   passiveUnique?: boolean;
   lore?: string;
-  builtFrom?: string[];
   buildsInto?: string[];
-  
-  // **CAMPO ESSENCIAL ADICIONADO:**
-  description?: string; // Descrição curta do item (opcional, mas necessário para seu código)
-
-  // **CRÍTICO: AS ESTATÍSTICAS DEVEM SER NÚMEROS!**
-  stats?: {
-    physicalAttack?: number;
-    attackSpeed?: number;
-    physicalDefense?: number;
-    magicDefense?: number;
-    hp?: number;
-    cooldownReduction?: number;
-    movementSpeed?: number;
-    mana?: number;
-    // Adicione outras estatísticas aqui, todas como 'number'
-  };
-  effect?: {
-    name: string;
-    description: string;
-  };
+  builtFrom?: string[];
 }
