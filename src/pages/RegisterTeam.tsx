@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import type { Team, TeamMember } from '../types/Team';
 import { registerTeam } from '../services/database';
-// import { useNavigate } from 'react-router-dom'; // REMOVED - navigation handled by parent/modal closure
 import formStyles from '../styles/AuthForm.module.css';
 
 // Define props for the RegisterTeam component when used in a modal
 interface RegisterTeamFormProps {
-  onRegisterSuccess: () => void; // Callback to notify parent of successful registration
-  onClose: () => void; // Callback to close the modal
+  onRegisterSuccess?: () => void; // Callback para notificar o pai de sucesso no registo (OPCIONAL)
+  onClose?: () => void; // Callback para fechar o modal (OPCIONAL)
 }
 
 const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onClose }) => {
   const [teamDetails, setTeamDetails] = useState<Omit<Team, 'id' | 'members' | 'registrationDate'>>({
     name: '',
     tag: '',
-    logoURL: null, // Ensure this is explicitly null or empty string
+    logoURL: null, 
     contactEmail: '',
     leaderNickname: '',
     description: '',
@@ -22,11 +21,8 @@ const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onCl
   });
 
   const [members, setMembers] = useState<TeamMember[]>([{ nickname: '', lane: '' }]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for error messages
-  const [successMessage, setSuccessMessage] = useState<string | null>(null); // State for success messages
-
-  // useNavigate is no longer needed here as the modal handles closure/parent navigation
-  // const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -40,7 +36,7 @@ const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onCl
     setMembers(prevMembers => [...prevMembers, { nickname: '', lane: '' }]);
   };
 
-  const handleMemberInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => { // Changed event type for select
+  const handleMemberInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     const updatedMembers = [...members];
     updatedMembers[index] = { ...updatedMembers[index], [name]: value };
@@ -48,32 +44,27 @@ const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onCl
   };
 
   const handleRemoveMember = (index: number) => {
-    if (members.length > 1) { // Ensure at least one member remains (the leader perhaps, or force minimum)
+    if (members.length > 1) {
       const updatedMembers = members.filter((_, i) => i !== index);
       setMembers(updatedMembers);
     } else {
-      // Optional: Prevent removing the last member or show a message
       setErrorMessage("Uma equipa deve ter pelo menos um membro.");
     }
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setErrorMessage(null); // Clear previous errors
-    setSuccessMessage(null); // Clear previous success messages
+    setErrorMessage(null);
+    setSuccessMessage(null);
 
-    // Basic validation: leader must be present as a member (or assumed)
-    // For simplicity, we'll just check teamDetails.leaderNickname is not empty
     if (!teamDetails.leaderNickname) {
         setErrorMessage("O Nickname do Líder é obrigatório.");
         return;
     }
-    // Also, ensure at least one member (which could be the leader themselves)
     if (members.length === 0 || members[0].nickname === '') {
         setErrorMessage("A equipa deve ter pelo menos um membro (o líder, por exemplo).");
         return;
     }
-
 
     const teamData: Omit<Team, 'id' | 'registrationDate'> = { ...teamDetails, members };
     try {
@@ -81,18 +72,19 @@ const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onCl
       if (teamId) {
         console.log('Equipa registada com sucesso. ID:', teamId);
         setSuccessMessage('Equipa registada com sucesso! O formulário será fechado em breve.');
-        onRegisterSuccess(); // Notify parent of success
+        
+        // Chamada segura para onRegisterSuccess, apenas se a prop existir
+        onRegisterSuccess && onRegisterSuccess();
 
-        // Optionally clear the form after successful submission
         setTeamDetails({
             name: '', tag: '', logoURL: null, contactEmail: '',
             leaderNickname: '', description: '', region: '',
         });
         setMembers([{ nickname: '', lane: '' }]);
 
-        // Automatically close modal after a short delay
+        // Chamada segura para onClose, apenas se a prop existir
         setTimeout(() => {
-            onClose();
+            onClose && onClose();
         }, 2000);
 
       } else {
@@ -161,7 +153,7 @@ const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onCl
                 name="lane"
                 value={member.lane || ''}
                 onChange={(event) => handleMemberInputChange(index, event)}
-                className={formStyles.select} // Use a classe de select se existir
+                className={formStyles.select}
               >
                 <option value="">N/A</option>
                 <option value="Top">Top</option>
@@ -171,7 +163,7 @@ const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onCl
                 <option value="Support">Support</option>
               </select>
             </div>
-            {members.length > 1 && ( // Only show remove button if there's more than 1 member
+            {members.length > 1 && (
               <button
                 type="button"
                 onClick={() => handleRemoveMember(index)}
@@ -188,7 +180,8 @@ const RegisterTeam: React.FC<RegisterTeamFormProps> = ({ onRegisterSuccess, onCl
         {successMessage && <p className={formStyles.successMessage}>{successMessage}</p>}
 
         <button type="submit" className={formStyles.button} disabled={!!successMessage}>Registar Equipa</button>
-        <button type="button" onClick={onClose} className={formStyles.buttonSecondary}>Cancelar</button> {/* Button to close modal */}
+        {/* Chamada segura para onClose, apenas se a prop existir */}
+        {onClose && <button type="button" onClick={onClose} className={formStyles.buttonSecondary}>Cancelar</button>}
       </form>
     </div>
   );
