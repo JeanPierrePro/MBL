@@ -1,0 +1,1020 @@
+[
+  {
+    "id": "arma-malefica",
+    "name": "Arma Maléfica",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Arma%20Mal%C3%A9fica.webp",
+    "stats": {
+      "physicalAttack": "40",
+      "attackSpeed": "20%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Destruidor de Armadura: Aumenta a Penetração Física em 30%. Energia Maléfica: Aumenta o alcance do Ataque Básico em 12%. Ao atingir um alvo, ganha 10% de Velocidade de Movimento por 0.5 segundos."
+    },
+    "cost": 2060,
+    "passiveUnique": true,
+    "lore": "Uma arma imbuída com energias sombrias, capaz de quebrar defesas e aumentar a distância de ataque.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "lanca-do-grande-dragao",
+    "name": "Lança do Grande Dragão",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Lan%C3%A7a%20do%20Grande%20Drag%C3%A3o.webp",
+    "stats": {
+      "physicalAttack": "70",
+      "cooldownReduction": "10%",
+      "criticalChance": "20%"
+    },
+    "effect": {
+      "name": "Guerreiro Supremo",
+      "description": "Após usar uma Habilidade Suprema (Ultimate), aumenta a Velocidade de Movimento em 30% por 7.5 segundos. Este efeito tem um Tempo de Recarga de 15 segundos."
+    },
+    "cost": 2350,
+    "passiveUnique": true,
+    "lore": "Uma lança lendária que concede ao seu portador a agilidade e o poder de um dragão após liberar sua força máxima.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "alabardas-dos-mares",
+    "name": "Alabardas dos Mares",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Alabardas%20dos%20Mares.webp",
+    "stats": {
+      "physicalAttack": "80",
+      "attackSpeed": "20%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Praga da Vida: Causar dano a um alvo reduz os efeitos de Escudo e Regeneração de HP dele para 50% do normal por 3 segundos. Punir: Aumenta o dano em 8% contra heróis inimigos com HP extra maior."
+    },
+    "cost": 2080,
+    "passiveUnique": true,
+    "lore": "Armas rituais forjadas com corais profundos, usadas para caçar criaturas marinhas e drenar sua vitalidade.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "meteoro-rosa-de-ouro",
+    "name": "Meteoro Rosa de Ouro",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Meteoro%20Rosa%20de%20Ouro.webp",
+    "stats": {
+      "physicalAttack": "40",
+      "attackSpeed": "20%",
+      "lifesteal": "10%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Escama de Dragão: Cada 1% de Roubo de Vida aumenta a Defesa Híbrida em 1, até um máximo de 50 (efeito reduzido pela metade para heróis que não são Lutadores). Linha da Vida: Ao receber dano que reduz o HP para menos de 30%, ganha um Escudo de 770(+70*Nível do Herói) (aumenta com o nível do herói) e 50% de Velocidade de Movimento que decai rapidamente ao longo de 3 segundos. Este efeito tem um Tempo de Recarga de 60 segundos."
+    },
+    "cost": 2120,
+    "passiveUnique": true,
+    "lore": "Um fragmento de meteoro infundido com magia, que oferece proteção e sustento em momentos críticos de batalha.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "ataque-do-cacador",
+    "name": "Ataque do Caçador",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Ataque%20do%20Ca%C3%A7ador.webp",
+    "stats": {
+      "physicalAttack": "80",
+      "cooldownReduction": "10%",
+      "physicalPenetration": "15"
+    },
+    "effect": {
+      "name": "Retribuição",
+      "description": "Causar dano ao mesmo herói inimigo ou monstro da selva 5 vezes seguidas concede 50% de Velocidade de Movimento extra que decai ao longo de 3 segundos (Tempo de Recarga de 8 segundos)."
+    },
+    "cost": 2350,
+    "passiveUnique": true,
+    "lore": "Uma arma ágil, preferida por caçadores que buscam velocidade e precisão para abater suas presas.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "lamina-do-desespero",
+    "name": "Lâmina do Desespero",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Lamina%20do%20Desespero.webp",
+    "stats": {
+      "physicalAttack": "160",
+      "movementSpeed": "5%"
+    },
+    "effect": {
+      "name": "Desespero",
+      "description": "Causar dano a inimigos que não são tropas e que têm menos de 50% de HP aumenta o Ataque Físico em 25% por 2 segundos (o efeito é aplicado antes do dano ser causado)."
+    },
+    "cost": 3010,
+    "passiveUnique": true,
+    "lore": "Uma lâmina lendária que infunde medo nos corações dos adversários, garantindo poder extra contra aqueles à beira da derrota.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "lamina-dos-sete-mares",
+    "name": "Lâmina dos Sete Mares",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Lamina%20dos%20Sete%20Mares.webp",
+    "stats": {
+      "physicalAttack": "70",
+      "hp": "250",
+      "physicalPenetration": "15"
+    },
+    "effect": {
+      "name": "Emboscada",
+      "description": "Se nenhum dano for recebido ou causado por 5 segundos (excluindo de tropas ou monstros), o próximo Ataque Básico causará um dano físico adicional de 160 (+40% do Ataque Físico Total) e reduzirá a velocidade do alvo em 40% por 1.5 segundos."
+    },
+    "cost": 1950,
+    "passiveUnique": true,
+    "lore": "Uma lâmina misteriosa forjada nas profundezas dos sete mares, perfeita para emboscadas e ataques surpresa.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "voz-do-vento",
+    "name": "Voz do Vento",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Voz%20do%20Vento.webp",
+    "stats": {
+      "attackSpeed": "35%",
+      "criticalChance": "20%",
+      "movementSpeed": "20"
+    },
+    "effect": {
+      "name": "Tufão",
+      "description": "A cada 5–2 segundos (reduzido em 0.2 segundos por cada Ataque Básico), o próximo Ataque Básico atingirá até 3 unidades inimigas por 150–362 de Dano Mágico. (Este ataque pode causar Acerto Crítico e o dano aumenta para 200% contra Tropas.)"
+    },
+    "cost": 1870,
+    "passiveUnique": true,
+    "lore": "Um arco imbuído com o poder do vento, capaz de lançar flechas que se dividem e atingem múltiplos alvos com a fúria de uma tempestade.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "confronto-sem-fim",
+    "name": "Confronto Sem Fim",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Confronto%20Sem%20Fim.webp",
+    "stats": {
+      "physicalAttack": "60",
+      "hp": "250",
+      "cooldownReduction": "10%",
+      "hybridLifesteal": "8%",
+      "movementSpeed": "5",
+      "manaRegen": "5"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Justiça Divina: Após usar uma habilidade, o próximo Ataque Básico em 3 segundos causa 60% do Ataque Físico Total como Dano Verdadeiro adicional (1.5 segundos de Tempo de Recarga). Perseguir o Destino: Ativar Justiça Divina concede 10% de Velocidade de Movimento extra."
+    },
+    "cost": 2400,
+    "passiveUnique": true,
+    "lore": "Um artefato de combate forjado para batalhas intermináveis, concedendo ao seu portador a capacidade de atacar sem cessar e perseguir inimigos implacavelmente.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "furia-do-guerreiro-selvagem",
+    "name": "Fúria do Guerreiro Selvagem",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Furia%20do%20Guerreiro%20Selvagem.webp",
+    "stats": {
+      "physicalAttack": "65",
+      "criticalChance": "25%",
+      "criticalDamage": "40%"
+    },
+    "effect": {
+      "name": "Perdição",
+      "description": "Acertos críticos concedem 5% de Ataque Físico extra por 2 segundos."
+    },
+    "cost": 2290,
+    "passiveUnique": true,
+    "lore": "Um machado de batalha imbuído com a essência de uma fera, despertando uma fúria incontrolável que amplifica o poder do seu portador em cada ataque crítico.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+
+  {
+    "id": "garras-de-haas",
+    "name": "Garras de Haas",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Garras%20de%20Haas.webp",
+    "stats": {
+      "physicalAttack": "40",
+      "attackSpeed": "15%",
+      "criticalChance": "20%"
+    },
+    "effect": {
+      "name": "Roubo de Vida",
+      "description": "Concede bônus de Roubo de Vida. (Detalhes específicos de Roubo de Vida podem ser adicionados aqui se o jogo especificar uma porcentagem base para o item sem passiva nomeada.)"
+    },
+    "cost": 1810,
+    "passiveUnique": false, 
+    "lore": "Garras afiadas que drenam a vitalidade dos inimigos, permitindo que o portador se sustente no campo de batalha.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "rugido-malefico",
+    "name": "Rugido Maléfico",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Rugido%20Malefico.webp",
+    "stats": {
+      "physicalAttack": "60"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Destruidor de Armadura: Aumenta a Penetração Física em 30%. Quebrador: Ao atacar um inimigo, ganha 0.6% de Penetração Física extra para cada ponto de Defesa Física do inimigo, limitado a 30%."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Uma arma que emite um rugido aterrorizante, capaz de pulverizar até as armaduras mais resistentes de seus inimigos.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "coroa-do-inverno",
+    "name": "Coroa do Inverno",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Coroa%20do%20Inverno.webp",
+    "stats": {
+      "adaptiveAttack": "45",
+      "hp": "400",
+      "cooldownReduction": "5%"
+    },
+    "effect": {
+      "name": "Ativa Única - Congelar",
+      "description": "Fica congelado, inatingível e imune a dano por 2 segundos (100 segundos de Tempo de Recarga). Não pode mover ou usar habilidades enquanto congelado, mas habilidades já conjuradas não serão interrompidas."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Uma coroa forjada no coração de uma nevasca eterna, concedendo ao seu portador um momento de invencibilidade gélida.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+
+  {
+    "id": "tempo-corrido",
+    "name": "Tempo Corrido",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Tempo%20Corrido.webp",
+    "stats": {
+      "adaptiveAttack": "30",
+      "hp": "600",
+      "cooldownReduction": "15%"
+    },
+    "effect": {
+      "name": "Corrente Temporal",
+      "description": "Abates ou assistências de heróis reduzem o tempo de recarga atual da Habilidade Suprema (Ultimate) em 30%."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Um artefato que manipula o tempo, permitindo ao usuário reduzir drasticamente o tempo de recarga de suas habilidades mais poderosas após cada vitória.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "perfurador-celestial",
+    "name": "Perfurador Celestial",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Perfurador%20Celestial.webp",
+    "stats": {
+      "adaptiveAttack": "60",
+      "movementSpeed": "15"
+    },
+    "effect": {
+      "name": "Letalidade",
+      "description": "Após causar dano a um herói inimigo, executa o herói se o HP dele for inferior a 4%. Ganha 10 acúmulos de Letalidade para cada abate e perde 30% dos acúmulos atuais para cada morte. Cada acúmulo de Letalidade aumenta o limiar de HP do efeito de execução em 0.1%, acumulando até 80 vezes."
+    },
+    "cost": 2060,
+    "passiveUnique": true,
+    "lore": "Uma arma forjada para caçadores celestiais, capaz de perfurar a defesa mais forte e finalizar inimigos enfraquecidos com precisão letal.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "machado-de-guerra",
+    "name": "Machado de Guerra",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Machado%20de%20Guerra.webp",
+    "stats": {
+      "physicalAttack": "35",
+      "hp": "400",
+      "cooldownReduction": "10%",
+      "spellVamp": "12%"
+    },
+    "effect": {
+      "name": "Espírito de Luta",
+      "description": "Ataques concedem 12 de Ataque Físico extra por segundo por 4 segundos, até 6 acúmulos. Causa 10% de Dano Verdadeiro extra baseado no dano causado (sem redução de dano contada) com acúmulos máximos. (Atiradores, Magos e Suportes recebem apenas 50% desses efeitos acumulados.)"
+    },
+    "cost": 2040,
+    "passiveUnique": true,
+    "lore": "Um machado empunhado por guerreiros experientes, que canaliza a fúria da batalha para aumentar continuamente o poder de ataque e o sustain.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "vento-da-natureza",
+    "name": "Vento da Natureza",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Vento%20da%20Natureza.webp",
+    "stats": {
+      "physicalAttack": "30",
+      "attackSpeed": "20%",
+      "lifesteal": "10%"
+    },
+    "effect": {
+      "name": "Ativa Única - Canto do Vento",
+      "description": "Torna-se imune a todo Dano Físico por 2 segundos (duração reduzida pela metade para heróis que não são Atiradores; 90 segundos de Tempo de Recarga)."
+    },
+    "cost": 1880,
+    "passiveUnique": true,
+    "lore": "Um amuleto abençoado pela natureza, que envolve seu portador em uma aura protetora, repelindo ataques físicos por um breve período.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+
+  {
+    "id": "bastao-dourado",
+    "name": "Bastão Dourado",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Bast%C3%A3o%20Dourado.webp",
+    "stats": {
+      "physicalAttack": "55",
+      "attackSpeed": "15%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Veloz: Cada 1% de Chance de Crítico extra obtida é convertida em 1% de Velocidade de Ataque extra. Golpe Infinito: Após cada 2 Ataques Básicos não-críticos, a Velocidade de Ataque do próximo Ataque Básico é aumentada em 80% (e o limite de Velocidade de Ataque é aumentado para 500%) e aciona Efeitos de Ataque 2 vezes adicionais."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Um bastão lendário que canaliza a energia do vento, permitindo golpes rápidos e múltiplos, ideais para sobrecarregar os adversários com ataques contínuos.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "foice-da-corrosao",
+    "name": "Foice da Corrosão",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Foice%20da%20Corros%C3%A3o.webp",
+    "stats": {
+      "physicalAttack": "30",
+      "attackSpeed": "30%",
+      "movementSpeed": "5%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Corrosivo: Ataques Básicos ganham 80 de Dano Físico extra e reduzem a velocidade do alvo em 8% (reduzido pela metade para Ataques Básicos à distância) por 1.5 segundos. Acumula até 5 vezes. Impulso: Ataques Básicos concedem 6% de Velocidade de Ataque extra por 3 segundos, limitado a 5 acúmulos."
+    },
+    "cost": 2050,
+    "passiveUnique": true,
+    "lore": "Uma foice infundida com uma substância ácida que não só retarda os inimigos, mas também corrói suas defesas com cada golpe.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+  {
+    "id": "espada-cacadora-de-demonios",
+    "name": "Espada Caçadora de Demônios",
+    "category": "Físico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/F%C3%ADsico/Espada%20Ca%C3%A7adora%20de%20Demonios.webp",
+    "stats": {
+      "physicalAttack": "35",
+      "attackSpeed": "20%",
+      "lifesteal": "8%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Engolir: Ataques Básicos causam 8% do HP atual do alvo como dano físico extra (limitado a 60 contra tropas). Devorar: Ataques Básicos concedem 2% de Roubo de Vida por 3 segundos (acumula até 5 vezes)."
+    },
+    "cost": 2180,
+    "passiveUnique": true,
+    "lore": "Uma lâmina forjada para combater os mais temíveis demônios, capaz de drenar sua essência vital e causar dano massivo aos mais resistentes.",
+    "buildsInto": [],
+    "builtFrom": []
+  },
+   {
+    "id": "lanterna-dos-desejos",
+    "name": "Lanterna dos Desejos",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Lanterna%20dos%20Desejos.webp",
+    "stats": {
+      "magicPower": "75",
+      "mana": "400",
+      "cooldownReduction": "10%"
+    },
+    "effect": {
+      "name": "Deusa Borboleta",
+      "description": "Para cada 800 de Dano Mágico causado a um herói inimigo (calculado antes da Redução de Dano), uma Deusa Borboleta é invocada para atacar o herói inimigo, causando Dano Mágico igual a 8% do HP Atual dele."
+    },
+    "cost": 2060,
+    "passiveUnique": true,
+    "lore": "Uma lanterna antiga que contém o espírito de uma deusa borboleta, capaz de conjurar seus servos para perseguir e drenar a vida dos inimigos.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "frasco-do-oasis",
+    "name": "Frasco do Oásis",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Frasco%20do%20Oasis.webp",
+    "stats": {
+      "magicPower": "60",
+      "hp": "300",
+      "cooldownReduction": "10%",
+      "healingEffect": "12%"
+    },
+    "effect": {
+      "name": "Bênção",
+      "description": "Ao usar uma habilidade de cura ou escudo, se o HP do alvo estiver abaixo de 35%, ou cair abaixo de 35% em 3 segundos, ele receberá um escudo de (100*Nível do Herói) que dura 3 segundos. Quando este efeito é ativado, também reduz o tempo de recarga das habilidades do conjurador em 2 segundos. (Este efeito só pode ser ativado uma vez a cada 60 segundos no mesmo alvo e não será ativado em habilidades de cura e escudo apenas para si mesmo.)"
+    },
+    "cost": 2040,
+    "passiveUnique": true,
+    "lore": "Um frasco místico que contém a essência de um oásis, concedendo proteção e um fôlego de vida a aliados em momentos de necessidade.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "cajado-genial",
+    "name": "Cajado Genial",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Cajado%20Genial.webp",
+    "stats": {
+      "magicPower": "75",
+      "movementSpeed": "5%",
+      "magicPenetration": "10"
+    },
+    "effect": {
+      "name": "Mágica",
+      "description": "Causar Dano Mágico a heróis inimigos reduzirá a Defesa Mágica deles em 3+(0.3*Nível do Herói) por 2 segundos. Acumula até 3 vezes."
+    },
+    "cost": 2000,
+    "passiveUnique": true,
+    "lore": "Um cajado forjado por um gênio arcano, capaz de desvendar os segredos da magia e enfraquecer as defesas dos inimigos com cada feitiço.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+   {
+    "id": "cetro-relampago",
+    "name": "Cetro Relâmpago",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Cetro%20Relampago.webp",
+    "stats": {
+      "magicPower": "75",
+      "mana": "400",
+      "cooldownReduction": "10%"
+    },
+    "effect": {
+      "name": "Ressonância",
+      "description": "A cada 6 segundos, a próxima habilidade ecoa, causando 170 (+85% de Poder Mágico) de Dano Mágico extra a todos os inimigos no alcance."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Um cetro que invoca o poder dos relâmpagos, fazendo com que os feitiços do conjurador reverberem e atinjam múltiplos alvos com explosões de energia.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "asas-sangrentas",
+    "name": "Asas Sangrentas",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Asas%20Sangrantas.webp",
+    "stats": {
+      "magicPower": "90"
+    },
+    "effect": {
+      "name": "Guarda",
+      "description": "Ganha um Escudo de 800 (+100% de Poder Mágico) que regenera 20 segundos após receber dano. O Escudo também concede 30 de Velocidade de Movimento enquanto dura e 150 de Velocidade de Movimento por 1 segundo após se quebrar."
+    },
+    "cost": 2260,
+    "passiveUnique": true,
+    "lore": "Asas místicas que oferecem uma proteção vitalícia, envolvendo o usuário em um escudo de sangue que se regenera e concede agilidade quando mais necessário.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "foice-estelarium",
+    "name": "Foice Estelarium",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Foice%20Estelarium.webp",
+    "stats": {
+      "magicPower": "70",
+      "cooldownReduction": "10%",
+      "hybridLifesteal": "8%",
+      "manaRegen": "6"
+    },
+    "effect": {
+      "name": "Crise",
+      "description": "Em 3 segundos após usar uma habilidade, o próximo Ataque Básico do conjurador aplicará 100 (+100% do Poder Mágico Total) de Dano Verdadeiro adicional com um tempo de recarga de 1.5 segundos. Em seguida, ganha brevemente 10% de Velocidade de Movimento."
+    },
+    "cost": 2400,
+    "passiveUnique": true,
+    "lore": "Uma foice infundida com a luz das estrelas, que aprimora os ataques do usuário após cada feitiço, permitindo golpes devastadores e ágeis.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "varinha-brilhante",
+    "name": "Varinha Brilhante",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Varinha%20Brulhante.webp",
+    "stats": {
+      "magicPower": "75",
+      "hp": "400",
+      "movementSpeed": "5%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Queimar: Causar Dano Mágico incendeia os alvos por 3 segundos, também causando Dano Mágico extra igual a 1% do HP Máximo do alvo por segundo. Praga da Vida: Causar dano ao alvo reduz os efeitos de Escudo e Regeneração de HP dele para 50% do normal por 3 segundos."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Uma varinha que irradia calor, capaz de incinerar inimigos e impedir sua recuperação com chamas persistentes.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "rainha-do-gelo",
+    "name": "Rainha do Gelo",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Rainha%20do%20Gelo.webp",
+    "stats": {
+      "magicPower": "75",
+      "spellVamp": "10%",
+      "hp": "300",
+      "movementSpeed": "7%"
+    },
+    "effect": {
+      "name": "Prisão Gélida",
+      "description": "Quando uma habilidade causa dano a um herói inimigo, também o desacelera em 10% por 2 segundos (acumula até 3 vezes). Este efeito tem um tempo de recarga de 1 segundo."
+    },
+    "cost": 2180,
+    "passiveUnique": true,
+    "lore": "Uma coroa forjada do gelo eterno, que impregna os feitiços do conjurador com um frio paralisante, diminuindo a velocidade dos inimigos a cada golpe.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "forca-reunida",
+    "name": "Força Reunida",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/For%C3%A7a%20Reunida.webp",
+    "stats": {
+      "magicPower": "70",
+      "hp": "400",
+      "hybridLifesteal": "20%"
+    },
+    "effect": {
+      "name": "Recarga",
+      "description": "Aumenta o Poder Mágico em 5 após causar Dano Mágico (este efeito acumula até 6 vezes e só pode ganhar 1 acúmulo a cada 0.4 segundo). Ao atingir o máximo de acúmulos, aumenta o Dano Mágico em 12% por 5 segundos."
+    },
+    "cost": 2120,
+    "passiveUnique": true,
+    "lore": "Um artefato que concentra a energia mágica, permitindo ao conjurador acumular poder e liberar explosões de dano crescente em combate prolongado.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+{
+    "id": "cristal-magico",
+    "name": "Cristal Mágico",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Cristal%20Magico.webp",
+    "stats": {
+      "magicPower": "185"
+    },
+    "effect": {
+      "name": "Mistério",
+      "description": "Ganha 21%-35% de Poder Mágico extra (escala com o nível)."
+    },
+    "cost": 3000,
+    "passiveUnique": true,
+    "lore": "Um cristal puro que emana uma aura mística, concedendo um poder mágico imenso ao seu portador, que se intensifica com a experiência.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "glaive-divina",
+    "name": "Glaive Divina",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Glaive%20divina.webp",
+    "stats": {
+      "magicPower": "65",
+      "magicPenetration": "40%"
+    },
+    "effect": {
+      "name": "Quebrador de Feitiços",
+      "description": "Ao atacar um inimigo, ganha 0.1% de Penetração Mágica extra para cada ponto de Defesa Mágica do inimigo, limitado a 20%."
+    },
+    "cost": 2040,
+    "passiveUnique": true,
+    "lore": "Uma lâmina sagrada abençoada pelos deuses, capaz de ignorar as defesas mágicas mais fortes, tornando-se uma arma temível contra conjuradores.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "relogio-do-destino",
+    "name": "Relógio do Destino",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Relogio%20do%20Destino.webp",
+    "stats": {
+      "magicPower": "45",
+      "hp": "400",
+      "mana": "400",
+      "cooldownReduction": "10%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Destino: Ganha 4.5(+0.5*Nível do Herói) de Defesa Híbrida por 5 segundos ao causar Dano Mágico a heróis inimigos, acumulando até 6 vezes (pode ganhar 1 acúmulo a cada 0.4 segundo). Presente: Quando o HP cai abaixo de 50%, recupera 15% do HP nos próximos 3 segundos. Quando o Mana cai abaixo de 50%, restaura 15% do Mana nos próximos 3 segundos. Tempo de Recarga: 60 segundos."
+    },
+    "cost": 1950,
+    "passiveUnique": true,
+    "lore": "Um relógio arcano que concede ao seu portador a capacidade de manipular o destino, garantindo resiliência e sustento em momentos críticos da batalha.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "coroa-do-inverno-magico",
+    "name": "Coroa do Inverno",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Coroa%20do%20Inverno.webp",
+    "stats": {
+      "adaptiveAttack": "45",
+      "hp": "400",
+      "cooldownReduction": "5%"
+    },
+    "effect": {
+      "name": "Ativa Única - Congelar",
+      "description": "Torna-se congelado, inatingível e imune a dano por 2 segundos (100 segundos de Tempo de Recarga). Não pode mover ou usar habilidades enquanto congelado, mas habilidades já conjuradas não serão interrompidas."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Uma coroa mágica forjada no coração de uma nevasca, capaz de conceder um breve momento de invencibilidade gélida, protegendo seu portador de qualquer ameaça.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+
+  {
+    "id": "tempo-corrido-magico",
+    "name": "Tempo Corrido",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Tempo%20Corrido.webp",
+    "stats": {
+      "adaptiveAttack": "30",
+      "hp": "600",
+      "cooldownReduction": "15%"
+    },
+    "effect": {
+      "name": "Corrente Temporal",
+      "description": "Abates ou assistências de heróis reduzem o tempo de recarga atual da Habilidade Suprema (Ultimate) em 30%."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Um artefato mágico que manipula o fluxo do tempo, permitindo que conjuradores acelerem o retorno de suas habilidades mais poderosas após cada vitória.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "perfurador-celestial-magico",
+    "name": "Perfurador Celestial",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Perfurador%20Celestial.webp",
+    "stats": {
+      "adaptiveAttack": "60",
+      "movementSpeed": "15"
+    },
+    "effect": {
+      "name": "Letalidade",
+      "description": "Após causar dano a um herói inimigo, executa o herói se o HP dele for inferior a 4%. Ganha 10 acúmulos de Letalidade para cada abate e perde 30% dos acúmulos atuais para cada morte. Cada acúmulo de Letalidade aumenta o limiar de HP do efeito de execução em 0.1%, acumulando até 80 vezes."
+    },
+    "cost": 2060,
+    "passiveUnique": true,
+    "lore": "Uma arma mágica forjada para finalizadores, capaz de perfurar as defesas e selar o destino de inimigos enfraquecidos com um golpe final devastador.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "pluma-celestial",
+    "name": "Pluma Celestial",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Pluma%20Celestial.webp",
+    "stats": {
+      "magicPower": "55",
+      "attackSpeed": "20%",
+      "lifesteal": "10%",
+      "cooldownReduction": "5%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Aflição: Cada Ataque Básico causa 50 (+30% do Poder Mágico Total) de Dano Mágico extra. Impulso: Ataques Básicos concedem 6% de Velocidade de Ataque extra por 3 segundos, limitado a 5 acúmulos."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Uma pena mágica que imbui ataques básicos com poder celestial, permitindo que conjuradores causem dano mágico contínuo e aumentem sua velocidade de ataque.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "livro-magico",
+    "name": "Livro Mágico",
+    "category": "Mágico",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/M%C3%A1gico/Livro%20Magico.webp",
+    "stats": {
+      "magicPower": "50",
+      "hp": "250",
+      "cooldownReduction": "20%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Fonte de Mana: Regenera 15% do Mana Máximo a cada 10 segundos. Maestria Mágica: O limite de Redução de Tempo de Recarga é aumentado em 5%."
+    },
+    "cost": 1900,
+    "passiveUnique": true,
+    "lore": "Um tomo antigo que contém segredos arcanos, concedendo ao seu portador vastas reservas de mana e a capacidade de conjurar feitiços com maior frequência.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+   {
+    "id": "armadura-radiante",
+    "name": "Armadura Radiante",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Armadura%20Radiante.webp",
+    "stats": {
+      "hp": "950",
+      "magicDefense": "40",
+      "hpRegen": "12"
+    },
+    "effect": {
+      "name": "Bênção Sagrada",
+      "description": "Ao receber Dano Mágico, ganha 5(+1*Nível do Herói) de Defesa Mágica por 5 segundos, acumulando até 6 vezes (só pode ganhar 1 acúmulo a cada 0.4 segundos)."
+    },
+    "cost": 1980,
+    "passiveUnique": true,
+    "lore": "Uma armadura abençoada com a luz divina, que se fortalece magicamente à medida que absorve ataques elementais, protegendo seu portador contra o poder arcano.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "tempo-corrido-defesa",
+    "name": "Tempo Corrido",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Tempo%20Corrido.webp",
+    "stats": {
+      "adaptiveAttack": "30",
+      "hp": "600",
+      "cooldownReduction": "15%"
+    },
+    "effect": {
+      "name": "Corrente Temporal",
+      "description": "Abates ou assistências de heróis reduzem o tempo de recarga atual da Habilidade Suprema (Ultimate) em 30%."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Um artefato que manipula o tempo, permitindo ao usuário reduzir drasticamente o tempo de recarga de suas habilidades mais poderosas após cada vitória, oferecendo um uso mais estratégico para tanques e suportes.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "armadura-do-crepusculo",
+    "name": "Armadura do Crepúsculo",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Armadura%20do%20Crepusculo.webp",
+    "stats": {
+      "hp": "1200",
+      "physicalDefense": "15"
+    },
+    "effect": {
+      "name": "Crepúsculo",
+      "description": "Ao receber mais de 500 de dano em uma única instância, o dano excedente além dessa quantidade é reduzido em 20 + (0.2% do HP Total)%."
+    },
+    "cost": 2200,
+    "passiveUnique": true,
+    "lore": "Uma armadura forjada na escuridão do crepúsculo, que absorve e mitiga grandes quantidades de dano em um único golpe, tornando seu portador incrivelmente resistente.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "armadura-de-peito-bruto",
+    "name": "Armadura de Peito Bruto",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Armadura%20de%20Peito%20Bruto.webp",
+    "stats": {
+      "hp": "600",
+      "physicalDefense": "20",
+      "cooldownReduction": "10%"
+    },
+    "effect": {
+      "name": "Força Bruta",
+      "description": "A cada segundo após causar dano, ganha 8 de Ataque Adaptativo extra e 2% de Velocidade de Movimento extra por 4 segundos, acumulando até 6 vezes. Ganha 15% de Redução da Duração de Controle de Grupo extra com acúmulos máximos."
+    },
+    "cost": 2100,
+    "passiveUnique": true,
+    "lore": "Uma armadura que se torna mais potente a cada golpe, concedendo ao seu portador força e agilidade crescentes no campo de batalha.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "imortal",
+    "name": "Imortal",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Imortal.webp",
+    "stats": {
+      "hp": "800",
+      "physicalDefense": "15"
+    },
+    "effect": {
+      "name": "Imortal",
+      "description": "Ressuscita 2.5 segundos após a morte e recupera 16% do HP Máximo e um escudo que pode absorver 150(+70*Nível do Herói) de dano. O escudo dura 3 segundos. Este efeito tem um tempo de recarga de 210 segundos."
+    },
+    "cost": 2120,
+    "passiveUnique": true,
+    "lore": "Um artefato lendário que desafia a morte, permitindo que seu portador retorne à batalha após ser derrotado, com uma nova chance de virar o jogo.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "dominio-de-gelo",
+    "name": "Domínio de Gelo",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Domonio%20de%20Gelo.webp",
+    "stats": {
+      "physicalDefense": "55",
+      "hp": "250",
+      "movementSpeed": "5%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Frio Ártico: Receber dano reduz a Velocidade de Ataque do agressor para 80% do normal por 1 segundo. Praga da Vida: Receber dano reduz os efeitos de Escudo e Regeneração de HP do agressor para 50% do normal por 1 segundo."
+    },
+    "cost": 2040,
+    "passiveUnique": true,
+    "lore": "Uma armadura gélida que pune agressores, desacelerando seus ataques e impedindo sua recuperação com a essência do frio eterno.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "protetor-de-athena",
+    "name": "Protetor de Athena",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Protetor%20de%20Athena.webp",
+    "stats": {
+      "hp": "900",
+      "magicDefense": "48",
+      "hpRegen": "2"
+    },
+    "effect": {
+      "name": "Escudo",
+      "description": "Ao receber Dano Mágico, ganha 25% de Redução de Dano Mágico por 3 segundos (aplicado antes de receber o dano). Recupera este efeito 5 segundos após sair de combate."
+    },
+    "cost": 2050,
+    "passiveUnique": true,
+    "lore": "Um escudo abençoado por Atena, que concede ao seu portador uma resistência divina contra explosões de dano mágico, protegendo-o nos momentos mais críticos.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "oraculo",
+    "name": "Oráculo",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Oraculo.webp",
+    "stats": {
+      "hp": "850",
+      "physicalDefense": "20",
+      "magicDefense": "20",
+      "cooldownReduction": "10%"
+    },
+    "effect": {
+      "name": "Bênção",
+      "description": "Os efeitos de Escudo e Regeneração de HP recebidos são aumentados em 30%."
+    },
+    "cost": 2160,
+    "passiveUnique": true,
+    "lore": "Um artefato sagrado que amplifica o poder de cura e proteção, tornando seu portador uma fortaleza inabalável no campo de batalha.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "couraca-antiga",
+    "name": "Couraça Antiga",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Couraca%20Antiga.webp",
+    "stats": {
+      "hp": "920",
+      "physicalDefense": "40",
+      "hpRegen": "4"
+    },
+    "effect": {
+      "name": "Dissuadir",
+      "description": "Ao ser atingido por uma habilidade, reduz o Dano Físico do agressor em 6% por 2 segundos (este efeito acumula até 3 vezes)."
+    },
+    "cost": 2040,
+    "passiveUnique": true,
+    "lore": "Uma armadura ancestral que enfraquece o ataque dos inimigos com cada golpe recebido, transformando a defesa em uma arma contra a agressão.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "capacete-do-guardiao",
+    "name": "Capacete do Guardião",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Capacete%20do%20Guardiao.webp",
+    "stats": {
+      "hp": "1550",
+      "hpRegen": "20"
+    },
+    "effect": {
+      "name": "Recuperação",
+      "description": "Recupera (2.5% do HP Total) de HP por segundo (reduzido para (0.5% do HP Total) de HP por segundo por 5 segundos após receber dano)."
+    },
+    "cost": 2200,
+    "passiveUnique": true,
+    "lore": "Um capacete místico que regenera continuamente a vida do seu portador, garantindo uma resistência inabalável em combate prolongado.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "capacete-amaldicoado",
+    "name": "Capacete Amaldiçoado",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Capacete%20Amaldi%C3%A7oado.webp",
+    "stats": {
+      "hp": "1200",
+      "magicDefense": "20"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Alma Ardente: Causa (1.2% do HP Total) de Dano Mágico a inimigos próximos por segundo. Este dano é aumentado em 125(+15*Nível do Herói)% contra monstros da selva e tropas. Maldição: Causar dano com Alma Ardente reduz a Defesa Híbrida do alvo em 3 por 3 segundos. Acumula até 3 vezes."
+    },
+    "cost": 1950,
+    "passiveUnique": true,
+    "lore": "Um capacete imbuído com uma maldição ancestral, que incendeia inimigos próximos e enfraquece suas defesas, ideal para limpar rotas e persistir em lutas.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "cinturao-do-trovao",
+    "name": "Cinturão do Trovão",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Cinturao%20do%20Trovao.webp",
+    "stats": {
+      "hp": "800",
+      "physicalDefense": "15",
+      "magicDefense": "15",
+      "movementSpeed": "20"
+    },
+    "effect": {
+      "name": "Trovão",
+      "description": "A cada 4 segundos, o próximo Ataque Básico causa 50 (+100% de Defesa Física Extra) (+100% de Defesa Mágica Extra) de Dano Verdadeiro extra ao alvo e inimigos ao redor, e os desacelera brevemente em 99%. A Defesa Híbrida aumenta permanentemente em 1 cada vez que o ataque atinge um herói inimigo. (Este efeito é reduzido para 50% para Atiradores e Magos)."
+    },
+    "cost": 2200,
+    "passiveUnique": true,
+    "lore": "Um cinturão imbuído com a fúria de uma tempestade, que permite que tanques e suportes causem dano explosivo e imobilizem inimigos com a força do trovão.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "asas-da-rainha",
+    "name": "Asas da Rainha",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Asas%20da%20rainha.webp",
+    "stats": {
+      "adaptiveAttack": "40",
+      "hp": "600",
+      "cooldownReduction": "10%",
+      "spellVamp": "10%"
+    },
+    "effect": {
+      "name": "Passivas Únicas",
+      "description": "Demonizar: Quando o HP cai abaixo de 40%, ganha 30% de Redução de Dano por 3 segundos e reduz os tempos de recarga das habilidades em 2 segundos. Este efeito tem um tempo de recarga de 60 segundos. Desafio: Para cada 1% de HP perdido, o dano é aumentado em 0.25%, até 15%."
+    },
+    "cost": 2160,
+    "passiveUnique": true,
+    "lore": "Asas místicas que concedem ao seu portador a capacidade de resistir ao dano e retaliar com fúria crescente à medida que sua vida diminui, inspirando medo nos corações dos inimigos.",
+    "builtFrom": [],
+    "buildsInto": []
+  },
+  {
+    "id": "armadura-de-lamina",
+    "name": "Armadura de Lâmina",
+    "category": "Defesa",
+    "imageUrl": "https://equipamentos-ivory.vercel.app/items/Defesa/Armadura%20De%20Lamina.webp",
+    "stats": {
+      "physicalDefense": "70",
+      "critDamageReduction": "20%"
+    },
+    "effect": {
+      "name": "Armadura Laminada",
+      "description": "Ao ser atingido por um Ataque Básico, causa Dano Físico igual a 30% do dano recebido (calculado antes da Redução de Dano) mais (20% da Defesa Física Total) ao agressor e o desacelera em 15% por 1 segundo."
+    },
+    "cost": 2080,
+    "passiveUnique": true,
+    "lore": "Uma armadura coberta por lâminas afiadas, que reflete o dano físico de volta aos agressores, tornando cada ataque uma ameaça para o atacante.",
+    "builtFrom": [],
+    "buildsInto": []
+  }
+]

@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
+import { getStorage } from "firebase/storage"; // <-- Adicione esta linha!
 
 const firebaseConfig = {
   apiKey: "AIzaSyAdVq1Aw5Gq3KAD25wG7I05u1vrkrukn7Y",
@@ -18,5 +19,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const analytics = getAnalytics(app);
+const storage = getStorage(app); // <-- Adicione esta linha para inicializar o Storage!
 
-export { app, auth, db, analytics };
+// Exportar todos os serviços que precisa usar noutros ficheiros
+export { app, auth, db, analytics, storage }; // <-- Adicione 'storage' aqui!

@@ -1,52 +1,352 @@
 /* src/pages/Equipe.module.css */
+/* src/pages/Equipe.module.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --background-dark: #070710; /* Fundo bem escuro, quase preto */
+  --card-primary: #101020;    /* Fundo principal do cartão */
+  --card-secondary: #1a1a30;  /* Fundo para seções internas do cartão */
+  --text-primary: #e8ebf2;   /* Texto principal (quase branco) */
+  --text-secondary: #a9b7c6; /* Texto secundário (cinza azulado) */
+  --accent-cyan: #00f0ff;    /* Ciano elétrico vibrante */
+  --accent-purple: #8a2be2;  /* Roxo azulado para contraste sutil */
+  --border-glow: 1px solid rgba(0, 240, 255, 0.4);
+  --shadow-light: 0 0 15px rgba(0, 240, 255, 0.3); /* Sombra/brilho suave */
+  --shadow-strong: 0 0 25px rgba(0, 240, 255, 0.6); /* Sombra/brilho intenso */
+  --gradient-border: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  --gradient-overlay: linear-gradient(to right, rgba(0,240,255,0.1), transparent 50%, rgba(138,43,226,0.1));
+}
+
+/* ... (restante do CSS abaixo) ... */
 
 .equipePage {
-  padding: 20px;
-  font-family: sans-serif;
+  padding: 60px 40px; /* Mais padding geral na página */
+  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--background-primary);
+  color: var(--text-light);
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 h2 {
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 50px; /* Mais espaço abaixo do título principal */
+  color: var(--highlight-accent);
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3.2em; /* Título um pouco maior */
+  text-transform: uppercase;
+  letter-spacing: 3px; /* Mais espaçamento entre letras */
+  text-shadow: var(--glow-effect);
+  position: relative;
+  padding-bottom: 15px; /* Mais espaço para a linha decorativa */
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 120px; /* Linha um pouco maior */
+  height: 4px; /* Linha mais grossa */
+  background-color: var(--highlight-accent);
+  box-shadow: var(--glow-effect);
+  border-radius: 2px;
 }
 
 .teamsList {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 35px; /* Mais espaço entre os cartões */
+  max-width: 1500px; /* Largura máxima um pouco maior */
+  margin: 0 auto;
 }
 
 .teamItem {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: #000000;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px; /* Bordas um pouco mais arredondadas */
+  padding: 30px 40px; /* **AUMENTADO**: Mais padding interno horizontal e vertical */
+  box-shadow: var(--glow-effect);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 40px; /* **AUMENTADO**: Mais espaço entre as seções (logo, info, membros) */
+  position: relative;
+  overflow: hidden;
 }
 
-.teamItem h3 {
-  margin-top: 0;
-  color: #3498db;
+.teamItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-overlay);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-.teamTag {
-  color: #777;
-  margin-bottom: 10px;
+.teamItem:hover {
+  transform: translateY(-10px); /* Eleva um pouco mais no hover */
+  box-shadow: var(--hover-glow);
+  background-color: #2a2a40;
+}
+
+.teamItem:hover::before {
+    opacity: 1;
 }
 
 .teamLogo {
-  max-width: 100px;
-  max-height: 100px;
-  margin-bottom: 10px;
+  min-width: 120px; /* Logo um pouco maior */
+  max-width: 140px;
+  min-height: 120px;
+  max-height: 140px;
+  border-radius: 50%;
+  border: 4px solid var(--highlight-accent); /* Borda da logo mais grossa */
+  box-shadow: 0 0 10px rgba(0, 230, 230, 0.6); /* Brilho mais notável */
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.teamInfo {
+  flex-grow: 2; /* Permite que este bloco cresça mais, dando prioridade */
+  max-width: 50%; /* Limita a largura para que os membros tenham espaço */
+}
+
+.teamInfo h3 {
+  margin-top: 0;
+  color: var(--highlight-accent);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5em; /* Título da equipa maior */
+  margin-bottom: 8px; /* Mais espaço abaixo do título da equipa */
+  text-shadow: 0 0 7px rgba(0, 230, 230, 0.4);
+}
+
+.teamTag {
+  color: var(--highlight-accent);
+  background-color: rgba(0, 230, 230, 0.15); /* Fundo um pouco mais visível */
+  padding: 6px 12px; /* Tag um pouco maior */
   border-radius: 5px;
+  display: inline-block;
+  margin-bottom: 20px; /* Mais espaço abaixo da tag */
+  font-size: 0.9em;
+  border: 1px solid rgba(0, 230, 230, 0.5);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.teamDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 40px; /* **AUMENTADO**: Mais espaço entre os detalhes */
+  margin-bottom: 20px; /* Mais espaço abaixo dos detalhes */
+}
+
+.teamDetails p {
+  margin: 0;
+  font-size: 0.95em; /* Texto de detalhes um pouco maior */
+  color: var(--secondary-text);
+  display: flex;
+  align-items: center;
+}
+
+.teamDetails p strong {
+  color: var(--text-light);
+  margin-right: 8px; /* Mais espaço entre label e valor */
+}
+
+.teamDetails p::before {
+  content: '⚡';
+  color: var(--highlight-accent);
+  margin-right: 10px; /* Mais espaço do ícone */
+  font-size: 1.2em; /* Ícone um pouco maior */
+}
+
+.membersSection {
+  flex-grow: 1; /* Permite que o bloco de membros ocupe o espaço restante */
+  padding-left: 40px; /* **AUMENTADO**: Mais espaçamento da seção de membros */
+  border-left: 2px dashed var(--border-color); /* Linha divisória vertical mais grossa */
+}
+
+.membersSection h4 {
+  color: var(--highlight-accent);
+  margin-top: 0;
+  margin-bottom: 15px; /* Mais espaço abaixo do título de membros */
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.8em; /* Título de membros maior */
+  text-shadow: 0 0 6px rgba(0, 230, 230, 0.3);
 }
 
 .membersList {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 25px; /* Mais espaço entre membros */
 }
 
 .memberItem {
-  margin-left: 20px;
-  margin-bottom: 5px;
-  color: #555;
+  margin: 0;
+  color: var(--text-light);
+  font-size: 0.95em; /* Nome do membro um pouco maior */
+  position: relative;
+  padding-left: 20px; /* Mais espaço para o marcador */
+}
+
+.memberItem::before {
+  content: '>';
+  color: var(--highlight-accent);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: bold;
+  font-size: 1.1em; /* Marcador um pouco maior */
+}
+
+/* Responsividade */
+@media (max-width: 1200px) { /* Ponto de quebra ajustado para telas maiores */
+  .teamItem {
+    flex-direction: column; /* Empilha o conteúdo em telas médias */
+    align-items: flex-start;
+    gap: 30px;
+    padding: 25px 30px;
+  }
+
+  .teamLogo {
+    margin: 0 0 20px 0;
+  }
+
+  .teamInfo {
+    max-width: 100%; /* Ocupa a largura total quando empilhado */
+  }
+
+  .teamDetails {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .membersSection {
+    padding-left: 0;
+    border-left: none;
+    border-top: 2px dashed var(--border-color);
+    padding-top: 25px;
+    margin-top: 25px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .equipePage {
+    padding: 40px 20px;
+  }
+
+  h2 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+  }
+
+  .teamItem {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .teamLogo {
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 100px;
+    max-height: 100px;
+  }
+
+  .teamInfo h3 {
+    font-size: 2em;
+  }
+
+  .membersSection h4 {
+    font-size: 1.6em;
+  }
+}
+
+@media (max-width: 500px) {
+  .equipePage {
+    padding: 25px 15px;
+  }
+
+  h2 {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+  }
+
+  .teamItem {
+    padding: 15px;
+  }
+
+  .teamInfo h3 {
+    font-size: 1.6em;
+  }
+}
+/* src/pages/Equipe.module.css - Add/Update these styles at the end of your file */
+
+/* --- Styles for the register team button and prompt --- */
+.registerPrompt {
+  text-align: center;
+  margin-bottom: 60px; /* More space for the button and text */
+  padding: 30px;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--glow-effect);
+  max-width: 800px; /* Limit width to prevent excessive stretching */
+  margin-left: auto;
+  margin-right: auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.registerPrompt:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hover-glow);
+}
+
+.registerPrompt p {
+  font-size: 1.2em;
+  color: var(--text-light);
+  margin-bottom: 20px;
+  line-height: 1.5;
+  font-family: 'Space Grotesk', sans-serif; /* Consistency with titles */
+}
+
+/* The button already uses formStyles.button, so no need for style here unless you want to override */
+
+.noTeamsMessage {
+  text-align: center;
+  font-size: 1.3em;
+  color: var(--secondary-text);
+  margin-top: 50px;
+  padding: 20px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  background-color: rgba(28, 28, 46, 0.5); /* Slightly darker background */
+}
+
+/* Adjustments for the internal layout of teamItem for greater control */
+.teamContent {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* Maintains flexbox spacing */
+  width: 100%; /* Ensures content occupies the width of the parent */
+}
+
+/* Overrides for when the teamItem layout stacks (mobile) */
+@media (max-width: 1200px) {
+  .teamContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px; /* Reduces gap when stacked */
+  }
 }

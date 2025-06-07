@@ -1,7 +1,5 @@
 // Home.tsx
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
-import AuthArea from '../components/AuthArea'; // Continuamos a importar a AuthArea
 import NewsCard from '../components/NewsCard';
 import { useLocation } from 'react-router-dom';
 import { getLatestNews } from '../services/database';
@@ -34,8 +32,7 @@ const Home: React.FC = () => {
       {/* O header agora conterá a Navbar E a AuthArea para o lado direito */}
       {isHomePage && (
         <header className={styles.homeHeader}> {/* Nova classe para o header da Home */}
-          <Navbar />
- 
+         
         </header>
       )}
 
