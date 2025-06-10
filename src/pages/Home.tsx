@@ -20,21 +20,18 @@ const Home: React.FC = () => {
   // Efeito para carregar as notícias em tempo real
   useEffect(() => {
     setLoadingNews(true);
-    // Usamos o listener para obter as notícias em tempo real.
-    // O 'listenToAllNews' já as ordena da mais recente para a mais antiga.
     const unsubscribe = listenToAllNews(allNews => {
       // Pegamos apenas as 3 notícias mais recentes para mostrar na Home
       setLatestNews(allNews.slice(0, 3));
       setLoadingNews(false);
     });
 
-    // Limpa o listener quando o componente é desmontado para evitar leaks de memória
+    // Limpa o listener quando o componente é desmontado
     return () => unsubscribe();
-  }, []); // O array vazio [] garante que esta lógica só corre uma vez
+  }, []);
 
   return (
     <div className={styles.container}>
-      {/* Secção Principal de Boas-Vindas */}
       <header className={styles.heroSection}>
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>Bem-vindo ao MBL</h1>
@@ -46,7 +43,6 @@ const Home: React.FC = () => {
 
       <main className={styles.mainContent}>
         
-        {/* Secção de Acesso Rápido aos Treinos (só aparece se o utilizador estiver logado) */}
         {!loadingAuth && user && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Agenda da Equipa</h2>
@@ -57,7 +53,6 @@ const Home: React.FC = () => {
           </section>
         )}
 
-        {/* Secção das Últimas Notícias */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Últimas Notícias</h2>
           {loadingNews ? (
@@ -68,11 +63,13 @@ const Home: React.FC = () => {
                 {latestNews.map((newsItem) => (
                   <NewsCard
                     key={newsItem.id}
-                    imageUrl={newsItem.imageUrl || '/assets/default-news.jpg'}
+                    imageUrl={newsItem.imageUrl}
                     title={newsItem.title}
                     summary={newsItem.summary}
-                    // A função onClick pode navegar para uma página de detalhe da notícia no futuro
-                    onClick={() => navigate(`/noticias`)} 
+                    // ===== CORREÇÃO AQUI =====
+                    // Adicionada a propriedade 'publicationDate' que estava em falta
+                    publicationDate={newsItem.publicationDate}
+                    onClick={() => navigate(`/noticias/${newsItem.id}`)} 
                   />
                 ))}
               </div>
