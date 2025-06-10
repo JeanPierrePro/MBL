@@ -1,0 +1,54 @@
+.pageContainer {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #2e609a;
+  padding-bottom: 20px;
+}
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.addButton {
+  background: linear-gradient(90deg, #e94560, #9f3d5b);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.addButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
+}
+
+.newsSection {
+  margin-bottom: 50px;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  color: #e94560;
+  margin-bottom: 25px;
+}
+
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}

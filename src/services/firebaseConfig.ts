@@ -1,25 +1,30 @@
-// src/services/firebaseConfig.ts
-import { initializeApp } from "firebase/app";
+// MANTENHA TODOS OS SEUS IMPORTS
+import { initializeApp, getApps, getApp } from "firebase/app"; 
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-import { getStorage } from "firebase/storage"; // <-- Adicione esta linha!
+import { getStorage } from "firebase/storage";
+import { getFunctions } from "firebase/functions";
 
+// COLE A SUA NOVA CONFIGURAÇÃO AQUI
 const firebaseConfig = {
-  apiKey: "AIzaSyAdVq1Aw5Gq3KAD25wG7I05u1vrkrukn7Y",
-  authDomain: "mobile-legends-615e9.firebaseapp.com",
-  projectId: "mobile-legends-615e9",
-  storageBucket: "mobile-legends-615e9.firebasestorage.app",
-  messagingSenderId: "372325609069",
-  appId: "1:372325609069:web:023c93fcde9d9f1a689964",
-  measurementId: "G-XRSP32H893"
+  apiKey: "AIzaSyDlMGRFT2aB3k0ow7-0i3bRpdkFSa7AiaU",
+  authDomain: "mobile-lengends-b1755.firebaseapp.com",
+  projectId: "mobile-lengends-b1755",
+  storageBucket: "mobile-lengends-b1755.firebasestorage.app",
+  messagingSenderId: "523351753325",
+  appId: "1:523351753325:web:cee98dce0ab4172eaab564",
+  measurementId: "G-NF66Q3EM73"
 };
 
-const app = initializeApp(firebaseConfig);
+// MANTENHA O RESTO DO SEU CÓDIGO IGUAL
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
 const auth = getAuth(app);
 const db = getFirestore(app);
-const analytics = getAnalytics(app);
-const storage = getStorage(app); // <-- Adicione esta linha para inicializar o Storage!
+const analytics = getAnalytics(app); // Esta linha pode ou não existir no seu ficheiro original
+const storage = getStorage(app);
+const functions = getFunctions(app);
 
-// Exportar todos os serviços que precisa usar noutros ficheiros
-export { app, auth, db, analytics, storage }; // <-- Adicione 'storage' aqui!
+// MANTENHA AS SUAS EXPORTAÇÕES
+export { app, auth, db, analytics, storage, functions };

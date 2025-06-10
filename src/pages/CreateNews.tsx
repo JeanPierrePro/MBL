@@ -1,132 +1,98 @@
-// src/pages/CreateNews.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addNews, getUserProfile } from '../services/database';
-import type { News } from '../types/News';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../services/firebaseConfig';
+// ===== CORREÇÃO 1: Importa a função com o nome correto 'addNews' =====
+import { getUserProfile, addNews } from '../services/database';
 import formStyles from '../styles/AuthForm.module.css';
-import type { UserProfile } from '../types/User'; // Importar UserProfile
 
 const CreateNews: React.FC = () => {
   const [user, loadingUser] = useAuthState(auth);
-  // Renomeado para 'canCreateNews' para refletir a permissão de coach
-  const [canCreateNews, setCanCreateNews] = useState(false);
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
+  const [summary, setSummary] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [content, setContent] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Proteção da página: só para coaches
   useEffect(() => {
-    const checkUserRole = async () => {
-      if (user) {
-        const userProfile: UserProfile | null = await getUserProfile(user.uid);
-        // VERIFICA SE O USUÁRIO É 'coach'
-        if (!(userProfile && userProfile.role === 'coach')) {
-          alert('Acesso negado. Apenas treinadores podem criar notícias.');
-          navigate('/noticias'); // Redireciona para notícias se não for coach
-        } else {
-          setCanCreateNews(true); // Permite a criação se for coach
-        }
-      } else {
-        alert('Você precisa estar logado para acessar esta página.');
-        navigate('/login'); // Redireciona para o login se não estiver logado
-      }
-    };
-
-    if (!loadingUser) {
-      checkUserRole();
+    if (loadingUser) return;
+    if (!user) {
+      navigate('/login');
+      return;
     }
+    getUserProfile(user.uid).then(profile => {
+      if (profile?.role !== 'coach') {
+        navigate('/');
+      }
+    });
   }, [user, loadingUser, navigate]);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (!canCreateNews) { // Verifica a permissão antes de tentar adicionar
-      alert('Você não tem permissão para adicionar notícias.');
-      return;
-    }
-
-    if (!title || !description || !imageUrl) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
-      return;
-    }
-
-    const newNewsData: Omit<News, 'id' | 'publicationDate'> = {
-      title,
-      description,
-      imageUrl,
-      // Adicione a data de publicação, pois News type agora espera (ou ajuste o tipo)
-      // Se News espera 'publicationDate', você precisa adicionar um valor aqui.
-      // Por exemplo, usando a data atual:
-      // publicationDate: new Date().toISOString(), // ou new Date() se seu Firebase aceitar timestamp
-    };
-
-    try {
-      const newsId = await addNews(newNewsData);
-      if (newsId) {
-        alert('Notícia/Evento adicionado com sucesso!');
-        navigate('/noticias');
-      } else {
-        alert('Falha ao adicionar notícia/evento. Verifique o console.');
-      }
-    } catch (error) {
-      console.error('Erro ao adicionar notícia/evento:', error);
-      alert('Ocorreu um erro ao adicionar a notícia/evento.');
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
     }
   };
 
-  if (loadingUser) {
-    return <p>Verificando permissões de acesso...</p>;
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!imageFile || !title || !summary) {
+      setError("Título, Resumo e Imagem de Destaque são obrigatórios.");
+      return;
+    }
 
-  // Se o usuário não tem permissão após a verificação, exibe mensagem e impede o formulário de ser mostrado.
-  if (!canCreateNews) {
-    return <p>Acesso negado. Você não tem permissão para visualizar esta página.</p>;
-  }
+    setIsSubmitting(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const newsData = { title, summary, description, content };
+      // ===== CORREÇÃO 2: Chama a função com o nome correto 'addNews' =====
+      await addNews(newsData, imageFile);
+      setSuccess("Notícia publicada com sucesso!");
+      setTimeout(() => navigate('/noticias'), 2000);
+    } catch (err: any) {
+      setError(err.message || "Ocorreu um erro desconhecido.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className={formStyles.container}>
-      <h2>Adicionar Nova Notícia / Evento</h2>
       <form onSubmit={handleSubmit} className={formStyles.form}>
+        <h2 className={formStyles.centeredHeading}>Publicar Nova Notícia</h2>
         <div className={formStyles.formGroup}>
-          <label htmlFor="title" className={formStyles.label}>Título:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className={formStyles.input}
-          />
+          <label htmlFor="title">Título</label>
+          <input type="text" id="title" value={title} onChange={e => setTitle(e.target.value)} required className={formStyles.input} disabled={isSubmitting} />
         </div>
         <div className={formStyles.formGroup}>
-          <label htmlFor="description" className={formStyles.label}>Descrição:</label>
-          <textarea
-            id="description"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            rows={5}
-            className={formStyles.textarea}
-          ></textarea>
+          <label htmlFor="summary">Resumo</label>
+          <input type="text" id="summary" value={summary} onChange={e => setSummary(e.target.value)} required className={formStyles.input} disabled={isSubmitting} />
         </div>
         <div className={formStyles.formGroup}>
-          <label htmlFor="imageUrl" className={formStyles.label}>URL da Imagem:</label>
-          <input
-            type="url"
-            id="imageUrl"
-            name="imageUrl"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            required
-            className={formStyles.input}
-          />
+          <label htmlFor="image">Imagem de Destaque</label>
+          <input type="file" id="image" onChange={handleFileChange} required accept="image/*" className={formStyles.input} disabled={isSubmitting} />
         </div>
-        <button type="submit" className={formStyles.button}>Publicar Notícia / Evento</button>
+        <div className={formStyles.formGroup}>
+          <label htmlFor="description">Descrição</label>
+          <textarea id="description" value={description} onChange={e => setDescription(e.target.value)} className={formStyles.textarea} rows={3} disabled={isSubmitting}></textarea>
+        </div>
+        <div className={formStyles.formGroup}>
+          <label htmlFor="content">Conteúdo Completo</label>
+          <textarea id="content" value={content} onChange={e => setContent(e.target.value)} className={formStyles.textarea} rows={10} disabled={isSubmitting}></textarea>
+        </div>
+        {error && <p className={formStyles.errorMessage}>{error}</p>}
+        {success && <p className={formStyles.successMessage}>{success}</p>}
+        <button type="submit" className={formStyles.button} disabled={isSubmitting}>
+          {isSubmitting ? 'A Publicar...' : 'Publicar Notícia'}
+        </button>
       </form>
     </div>
   );

@@ -1,128 +1,182 @@
 // src/services/auth.ts
+
 import {
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile,
+  signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // <-- ESSENCIAL: Adicione esta importação
-import { auth, db, storage } from './firebaseConfig'; // <-- ESSENCIAL: Garanta que 'storage' é importado daqui
-import { FirebaseError } from 'firebase/app';
+import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { auth, db, storage } from './firebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import type { UserProfile } from '../types/User';
 
-export const login = async (email: string, password: string): Promise<UserProfile | null> => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    if (user) {
-      const userDocRef = doc(db, 'users', user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-      let userProfile: UserProfile | null = null;
-
-      if (userSnapshot.exists()) {
-        userProfile = { ...userSnapshot.data(), uid: user.uid } as UserProfile;
-        await updateDoc(userDocRef, { status: 'Online' });
-        console.log(`Status de ${user.email} atualizado para Online.`);
-      } else {
-        console.warn(`Perfil não encontrado para UID: ${user.uid} após login. Criando um perfil básico.`);
-        const newProfile: UserProfile = {
-          uid: user.uid,
-          email: user.email || '',
-          nick: user.displayName || 'Novo Usuário',
-          lane: 'N/A', // Padrão se o perfil não existir e for criado no login
-          fotoPerfil: user.photoURL || null,
-          status: 'Online',
-          role: 'member',
-        };
-        await setDoc(userDocRef, newProfile);
-        userProfile = newProfile;
-      }
-      return userProfile;
-    }
-    return null;
-  } catch (error: unknown) {
-    if (error instanceof FirebaseError) {
-      console.error('Erro ao fazer login:', error.message);
-      throw new Error('Erro ao fazer login: ' + error.message);
-    } else {
-      console.error('Erro desconhecido ao fazer login:', error);
-      throw new Error('Erro desconhecido ao fazer login.');
-    }
-  }
-};
-
+/**
+ * Registra um novo usuário no Firebase Authentication e cria seu perfil no Firestore.
+ */
 export const registerUser = async (
   nick: string,
   email: string,
   password: string,
-  lane: string, // Pode vir vazia se for coach
-  role: 'member' | 'coach',
-  foto: File | null // <-- ESTE É O SEXTO ARGUMENTO!
-): Promise<UserProfile | null> => {
+  lane: 'Top' | 'Jungle' | 'Mid' | 'Adc' | 'Support' | null,
+  role: 'coach' | 'member',
+  foto: File | null
+): Promise<void> => {
   try {
+    // 1. Criar utilizador na autenticação
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    let photoURL: string | null = null;
-
-    // Lógica para upload da foto
-    if (foto && user) { // Certifique-se que o 'user' existe antes de tentar carregar a foto
-      const storageRef = ref(storage, `profile_pictures/${user.uid}/${foto.name}`);
-      const snapshot = await uploadBytes(storageRef, foto);
-      photoURL = await getDownloadURL(snapshot.ref);
-      console.log('Foto de perfil carregada:', photoURL);
+    // 2. Lidar com o upload da foto de perfil
+    let fotoURL: string | null = null;
+    if (foto) {
+      const fotoRef = ref(storage, `profile_pictures/${user.uid}/${foto.name}`);
+      await uploadBytes(fotoRef, foto);
+      fotoURL = await getDownloadURL(fotoRef);
     }
 
-    const userDocRef = doc(db, 'users', user.uid);
-    const newProfile: UserProfile = {
+    // 3. Atualizar o perfil do Firebase Auth (para nome e foto)
+    await updateProfile(user, {
+      displayName: nick,
+      photoURL: fotoURL
+    });
+
+    // ===== CORREÇÃO PRINCIPAL AQUI =====
+    // Construímos o objeto de perfil de forma segura
+    const userProfileData: Partial<UserProfile> = {
       uid: user.uid,
-      nick: nick,
-      email: email,
-      lane: role === 'coach' ? '' : lane,
-      fotoPerfil: photoURL, // Use a URL obtida do Storage
-      status: 'Online',
-      role: role,
+      nick,
+      email,
+      role,
+      fotoURL,
+      status: 'Offline',
+      matchHistory: [], // Iniciar com histórico vazio
+      // Não adicionamos 'lane' ou 'teamId' aqui ainda
     };
-    await setDoc(userDocRef, newProfile);
 
-    if (auth.currentUser) {
-      await updateProfile(auth.currentUser, {
-        displayName: nick,
-        photoURL: photoURL, // Atualiza também a foto de perfil no Firebase Auth
-      });
+    // Adicionamos 'lane' APENAS se o 'role' for 'member' e a lane for fornecida
+    if (role === 'member' && lane) {
+      userProfileData.lane = lane;
     }
+    
+    // Se o role for 'coach', a lane nunca será adicionada ao objeto,
+    // o que evita o erro de 'undefined' no Firestore.
 
-    console.log('Usuário registrado e perfil criado:', nick);
-    return newProfile;
-  } catch (error: unknown) {
-    if (error instanceof FirebaseError) {
-      console.error('Erro ao registrar:', error.message);
-      throw new Error('Erro ao registrar: ' + error.message);
+    // 4. Salvar o documento de perfil no Firestore
+    await setDoc(doc(db, 'users', user.uid), userProfileData);
+
+  } catch (error: any) {
+    // A sua ótima gestão de erros continua aqui
+    if (error.code === 'auth/email-already-in-use') {
+      throw new Error('O email já está em uso. Por favor, use outro email.');
+    } else if (error.code === 'auth/weak-password') {
+      throw new Error('A senha é muito fraca. Por favor, use uma senha com pelo menos 6 caracteres.');
     } else {
-      console.error('Erro desconhecido ao registrar:', error);
-      throw new Error('Erro desconhecido ao registrar.');
+      console.error("Erro desconhecido no registro do usuário:", error);
+      throw new Error(error.message || 'Erro desconhecido ao registar. Por favor, tente novamente.');
     }
   }
 };
 
+
+/**
+ * Realiza o login de um usuário usando email e senha.
+ */
+export const login = async (email: string, password: string): Promise<UserProfile> => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const userProfile: UserProfile = {
+                uid: user.uid,
+                nick: userData.nick || '',
+                email: userData.email || '',
+                role: userData.role || 'member',
+                lane: userData.lane || null, // Garante que seja null em vez de undefined
+                inGameName: userData.inGameName || '', // Adicionado para consistência
+                fotoURL: userData.fotoURL || null,
+                teamId: userData.teamId || null,
+                status: userData.status || 'Offline',
+                matchHistory: userData.matchHistory || [],
+            };
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            return userProfile;
+        } else {
+            // Se o utilizador existe na Auth mas não no Firestore, é um estado inconsistente.
+            await signOut(auth); // Desloga o utilizador para segurança
+            throw new Error("Perfil de usuário não encontrado. Por favor, contacte o suporte.");
+        }
+    } catch (error: any) {
+        if (error.code === 'auth/invalid-credential') {
+            throw new Error('Credenciais inválidas. Verifique seu email e senha.');
+        } else {
+            console.error("Erro desconhecido no login:", error);
+            throw new Error(error.message || 'Erro desconhecido ao fazer login.');
+        }
+    }
+};
+
+
+/**
+ * Realiza o login de um membro da equipe usando seu nickname e senha.
+ */
+export const loginMemberWithNickname = async (nickname: string, password: string): Promise<UserProfile> => {
+    try {
+        const usersRef = collection(db, 'users');
+        const q = query(usersRef, where('nick', '==', nickname), where('role', '==', 'member'));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+            throw new Error('Nickname não encontrado ou não associado a um membro da equipa.');
+        }
+
+        const memberData = querySnapshot.docs[0].data();
+        if (!memberData.email) {
+            throw new Error('Email associado ao nickname não encontrado. Não é possível fazer login.');
+        }
+
+        // Primeiro, faz o login na Auth para verificar a senha
+        await signInWithEmailAndPassword(auth, memberData.email, password);
+
+        // Se o login for bem-sucedido, retorna os dados do perfil
+        const userProfile: UserProfile = {
+            uid: querySnapshot.docs[0].id,
+            nick: memberData.nick,
+            email: memberData.email,
+            role: memberData.role,
+            lane: memberData.lane || null,
+            inGameName: memberData.inGameName || '',
+            fotoURL: memberData.fotoURL || null,
+            teamId: memberData.teamId || null,
+            status: memberData.status || 'Offline',
+            matchHistory: memberData.matchHistory || [],
+        };
+
+        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+        return userProfile;
+
+    } catch (error: any) {
+        if (error.code === 'auth/invalid-credential') {
+            throw new Error('Nickname ou senha inválidos.');
+        } else {
+            console.error("Erro desconhecido no login de membro:", error);
+            throw new Error(error.message || 'Erro desconhecido ao fazer login como membro.');
+        }
+    }
+};
+
+/**
+ * Realiza o logout do usuário do Firebase Authentication.
+ */
 export const logout = async (): Promise<void> => {
   try {
-    if (auth.currentUser) {
-      const userDocRef = doc(db, 'users', auth.currentUser.uid);
-      await updateDoc(userDocRef, { status: 'Offline' });
-      console.log(`Status de ${auth.currentUser.email} atualizado para Offline.`);
-    }
     await signOut(auth);
-    console.log('Logout realizado com sucesso');
-  } catch (error: unknown) {
-    if (error instanceof FirebaseError) {
-      console.error('Erro ao deslogar:', error.message);
-      throw new Error('Erro ao deslogar: ' + error.message);
-    } else {
-      console.error('Erro desconhecido ao deslogar:', error);
-      throw new Error('Erro desconhecido ao deslogar.');
-    }
+    localStorage.removeItem('userProfile');
+  } catch (error: any) {
+    console.error("Erro ao fazer logout:", error);
+    throw new Error(error.message || 'Erro desconhecido ao fazer logout.');
   }
 };

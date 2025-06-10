@@ -1,61 +1,88 @@
+/* src/styles/AuthForm.module.css */
+
+/*
+ * NOTA: As variáveis de cor são esperadas do seu arquivo global.css ou _app.tsx
+ * Certifique-se de que estão bem definidas para um tema consistente.
+ * Variáveis necessárias:
+ * --primary-background, --primary-background-rgb (ex: #1a1a2e ou 26,26,46)
+ * --primary-text, --primary-text-rgb (ex: #e0e0e0 ou 224,224,224)
+ * --subtle-accent, --subtle-accent-rgb (ex: #ffd700 para dourado ou 255,215,0)
+ * --navbar-background, --navbar-background-rgb (ex: #2a2a4a ou 42,42,74)
+ * --navbar-shadow-color, --navbar-shadow-color-rgb (ex: #00bcd4 para ciano ou 0,188,212)
+ * --secondary-color-a, --secondary-color-a-rgb (ex: #8a2be2 para violeta ou 138,43,226)
+ * --auth-area-glow, --auth-area-glow-rgb (ex: #00ffff para ciano elétrico ou 0,255,255)
+ */
+
+/* Recomendações de fontes (importar no global.css ou _app.tsx): */
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Roboto:wght@300;400;700&display=swap'); */
+
+/* Base e Cores */
+
+    /* Exemplo de fallback/default para as variáveis, caso não estejam no global.css */
+    /* --primary-background: #1a1a2e; */
+    /* --primary-background-rgb: 26,26,46; */
+    /* --primary-text: #e0e0e0; */
+    /* --primary-text-rgb: 224,224,224; */
+    /* --subtle-accent: #ffd700; */
+    /* --subtle-accent-rgb: 255,215,0; */
+    /* --navbar-background: #2a2a4a; */
+    /* --navbar-background-rgb: 42,42,74; */
+    /* --navbar-shadow-color: #00bcd4; */
+    /* --navbar-shadow-color-rgb: 0,188,212; */
+    /* --secondary-color-a: #8a2be2; */
+    /* --secondary-color-a-rgb: 138,43,226; */
+    /* --auth-area-glow: #00ffff; */
+    /* --auth-area-glow-rgb: 0,255,255; */
 
 
-/* Importar fontes do Google Fonts - Certifique-se que já estão linkadas no seu HTML ou _app.tsx/_document.tsx */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
 
-.registerTeamPage {
+/* --- Container Principal do Formulário --- */
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 20px;
-    background-color: var(--primary-background); /* Fundo como o container da MetaPage */
+    justify-content: center;
+    min-height: calc(100vh - var(--navbar-height, 80px));
+    padding: 20px;
+    background-color: var(--primary-background);
     color: var(--primary-text);
-    min-height: 100vh;
-    font-family: 'Share Tech Mono', monospace; /* Fonte principal para texto */
-    gap: 30px; /* Espaçamento entre elementos */
-    position: relative;
-    overflow-x: hidden;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden; /* Previne scroll horizontal em telas pequenas */
 }
 
-h2 {
+/* --- Título do Formulário --- */
+.centeredHeading { /* Renomeado de .container h2 para ser mais genérico e reutilizável */
     text-align: center;
-    color: var(--subtle-accent); /* Cor do título como na MetaPage */
-    margin-bottom: 0px; /* Ajuste para o gap do container */
-    font-size: 3em;
-    font-family: 'Orbitron', sans-serif; /* Fonte do título como na MetaPage */
+    color: var(--subtle-accent);
+    margin-bottom: 30px;
+    font-size: 2.8em;
+    font-family: 'Orbitron', sans-serif;
     text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7);
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     animation: fadeInDown 1s ease-out forwards;
+    padding: 0 10px; /* Evita que o texto encoste nas bordas em telas pequenas */
 }
 
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    width: 90%; /* Ajustado para ser mais flexível */
-    max-width: 700px; /* Um pouco maior para formulários */
-    padding: 35px 50px; /* Mais padding para "cardificar" */
-    background-color: var(--navbar-background); /* Fundo como o filtersContainer */
+/* --- Formulário em si --- */
+.form {
+    background-color: var(--navbar-background);
+    padding: 40px 50px;
     border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(var(--navbar-shadow-color-rgb), 0.6);
+    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.6);
     border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2);
     transition: all 0.4s ease-in-out;
     position: relative;
     overflow: hidden;
-    z-index: 1; /* Para garantir que o conteúdo esteja acima do brilho */
+    width: 100%;
+    max-width: 650px; /* Aumentei ligeiramente a largura máxima para acomodar melhor as seções */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Aumentei o espaçamento entre os grupos e seções principais */
+    z-index: 1;
 }
 
-form::before {
+/* Efeito de brilho de fundo no formulário ao passar o mouse */
+.form::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -63,7 +90,7 @@ form::before {
     width: 200%;
     height: 200%;
     background: radial-gradient(circle at center,
-        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
+        rgba(var(--auth-area-glow-rgb), 0.15) 0%, /* Brilho um pouco mais intenso */
         transparent 70%
     );
     transform: rotate(0deg);
@@ -72,230 +99,257 @@ form::before {
     z-index: 0;
 }
 
-form:hover::before {
+.form:hover::before {
     opacity: 1;
     transform: rotate(360deg);
 }
 
-form:hover {
-    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 30px rgba(var(--auth-area-glow-rgb), 0.5);
+.form:hover {
+    box-shadow: 0 10px 25px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 40px rgba(var(--auth-area-glow-rgb), 0.6); /* Sombra e brilho mais intensos no hover */
     border-color: var(--secondary-color-a);
 }
 
-.formGroup {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px; /* Mais espaçamento entre grupos */
-    width: 100%;
-    position: relative;
-    z-index: 1;
-}
-
-label {
-    margin-bottom: 8px; /* Mais espaço */
-    font-weight: bold;
-    color: var(--subtle-accent); /* Cor do label como o filterLabel */
-    font-family: 'Share Tech Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1.2px; /* Mais espaçamento */
-    text-shadow: 0 0 4px rgba(var(--subtle-accent-rgb), 0.4); /* Brilho no texto */
-}
-
-input[type="text"],
-input[type="email"],
-input[type="url"],
-textarea {
-    padding: 14px 20px; /* Padding como o filterSelect */
-    border-radius: 8px;
-    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
-    background-color: var(--primary-background); /* Fundo como o filterSelect */
-    color: var(--primary-text);
-    font-size: 1.15em;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-    outline: none;
-    width: 100%; /* Garante que ocupam o espaço disponível */
-    box-sizing: border-box; /* Inclui padding e border na largura */
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="url"]:focus,
-textarea:focus {
-    border-color: var(--secondary-color-a);
-    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
-    background-color: rgba(var(--primary-background-rgb), 1);
-    color: var(--subtle-accent);
-}
-
-textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-h3 {
-    margin-top: 30px; /* Mais espaço */
-    margin-bottom: 15px;
-    color: var(--subtle-accent); /* Estilo como os labels */
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 1.5px;
-    text-shadow: 0 0 6px rgba(var(--subtle-accent-rgb), 0.6);
-    text-align: center;
-}
-
-.memberInput {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 15px; /* Mais espaçamento */
-    margin-bottom: 15px;
-    align-items: end; /* Alinha os itens na parte inferior */
-    width: 100%;
-    background-color: rgba(var(--navbar-background-rgb), 0.7); /* Um fundo mais suave para cada membro */
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.1);
-    box-shadow: 0 2px 8px rgba(var(--navbar-shadow-color-rgb), 0.3);
+/* --- Seções do Formulário (Ex: Detalhes da Equipa, Membros da Equipa) --- */
+.formSection {
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.3); /* Borda mais consistente */
+    border-radius: 10px; /* Cantos arredondados */
+    padding: 25px;
+    margin-bottom: 20px; /* Espaço entre as seções */
+    background-color: rgba(var(--primary-background-rgb), 0.7); /* Fundo semi-transparente */
+    box-shadow: inset 0 0 15px rgba(var(--navbar-shadow-color-rgb), 0.1); /* Brilho interno sutil */
     transition: all 0.3s ease;
 }
 
-.memberInput:hover {
-    box-shadow: 0 4px 12px rgba(var(--navbar-shadow-color-rgb), 0.5);
-    border-color: rgba(var(--secondary-color-a-rgb), 0.3);
+.formSection:last-child {
+    margin-bottom: 0; /* Remove a margem do último para não adicionar espaço extra */
 }
 
-.memberInputGroup {
-    display: flex;
-    flex-direction: column;
+.formSection:hover {
+    border-color: var(--subtle-accent);
+    box-shadow: inset 0 0 20px rgba(var(--auth-area-glow-rgb), 0.2), 0 0 10px rgba(var(--secondary-color-a-rgb), 0.3);
 }
 
-.memberInput label {
-    font-weight: normal; /* Manter a fonte bold, mas sem negrito extra */
-    font-size: 0.95em; /* Ligeiramente menor */
-    text-shadow: none; /* Remover brilho dos labels internos */
-    color: var(--primary-text); /* Mais suave */
-    margin-bottom: 5px;
-    letter-spacing: 1px;
-}
-
-.memberInput input[type="text"] {
-    width: 100%;
-    padding: 10px 15px; /* Ajustar padding */
-    font-size: 1em; /* Ajustar tamanho da fonte */
-}
-
-/* Botões Estilo Cyberpunk/Neon */
-.buttonBase {
-    padding: 14px 25px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.15em;
-    cursor: pointer;
-    font-family: 'Orbitron', sans-serif;
+/* Título da Seção */
+.sectionTitle {
+    text-align: center;
+    color: var(--secondary-color-a); /* Cor de acento secundária */
+    margin-top: -10px; /* Puxa um pouco para cima do border */
+    margin-bottom: 25px; /* Mais espaço abaixo do título da seção */
+    font-size: 1.8em; /* Levemente maior */
+    font-weight: 700; /* Mais negrito */
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.3s ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 5px rgba(var(--secondary-color-a-rgb), 0.5);
+}
+
+/* --- Grupo de Formulário (label + input/select) --- */
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre label e input */
     position: relative;
-    overflow: hidden;
-    outline: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra padrão */
+    z-index: 1;
+    margin-bottom: 18px; /* Adicionado para uniformidade */
 }
 
-.buttonBase::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0%;
-    height: 0%;
-    background: rgba(255, 255, 255, 0.15); /* Brilho de clique */
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out;
-}
-
-.buttonBase:active::before {
-    width: 200%;
-    height: 200%;
-    opacity: 1;
-    transition: 0s;
-}
-
-.removeButton {
-    composes: buttonBase; /* Herdar estilos base */
-    background-color: #e74c3c; /* Vermelho vibrante */
-    color: white;
-    box-shadow: 0 0 10px rgba(231, 76, 60, 0.6); /* Brilho vermelho */
-}
-
-.removeButton:hover {
-    background-color: #c0392b;
-    box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
-    transform: translateY(-2px);
-}
-
-.addButton {
-    composes: buttonBase; /* Herdar estilos base */
-    background-color: var(--secondary-color-a); /* Azul vibrante */
-    color: white;
-    margin-top: 20px; /* Mais espaço */
-    width: fit-content;
-    align-self: center; /* Centralizar botão Adicionar Membro */
-    box-shadow: 0 0 10px rgba(var(--secondary-color-a-rgb), 0.6); /* Brilho azul */
-}
-
-.addButton:hover {
-    background-color: #0069d9;
-    box-shadow: 0 0 15px rgba(var(--secondary-color-a-rgb), 0.8);
-    transform: translateY(-2px);
-}
-
-.submitButton {
-    composes: buttonBase; /* Herdar estilos base */
-    background-color: #27ae60; /* Verde vibrante */
-    color: white;
-    margin-top: 30px; /* Mais espaço */
-    font-size: 1.3em; /* Maior para o botão de submissão */
-    align-self: center; /* Centralizar botão de submissão */
-    box-shadow: 0 0 12px rgba(39, 174, 96, 0.7); /* Brilho verde */
-}
-
-.submitButton:hover {
-    background-color: #229954;
-    box-shadow: 0 0 20px rgba(39, 174, 96, 0.9);
-    transform: translateY(-3px);
-}
-
-.error-message, .success-message {
-    text-align: center;
-    font-size: 1.1em;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 25px;
-    width: 100%;
-    box-sizing: border-box;
+/* Label */
+.label {
+    font-size: 1.1em; /* Levemente menor para não competir com o título da seção */
+    color: var(--subtle-accent);
+    font-weight: bold;
     font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-shadow: 0 0 4px rgba(var(--subtle-accent-rgb), 0.4);
+}
+
+/* Input, Select, Textarea */
+.input,
+.select,
+.textarea {
+    padding: 14px 18px; /* Padding ajustado */
+    border-radius: 8px;
+    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
+    background-color: rgba(var(--primary-background-rgb), 0.8); /* Fundo um pouco mais opaco */
+    color: var(--primary-text);
+    font-size: 1.1em;
+    font-family: 'Roboto', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box; /* Essencial para padding e border não quebrarem a largura */
+}
+
+.textarea {
+    min-height: 100px; /* Altura mínima para a textarea */
+    resize: vertical;
+}
+
+.select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Ícone SVG para a seta do select - cor ajustada para ser visível no tema escuro */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b0b0b0%22%20d%3D%22M287%2C197.393a15.8%2C15.8%2C0%2C0%2C1%2C-15.8-15.8l-128.5-128.5a15.8%2C15.8%2C0%2C0%2C1%2C-22.3%2C0L15.8%2C181.593a15.8%2C15.8%2C0%2C0%2C1%2C0%2C22.3c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0l117.2-117.2l117.2%2C117.2c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0C290.4%2C207.393%2C290.4%2C200.793%2C287%2C197.393Z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 18px; /* Levemente maior */
+    padding-right: 45px;
+    cursor: pointer;
+}
+
+.input:hover,
+.select:hover,
+.textarea:hover {
+    border-color: var(--secondary-color-a);
+    background-color: rgba(var(--primary-background-rgb), 0.95);
+    color: var(--subtle-accent);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+    border-color: var(--auth-area-glow); /* Cor de foco mais vibrante */
+    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
+    background-color: var(--primary-background); /* Fundo sólido no foco */
+    color: var(--subtle-accent);
+}
+
+/* Estilo para as opções dentro do select */
+.select option {
+    background-color: var(--navbar-background); /* Fundo das opções do select */
+    color: var(--primary-text);
+    padding: 10px;
+}
+
+.select option:hover {
+    background-color: var(--secondary-color-a);
+    color: white; /* Texto branco no hover da opção */
+}
+
+/* --- Botões --- */
+.buttonGroup { /* Nova classe para agrupar botões */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaçamento entre os botões */
+    margin-top: 30px;
+}
+
+.button {
+    padding: 15px 30px;
+    background-color: var(--subtle-accent);
+    color: var(--primary-background); /* Texto escuro no botão vibrante */
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(var(--subtle-accent-rgb), 0.4);
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    width: 100%; /* Garante que ocupam a largura total do buttonGroup */
+}
+
+.button:hover {
+    background-color: var(--secondary-color-a);
+    box-shadow: 0 6px 15px rgba(var(--secondary-color-a-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.8);
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(var(--secondary-color-a-rgb), 0.4);
+}
+
+.button:disabled {
+    background-color: rgba(var(--primary-text-rgb), 0.2); /* Cinza translúcido */
+    color: rgba(var(--primary-text-rgb), 0.5); /* Texto mais fraco */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.buttonSecondary {
+    background-color: rgba(var(--navbar-shadow-color-rgb), 0.3); /* Cor secundária translúcida */
+    color: var(--navbar-shadow-color); /* Texto com a cor da sombra da navbar */
+    border: 1px solid var(--navbar-shadow-color); /* Borda para contraste */
+    box-shadow: 0 2px 8px rgba(var(--navbar-shadow-color-rgb), 0.2);
+}
+
+.buttonSecondary:hover {
+    background-color: rgba(var(--navbar-shadow-color-rgb), 0.5); /* Mais opaco no hover */
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--navbar-shadow-color-rgb), 0.4), 0 0 15px rgba(var(--navbar-shadow-color-rgb), 0.6);
+}
+
+.buttonSecondary:active {
+    transform: translateY(0);
+}
+
+/* --- Mensagens de Erro/Sucesso --- */
+.errorMessage {
+    color: #ff6b6b; /* Um vermelho mais vibrante para erro */
+    background-color: rgba(255, 107, 107, 0.15); /* Fundo translúcido */
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 15px; /* Espaço para não ficar colado */
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1em;
+    border: 1px solid #ff6b6b;
+    box-shadow: 0 0 12px rgba(255, 107, 107, 0.5);
     animation: fadeIn 0.5s ease-out forwards;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
 }
 
-.error-message {
-    color: #ff6347; /* Tom de vermelho mais neon */
-    background-color: rgba(255, 99, 71, 0.1);
-    border: 1px solid rgba(255, 99, 71, 0.4);
-    box-shadow: 0 0 10px rgba(255, 99, 71, 0.5);
+.successMessage {
+    color: #4CAF50; /* Verde clássico de sucesso */
+    background-color: rgba(76, 175, 80, 0.15);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1em;
+    border: 1px solid #4CAF50;
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.5);
+    animation: fadeIn 0.5s ease-out forwards;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
 }
 
-.success-message {
-    color: #39ff14; /* Tom de verde neon */
-    background-color: rgba(57, 255, 20, 0.1);
-    border: 1px solid rgba(57, 255, 20, 0.4);
-    box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+/* --- Links de Navegação --- */
+.linkText {
+    margin-top: 25px;
+    font-size: 1.05em;
+    color: var(--primary-text);
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
 }
 
-@keyframes fadeIn {
+.link {
+    color: var(--secondary-color-a);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.link:hover {
+    color: var(--subtle-accent);
+    text-shadow: 0 0 10px rgba(var(--auth-area-glow-rgb), 0.8); /* Brilho mais forte no hover */
+}
+
+/* --- Animações --- */
+@keyframes fadeInDown {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(-30px); /* Desce de mais alto */
     }
     to {
         opacity: 1;
@@ -303,104 +357,134 @@ h3 {
     }
 }
 
-/* --- Responsividade --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
+/* --- Responsividade --- */
 @media (max-width: 768px) {
-    .registerTeamPage {
-        padding: 20px 10px;
+    .centeredHeading {
+        font-size: 2.2em;
+        margin-bottom: 25px;
+    }
+
+    .form {
+        padding: 30px 25px;
+        max-width: 500px; /* Ajuste para telas menores */
         gap: 20px;
     }
 
-    h2 {
-        font-size: 2.2em;
+    .formSection {
+        padding: 20px;
+        margin-bottom: 15px;
     }
 
-    form {
-        padding: 25px 30px;
-        width: 95%;
+    .sectionTitle {
+        font-size: 1.5em;
+        margin-bottom: 20px;
     }
 
-    label {
-        font-size: 0.95em;
-        letter-spacing: 1px;
+    .label {
+        font-size: 1em;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="url"],
-    textarea {
+    .input,
+    .select,
+    .textarea {
         padding: 12px 15px;
         font-size: 1em;
     }
 
-    h3 {
-        font-size: 1.5em;
+    .select {
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 40px;
     }
 
-    .memberInput {
-        grid-template-columns: 1fr; /* Membros em coluna em telas pequenas */
-        gap: 10px;
-        padding: 10px;
-    }
-
-    .memberInput input[type="text"] {
-        padding: 8px 12px;
-        font-size: 0.9em;
-    }
-
-    .buttonBase {
-        padding: 12px 20px;
-        font-size: 1em;
-    }
-
-    .submitButton {
+    .button {
+        padding: 12px 25px;
         font-size: 1.1em;
     }
 
-    .removeButton {
-        margin-top: 10px; /* Adicionar espaço para o botão remover */
+    .buttonGroup {
+        gap: 10px;
+        margin-top: 25px;
     }
 
-    .error-message, .success-message {
-        font-size: 1em;
-        padding: 15px;
+    .linkText {
+        font-size: 0.95em;
+    }
+
+    .errorMessage, .successMessage {
+        padding: 10px 15px;
+        font-size: 0.9em;
     }
 }
 
 @media (max-width: 480px) {
-    h2 {
+    .container {
+        padding: 10px;
+    }
+    .centeredHeading {
         font-size: 1.8em;
-        letter-spacing: 1px;
+        margin-bottom: 20px;
     }
 
-    form {
-        padding: 20px 20px;
+    .form {
+        padding: 25px 15px;
+        max-width: 100%; /* Permite que o formulário ocupe mais espaço em telas muito pequenas */
+        gap: 15px;
+        border-radius: 10px;
     }
 
-    label {
-        font-size: 0.9em;
-        letter-spacing: 0.8px;
+    .formSection {
+        padding: 15px;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="url"],
-    textarea {
+    .sectionTitle {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .label {
+        font-size: 0.95em;
+    }
+
+    .input,
+    .select,
+    .textarea {
         padding: 10px 12px;
         font-size: 0.9em;
     }
 
-    .buttonBase {
-        padding: 10px 15px;
-        font-size: 0.9em;
+    .select {
+        background-position: right 8px center;
+        background-size: 14px;
+        padding-right: 35px;
     }
 
-    .submitButton {
+    .button {
+        padding: 10px 20px;
         font-size: 1em;
+        letter-spacing: 0.8px;
     }
 
-    .error-message, .success-message {
-        font-size: 0.9em;
-        padding: 10px;
+    .buttonGroup {
+        margin-top: 20px;
+    }
+
+    .linkText {
+        font-size: 0.85em;
+    }
+
+    .errorMessage, .successMessage {
+        padding: 8px 12px;
+        font-size: 0.85em;
+        border-radius: 6px;
     }
 }

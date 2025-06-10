@@ -1,209 +1,259 @@
-  // src/services/database.ts
-  import { doc, getDoc, getDocs, collection, updateDoc, setDoc, addDoc, query, orderBy, limit } from "firebase/firestore";
-  import { db } from "./firebaseConfig";
+import { db, storage } from './firebaseConfig';
+import {
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    setDoc,
+    addDoc,
+    query,
+    where,
+    updateDoc,
+    arrayUnion,
+    onSnapshot,
+    orderBy
+} from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import type { News } from '../types/News';
+import type { Team } from '../types/Team';
+import type { UserProfile, MatchHistoryItem } from '../types/User';
 
-  import type { News } from "../types/News";
-  import type { TeamMember } from "../types/TeamMember";
-  import type { UserProfile } from "../types/User";
-  import type { Team } from "../types/Team";
-  import type { Champion } from "../types/Champion"; // IMPORTANTE: Importe o novo tipo Champion
+// --- Funções de Notícias ---
 
-  // Função para buscar o perfil do usuário
-  export async function getUserProfile(uid: string): Promise<UserProfile | null> {
-    const docRef = doc(db, "users", uid);
-    try {
-      const snapshot = await getDoc(docRef);
+/**
+ * Cria um listener em tempo real para a coleção de notícias,
+ * ordenando-as da mais recente para a mais antiga.
+ */
+export const listenToAllNews = (callback: (news: News[]) => void) => {
+  const newsQuery = query(collection(db, 'news'), orderBy('publicationDate', 'desc'));
 
-      if (!snapshot.exists()) {
-        console.warn(`Nenhum perfil de usuário encontrado para UID: ${uid}`);
-        return null;
-      }
+  const unsubscribe = onSnapshot(newsQuery, (querySnapshot) => {
+    const newsList = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        title: data.title || '',
+        summary: data.summary || '',
+        imageUrl: data.imageUrl || '',
+        publicationDate: data.publicationDate?.toDate() || new Date(),
+        description: data.description || '',
+        content: data.content || '',
+      } as News;
+    });
+    callback(newsList);
+  }, (error) => {
+    console.error("Erro ao ouvir as notícias:", error);
+    callback([]);
+  });
+  return unsubscribe;
+};
 
-      const data = snapshot.data();
-      return { ...data, uid: snapshot.id } as UserProfile;
-    } catch (error) {
-      console.error('Erro ao buscar perfil do usuário:', error);
-      return null;
-    }
+/**
+ * Cria um novo artigo de notícia, faz o upload da imagem e salva no Firestore.
+ */
+export const addNews = async (
+  newsData: { title: string, summary: string, description: string, content: string },
+  imageFile: File
+): Promise<string> => {
+  try {
+    const imageRef = ref(storage, `news_images/${Date.now()}_${imageFile.name}`);
+    await uploadBytes(imageRef, imageFile);
+    const imageUrl = await getDownloadURL(imageRef);
+    const completeNewsData = {
+      ...newsData,
+      imageUrl: imageUrl,
+      publicationDate: new Date(),
+    };
+    const docRef = await addDoc(collection(db, 'news'), completeNewsData);
+    return docRef.id;
+  } catch (error) {
+    console.error("Erro ao criar o artigo de notícia:", error);
+    throw new Error("Falha ao criar a notícia. Verifique a consola para mais detalhes.");
   }
+};
 
-  // Atualizar perfil do usuário
-  export async function updateUserProfile(uid: string, data: Partial<UserProfile>) {
-    const docRef = doc(db, "users", uid);
+
+// --- Funções de Perfil de Utilizador ---
+
+export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
     try {
-      await updateDoc(docRef, data);
-      console.log("Perfil atualizado com sucesso no Firestore.");
-    } catch (error) {
-      console.error("Erro ao atualizar perfil no Firestore:", error);
-      throw error;
-    }
-  }
-
-  // --- Funções de Notícias ---
-
-  // Converte o Timestamp do Firebase para uma string de data ISO para o tipo News
-  // Esta função auxiliar garante consistência na manipulação de datas.
-  const mapNewsDocToNewsType = (doc: any): News => {
-    const data = doc.data();
-    // Se publicationDate for um Timestamp, converte para ISO string
-    const publicationDate = data.publicationDate && typeof data.publicationDate.toDate === 'function'
-      ? data.publicationDate.toDate().toISOString()
-      : data.publicationDate; // Caso já seja uma string, mantém
-
-    return { ...data, id: doc.id, publicationDate } as News;
-  };
-
-
-  // Últimas notícias (ex: as 3 mais recentes)
-  export async function getLatestNews(limitCount = 3): Promise<News[]> {
-    const q = query(collection(db, "news"), orderBy("publicationDate", "desc"), limit(limitCount));
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(mapNewsDocToNewsType);
-  }
-
-  // Todas as notícias
-  export async function getAllNews(): Promise<News[]> {
-    const q = query(collection(db, "news"), orderBy("publicationDate", "desc"));
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(mapNewsDocToNewsType);
-  }
-
-  // Adiciona uma nova notícia/evento
-  export async function addNews(newsData: Omit<News, 'id' | 'publicationDate'>): Promise<string | null> {
-    try {
-      const newsCollectionRef = collection(db, 'news');
-      const docRef = await addDoc(newsCollectionRef, {
-        ...newsData,
-        publicationDate: new Date(), // Salva como Timestamp do Firebase
-      });
-      console.log('Notícia/Evento adicionado com ID: ', docRef.id);
-      return docRef.id;
-    } catch (error) {
-      console.error('Erro ao adicionar notícia/evento:', error);
-      return null;
-    }
-  }
-
-  // --- FIM das Funções de Notícias ---
-
-  // --- Funções de Membros da Equipe ---
-  export async function getTeamMembers(): Promise<TeamMember[]> {
-    try {
-      const snapshot = await getDocs(collection(db, "teamMembers"));
-      return snapshot.docs.map(doc => doc.data() as TeamMember);
-    } catch (error) {
-      console.error("Erro ao buscar membros da equipe:", error);
-      return [];
-    }
-  }
-  // --- FIM das Funções de Membros da Equipe ---
-
-  // --- Funções de Equipes (Teams) ---
-  export const registerTeam = async (teamData: Omit<Team, 'id' | 'registrationDate'>): Promise<string | null> => {
-    try {
-      const teamsCollectionRef = collection(db, 'teams');
-      const docRef = await addDoc(teamsCollectionRef, {
-        ...teamData,
-        registrationDate: new Date(),
-      });
-      console.log('Time registrado com ID: ', docRef.id);
-      return docRef.id;
-    } catch (error) {
-      console.error('Erro ao registrar time:', error);
-      return null;
-    }
-  };
-
-  export const getAllTeams = async (): Promise<Team[]> => {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'teams'));
-      const teams: Team[] = [];
-      querySnapshot.forEach((doc) => {
-        teams.push({ id: doc.id, ...doc.data() } as Team);
-      });
-      return teams;
-    } catch (error) {
-      console.error('Erro ao buscar times:', error);
-      return [];
-    }
-  };
-  // --- FIM das Funções de Equipes (Teams) ---
-
-  // --- Funções de Treinos ---
-  type Bookings = Record<string, string[]>; // Ex: { Segunda: ["15:00", "20:00"], Terça: ["17:00"] }
-
-  export async function getUserTrainings(uid: string): Promise<Bookings | null> {
-    const docRef = doc(db, "trainings", uid);
-    try {
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) return null;
-
-      const data = docSnap.data();
-      return data.bookings || null;
-    } catch (error) {
-      console.error("Erro ao buscar treinos do usuário:", error);
-      return null;
-    }
-  }
-
-  export async function addTrainingBooking(uid: string, day: string, time: string) {
-    const docRef = doc(db, "trainings", uid);
-    try {
-      const userTrainings = await getUserTrainings(uid);
-
-      if (!userTrainings) {
-        await setDoc(docRef, {
-          bookings: {
-            [day]: [time],
-          },
-        });
-        console.log(`Treino para ${day} às ${time} adicionado para ${uid}.`);
-      } else {
-        const dayTimes = userTrainings[day] || [];
-        if (dayTimes.includes(time)) {
-          throw new Error("Horário já agendado para este dia.");
+        const userDocRef = doc(db, 'users', uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+            const data = userDocSnap.data();
+            return {
+                uid: userDocSnap.id,
+                nick: data.nick || '',
+                email: data.email || '',
+                role: data.role || 'member',
+                lane: data.lane || null,
+                inGameName: data.inGameName || '',
+                status: data.status || 'Offline',
+                fotoURL: data.fotoURL || null,
+                teamId: data.teamId || null,
+                matchHistory: (data.matchHistory || []),
+            } as UserProfile;
         }
-        dayTimes.push(time);
-
-        await updateDoc(docRef, {
-          [`bookings.${day}`]: dayTimes,
-        });
-        console.log(`Treino para ${day} às ${time} atualizado para ${uid}.`);
-      }
+        return null;
     } catch (error) {
-      console.error("Erro ao adicionar agendamento de treino:", error);
-      throw error;
+        console.error('Erro ao obter perfil do usuário:', error);
+        return null;
     }
+};
+
+export const listenToUserProfile = (
+    uid: string,
+    callback: (profile: UserProfile) => void
+) => {
+    const docRef = doc(db, "users", uid);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const profileData: UserProfile = {
+                uid: docSnap.id,
+                nick: data.nick || '',
+                email: data.email || '',
+                role: data.role || 'member',
+                lane: data.lane || null,
+                inGameName: data.inGameName || '',
+                status: data.status || 'Offline',
+                fotoURL: data.fotoURL || null,
+                teamId: data.teamId || null,
+                matchHistory: data.matchHistory || [],
+            };
+            callback(profileData);
+        } else {
+            console.warn("Listener: Nenhum perfil encontrado para o UID:", uid);
+        }
+    });
+    return unsubscribe;
+};
+
+export const updateUserProfile = async (uid: string, updates: Partial<UserProfile>): Promise<void> => {
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        await setDoc(userDocRef, updates, { merge: true });
+        console.log('Perfil do usuário atualizado com sucesso!');
+    } catch (error) {
+        console.error('Erro ao atualizar perfil do usuário:', error);
+        throw error;
+    }
+};
+
+
+// --- Funções de Partidas (Match) ---
+
+export const addMatchToUserProfile = async (uid: string, matchData: Omit<MatchHistoryItem, 'id'>): Promise<string> => {
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const newMatchId = doc(collection(db, 'temp')).id;
+        const matchWithId: MatchHistoryItem = { id: newMatchId, ...matchData };
+        await updateDoc(userDocRef, {
+            matchHistory: arrayUnion(matchWithId)
+        });
+        return newMatchId;
+    } catch (error) {
+        console.error('Erro ao adicionar partida ao perfil:', error);
+        throw error;
+    }
+};
+
+export const updateMatchHistoryScreenshot = async (uid: string, matchId: string, screenshotUrl: string): Promise<void> => {
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+            const currentMatchHistory: MatchHistoryItem[] = userDocSnap.data().matchHistory || [];
+            const updatedMatchHistory = currentMatchHistory.map(match =>
+                match.id === matchId ? { ...match, screenshotUrl } : match
+            );
+            await updateDoc(userDocRef, { matchHistory: updatedMatchHistory });
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar screenshot:', error);
+        throw error;
+    }
+};
+
+
+// --- Funções de Equipa (Team) ---
+
+export const getAllTeams = async (): Promise<Team[]> => {
+   try {
+        const teamsCollection = collection(db, 'teams');
+        const teamSnapshot = await getDocs(teamsCollection);
+        const teamsList = teamSnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                ...data,
+                id: doc.id,
+                registrationDate: data.registrationDate ? data.registrationDate.toDate() : new Date(),
+                tag: data.tag || null,
+                logoURL: data.logoURL || null,
+                description: data.description || null,
+                region: data.region || null,
+                members: (data.members || []),
+            } as Team;
+        });
+        return teamsList;
+    } catch (error) {
+        console.error("Erro ao obter todas as equipes:", error);
+        throw error;
+    }
+};
+
+export const getTeamById = async (teamId: string): Promise<Team | null> => {
+    try {
+        const teamDocRef = doc(db, 'teams', teamId);
+        const teamDocSnap = await getDoc(teamDocRef);
+        if (teamDocSnap.exists()) {
+            const data = teamDocSnap.data();
+            return {
+                ...data,
+                id: teamDocSnap.id,
+                registrationDate: data.registrationDate ? data.registrationDate.toDate() : new Date(),
+                tag: data.tag || null,
+                logoURL: data.logoURL || null,
+                description: data.description || null,
+                region: data.region || null,
+                members: (data.members || []),
+            } as Team;
+        }
+        return null;
+    } catch (error) {
+        console.error("Erro ao obter equipe por ID:", error);
+        throw error;
+    }
+};
+
+export const getTeamMembers = async (teamId: string): Promise<UserProfile[]> => {
+    const membersCollection = collection(db, 'users');
+    const q = query(membersCollection, where('teamId', '==', teamId));
+    const membersSnapshot = await getDocs(q);
+    const membersList = membersSnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+            uid: doc.id,
+            nick: data.nick || '',
+            email: data.email || '',
+            role: data.role || 'member',
+            lane: data.lane || null,
+            inGameName: data.inGameName || '',
+            status: data.status || 'Offline',
+            fotoURL: data.fotoURL || null,
+            teamId: data.teamId || null,
+            matchHistory: data.matchHistory || [],
+        } as UserProfile;
+    });
+    return membersList;
+};
+
+export const getTeamTrainings = async (teamId: string): Promise<Record<string, string[]>> => {
+  try {
+    console.warn(`[database.ts] getTeamTrainings para teamId ${teamId} chamada, mas não implementada. Retornando vazio.`);
+    return {};
+  } catch (error) {
+    console.error(`[database.ts] Erro em getTeamTrainings para teamId ${teamId}:`, error);
+    throw error;
   }
-  // --- FIM das Funções de Treinos ---
-
-  // --- NOVAS FUNÇÕES PARA PERSONAGENS (CHAMPIONS) ---
-
-  /**
-   * Busca todos os personagens do Firestore.
-   * @returns Um array de objetos Champion.
-   */
-  export const getAllChampions = async (): Promise<Champion[]> => {
-    const championsCollectionRef = collection(db, 'champions'); // Nome da coleção: 'champions'
-    const championsSnapshot = await getDocs(championsCollectionRef);
-    const championsList: Champion[] = championsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Champion));
-    return championsList;
-  };
-
-  /**
-   * Busca um personagem específico pelo seu ID (nome do documento).
-   * @param championId O ID do personagem (nome do documento no Firestore).
-   * @returns O objeto Champion ou null se não for encontrado.
-   */
-  export const getChampionById = async (championId: string): Promise<Champion | null> => {
-    const championDocRef = doc(db, 'champions', championId);
-    const championSnapshot = await getDoc(championDocRef);
-
-    if (championSnapshot.exists()) {
-      return { id: championSnapshot.id, ...championSnapshot.data() } as Champion;
-    }
-    return null;
-  };
-
-  // --- FIM das NOVAS FUNÇÕES PARA PERSONAGENS ---
+};

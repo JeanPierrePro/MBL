@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Utilizadores podem ler o perfil de outros, mas só escrever no seu.
+    match /users/{userId} {
+      allow get, list: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Qualquer utilizador autenticado pode ver as equipas.
+    // A criação e edição são controladas por Cloud Functions ou regras mais específicas.
+    match /teams/{teamId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'coach';
+    }
+
+    // ===== REGRA FUNDAMENTAL PARA A AGENDA PRIVADA =====
+    // Permite ler e escrever na sub-coleção 'treinos' de uma equipa
+    // APENAS SE o ID da equipa do utilizador for o mesmo da equipa que ele está a tentar aceder.
+    match /teams/{teamId}/treinos/{day} {
+      allow read, write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.teamId == teamId;
+    }
+
+    // Regras antigas mantidas
+    match /news/{newsId} {
+      allow read: if true;
+      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'coach';
+      allow update, delete: if false;
+    }
+    match /match_results_text/{docId} {
+        allow read, write: if false;
+    }
+    match /parsed_matches/{matchId} {
+        allow read: if request.auth != null;
+        allow write: if false;
+    }
+  }
+}

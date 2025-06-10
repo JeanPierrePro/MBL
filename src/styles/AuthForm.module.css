@@ -1,331 +1,293 @@
-/* src/styles/AuthForm.module.css */
+/* =================================================================== */
+/* --- Layout & Container Principal --- */
+/* =================================================================== */
 
-/*
- * NOTA: As variáveis de cor são esperadas do seu arquivo global.css ou _app.tsx
- * Certifique-se de que estão bem definidas para um tema consistente.
- * Variáveis necessárias:
- * --primary-background, --primary-background-rgb
- * --primary-text, --primary-text-rgb
- * --subtle-accent, --subtle-accent-rgb
- * --navbar-background, --navbar-background-rgb
- * --navbar-shadow-color, --navbar-shadow-color-rgb
- * --secondary-color-a, --secondary-color-a-rgb
- * --auth-area-glow, --auth-area-glow-rgb
- */
-
-/* Recomendações de fontes (importar no global.css ou _app.tsx): */
-/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Roboto:wght@300;400;700&display=swap'); */
-
-/* Container Principal do Formulário (similar ao .filtersContainer de MetaPage) */
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Centraliza verticalmente na tela */
-    min-height: calc(100vh - var(--navbar-height, 80px)); /* Ajuste para altura da navbar */
-    padding: 20px;
-    background-color: var(--primary-background);
-    color: var(--primary-text);
-    font-family: 'Roboto', sans-serif; /* Fonte padrão para texto */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px; /* Espaço entre as seções */
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 900px; /* Largura máxima para o conteúdo central */
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* Título do Formulário (similar ao .heading de MetaPage) */
-.container h2 {
-    text-align: center;
-    color: var(--subtle-accent); /* Dourado vibrante */
-    margin-bottom: 30px; /* Espaço abaixo do título */
-    font-size: 2.8em; /* Levemente maior que o padrão */
-    font-family: 'Orbitron', sans-serif; /* Fonte mais impactante */
-    text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7); /* Brilho acentuado */
-    letter-spacing: 1.5px;
-    animation: fadeInDown 1s ease-out forwards;
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #e94560;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2e609a;
 }
 
-/* Formulário em si (similar ao .filtersContainer de MetaPage, mas adaptado) */
+/* =================================================================== */
+/* --- Formulários (Login, Register, CreateNews, etc.) --- */
+/* =================================================================== */
+
 .form {
-    background-color: var(--navbar-background);
-    padding: 40px 50px; /* Padding generoso */
-    border-radius: 15px; /* Cantos arredondados */
-    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.6); /* Sombra proeminente */
-    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2); /* Borda sutil */
-    transition: all 0.4s ease-in-out;
-    position: relative;
-    overflow: hidden; /* Garante que elementos internos respeitem o border-radius */
-    width: 100%;
-    max-width: 500px; /* Largura máxima para o formulário */
-    display: flex;
-    flex-direction: column;
-    gap: 25px; /* Espaçamento entre os grupos de formulário */
-    z-index: 1; /* Garante que o formulário esteja acima do pseudo-elemento */
+  background: #0f3460;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Efeito de brilho de fundo no formulário ao passar o mouse */
-.form::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center,
-        rgba(var(--auth-area-glow-rgb), 0.1) 0%,
-        transparent 70%
-    );
-    transform: rotate(0deg);
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
-    z-index: 0;
+.centeredHeading {
+  color: #e94560;
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
 }
 
-.form:hover::before {
-    opacity: 1;
-    transform: rotate(360deg);
-}
-
-.form:hover {
-    box-shadow: 0 10px 25px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 40px rgba(var(--auth-area-glow-rgb), 0.5); /* Sombra e brilho mais intensos */
-    border-color: var(--secondary-color-a);
-}
-
-/* Grupo de Formulário (label + input/select) */
 .formGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 8px; /* Espaço entre label e input */
-    position: relative;
-    z-index: 1; /* Garante que o conteúdo fique acima do pseudo-elemento do form */
+  margin-bottom: 1.5rem;
 }
 
-/* Label (similar ao .filterLabel de MetaPage) */
 .label {
-    font-size: 1.2em;
-    color: var(--subtle-accent);
-    font-weight: bold;
-    font-family: 'Share Tech Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 0 5px rgba(var(--subtle-accent-rgb), 0.5);
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #a7a9be;
+  font-weight: 600;
 }
 
-/* Input e Select (similar ao .filterSelect de MetaPage) */
 .input,
+.textarea,
 .select {
-    padding: 14px 20px;
-    border-radius: 8px;
-    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
-    background-color: var(--primary-background);
-    color: var(--primary-text);
-    font-size: 1.1em;
-    font-family: 'Roboto', sans-serif;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-    outline: none;
-    width: 100%; /* Ocupa a largura total do formGroup */
-}
-
-.select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FAF9F6%22%20d%3D%22M287%2C197.393a15.8%2C15.8%2C0%2C0%2C1%2C-15.8-15.8l-128.5-128.5a15.8%2C15.8%2C0%2C0%2C1%2C-22.3%2C0L15.8%2C181.593a15.8%2C15.8%2C0%2C0%2C1%2C0%2C22.3c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0l117.2-117.2l117.2%2C117.2c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0C290.4%2C207.393%2C290.4%2C200.793%2C287%2C197.393Z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 16px;
-    padding-right: 45px;
-    cursor: pointer;
-}
-
-.input:hover,
-.select:hover {
-    border-color: var(--secondary-color-a);
-    background-color: rgba(var(--primary-background-rgb), 0.9);
-    color: var(--subtle-accent); /* Texto muda para a cor de acento no hover */
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #2e609a;
+  border-radius: 8px;
+  background-color: #16213e;
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
 }
 
 .input:focus,
+.textarea:focus,
 .select:focus {
-    border-color: var(--secondary-color-a);
-    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
-    background-color: rgba(var(--primary-background-rgb), 1);
-    color: var(--subtle-accent); /* Texto muda para a cor de acento no focus */
+  outline: none;
+  border-color: #e94560;
+  box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.2);
 }
 
-/* Estilo para as opções dentro do select */
-.select option {
-    background-color: var(--primary-background);
-    color: var(--primary-text);
-    padding: 10px;
+.textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
-.select option:hover {
-    background-color: var(--navbar-background);
-    color: var(--subtle-accent);
-}
+/* =================================================================== */
+/* --- Botões --- */
+/* =================================================================== */
 
-/* Botão de Envio */
 .button {
-    padding: 15px 30px;
-    background-color: var(--subtle-accent); /* Cor de acento para o botão */
-    color: var(--primary-background); /* Texto escuro no botão vibrante */
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(var(--subtle-accent-rgb), 0.4); /* Sombra do botão */
-    margin-top: 20px; /* Espaço acima do botão */
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e94560, #9f3d5b);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .button:hover {
-    background-color: var(--secondary-color-a); /* Cor secundária no hover */
-    box-shadow: 0 6px 15px rgba(var(--secondary-color-a-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.8);
-    transform: translateY(-2px); /* Efeito de "subir" no hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
 }
 
-.button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(var(--secondary-color-a-rgb), 0.4);
+.button:disabled {
+  background: #4a5d7c;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.6;
 }
 
-/* Mensagem de Erro */
+.buttonSecondary {
+  composes: button; /* Herda os estilos do .button */
+  background: #2e609a;
+}
+.buttonSecondary:hover {
+  background: #214d7a;
+  box-shadow: 0 4px 20px rgba(46, 96, 154, 0.3);
+}
+
+.buttonGroupRow {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+/* =================================================================== */
+/* --- Página de Perfil --- */
+/* =================================================================== */
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 20px;
+  background-color: #0f3460;
+  padding: 25px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.profileImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #e94560;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(233, 69, 96, 0.5);
+}
+
+.profileInfo h2 {
+  margin: 0 0 5px 0;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.profileInfo p {
+  margin: 5px 0;
+  color: #a7a9be;
+}
+
+.summaryContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.summaryCard {
+  background-color: #0f3460;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  border-top: 3px solid #e94560;
+}
+
+.summaryCard h3 {
+  margin-top: 0;
+  font-size: 1em;
+  color: #a7a9be;
+  font-weight: 400;
+}
+
+.summaryCard p {
+  margin-bottom: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.chartContainer {
+  width: 100%;
+  background-color: #0f3460;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.matchHistoryGrid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.matchCard {
+  background-color: #0f3460;
+  border-left: 5px solid #4a5d7c; /* Cor neutra */
+  padding: 15px 20px;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.matchCard:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.matchCard.victory {
+  border-left-color: #4CAF50;
+}
+
+.matchCard.defeat {
+  border-left-color: #F44336;
+}
+
+.matchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  color: #a7a9be;
+}
+
+.outcomeText {
+  font-weight: bold;
+  font-size: 1.1em;
+  text-transform: uppercase;
+}
+
+.matchBody {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  font-size: 0.95em;
+}
+
+.matchBody p {
+  margin: 0;
+  background-color: #16213e;
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+
+.matchBody p strong {
+  color: #e94560;
+  margin-right: 8px;
+}
+
+
+/* =================================================================== */
+/* --- Mensagens de Feedback --- */
+/* =================================================================== */
+
+.errorMessage, .successMessage {
+  width: 100%;
+  max-width: 500px; /* Mesma largura do formulário */
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
 .errorMessage {
-    color: #ff4d4d; /* Um vermelho mais vibrante para erro */
-    background-color: rgba(255, 77, 77, 0.1);
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-top: -10px; /* Puxa um pouco para cima */
-    margin-bottom: 10px;
-    text-align: center;
-    font-size: 0.95em;
-    border: 1px solid #ff4d4d;
-    box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
-    animation: fadeIn 0.5s ease-out forwards;
+  background-color: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
 }
 
-/* Link de Login/Registro */
-.linkText {
-    margin-top: 25px;
-    font-size: 1.05em;
-    color: var(--primary-text);
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-}
-
-.link {
-    color: var(--secondary-color-a); /* Cor de acento para o link */
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.link:hover {
-    color: var(--subtle-accent); /* Link muda para dourado no hover */
-    text-shadow: 0 0 8px rgba(var(--auth-area-glow-rgb), 0.6);
-}
-
-/* Animação para o título (copiada de MetaPage.module.css) */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Animação genérica de fadeIn (para mensagens de erro, etc.) */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-
-/* --- Responsividade --- */
-
-@media (max-width: 768px) {
-    .container h2 {
-        font-size: 2.2em;
-        margin-bottom: 20px;
-    }
-
-    .form {
-        padding: 30px 30px;
-        max-width: 400px;
-        gap: 20px;
-    }
-
-    .label {
-        font-size: 1.1em;
-    }
-
-    .input,
-    .select {
-        padding: 12px 15px;
-        font-size: 1em;
-    }
-
-    .select {
-        background-position: right 10px center;
-        background-size: 14px;
-        padding-right: 35px;
-    }
-
-    .button {
-        padding: 12px 25px;
-        font-size: 1.1em;
-    }
-
-    .linkText {
-        font-size: 0.95em;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-    }
-    .container h2 {
-        font-size: 1.8em;
-    }
-
-    .form {
-        padding: 25px 20px;
-        max-width: 300px;
-        gap: 15px;
-    }
-
-    .label {
-        font-size: 1em;
-    }
-
-    .input,
-    .select {
-        padding: 10px 10px;
-        font-size: 0.95em;
-    }
-
-    .select {
-        background-position: right 8px center;
-        background-size: 12px;
-        padding-right: 30px;
-    }
-
-    .button {
-        padding: 10px 20px;
-        font-size: 1em;
-    }
-
-    .linkText {
-        font-size: 0.9em;
-    }
+.successMessage {
+  background-color: rgba(107, 255, 107, 0.1);
+  color: #6bff6b;
+  border: 1px solid #6bff6b;
 }

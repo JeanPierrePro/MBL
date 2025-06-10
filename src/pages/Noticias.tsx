@@ -1,97 +1,122 @@
-// src/pages/Noticias.tsx
-import React, { useState, useEffect } from 'react';
-import NewsCard from '../components/NewsCard';
-import NewsPopup from '../components/NewsPopup';
-import { getAllNews, getUserProfile } from '../services/database'; // Certifique-se que getUserProfile está aqui
-import type { News } from '../types/News';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../services/firebaseConfig'; // Importa a autenticação do Firebase
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { UserProfile } from '../types/User'; // Importa o tipo UserProfile
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+// Funções, tipos e estilos necessários
+import { listenToAllNews, getUserProfile } from '../services/database';
+import { auth } from '../services/firebaseConfig';
+import type { News } from '../types/News';
+import NewsCard from '../components/NewsCard';
+import styles from '../styles/Noticias.module.css';
+
+// Função auxiliar para agrupar as notícias por data
+const groupNewsByDate = (news: News[]) => {
+  const groups: { [key: string]: News[] } = {
+    "Hoje": [],
+    "Ontem": [],
+    "Esta Semana": [],
+    "Este Mês": [],
+    "Mais Antigas": [],
+  };
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  // O início da semana é a última Segunda-feira
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - (today.getDay() === 0 ? 6 : today.getDay() - 1));
+
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  news.forEach(item => {
+    // Certifica-se que publicationDate é um objeto Date válido
+    const itemDate = item.publicationDate instanceof Date ? item.publicationDate : new Date(item.publicationDate);
+    
+    if (itemDate >= today) groups["Hoje"].push(item);
+    else if (itemDate >= yesterday) groups["Ontem"].push(item);
+    else if (itemDate >= startOfWeek) groups["Esta Semana"].push(item);
+    else if (itemDate >= startOfMonth) groups["Este Mês"].push(item);
+    else groups["Mais Antigas"].push(item);
+  });
+
+  return groups;
+};
+
 
 const Noticias: React.FC = () => {
   const [newsData, setNewsData] = useState<News[]>([]);
-  const [selectedNews, setSelectedNews] = useState<News | null>(null);
-  const [user, loadingUser] = useAuthState(auth); // Hook para obter o usuário autenticado
-  const [canPostNews, setCanPostNews] = useState(false); // Estado para controlar a visibilidade do botão
+  const [loadingNews, setLoadingNews] = useState(true);
+  const [user, loadingUser] = useAuthState(auth);
+  const [canPostNews, setCanPostNews] = useState(false);
   const navigate = useNavigate();
 
+  // Efeito para carregar as notícias em tempo real
   useEffect(() => {
-    const fetchNewsAndUserRole = async () => {
-      // 1. Buscar todas as notícias
-      const news = await getAllNews();
-      setNewsData(news)
+    setLoadingNews(true);
+    const unsubscribe = listenToAllNews((news) => {
+      setNewsData(news);
+      setLoadingNews(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
-      // 2. Verificar o papel do usuário (role)
-      if (user) { // Se há um usuário logado
-        const userProfile: UserProfile | null = await getUserProfile(user.uid);
-        // Habilita a postagem APENAS se o usuário for 'coach'
-        if (userProfile && userProfile.role === 'coach') {
-          setCanPostNews(true);
-        } else {
-          setCanPostNews(false); // Membros não podem postar
-        }
+  // Efeito para verificar o papel (role) do utilizador
+  useEffect(() => {
+    const checkUserRole = async () => {
+      if (user) {
+        const userProfile = await getUserProfile(user.uid);
+        setCanPostNews(userProfile?.role === 'coach');
       } else {
-        setCanPostNews(false); // Se não há usuário logado, ninguém pode postar
+        setCanPostNews(false);
       }
     };
+    if (!loadingUser) {
+      checkUserRole();
+    }
+  }, [user, loadingUser]);
 
-    // Chama a função para buscar notícias e verificar a role do usuário
-    fetchNewsAndUserRole();
-  }, [user]); // Re-executa este efeito sempre que o estado do usuário (logado/deslogado) mudar
-
-  const handleNewsClick = (newsItem: News) => {
-    setSelectedNews(newsItem);
-  };
-
-  const handleClosePopup = () => {
-    setSelectedNews(null);
-  };
-
-  const handleAddNewsClick = () => {
-    // Redireciona para a página de criação de notícias.
-    // Você pode ter uma rota como '/create-news' ou '/treinador/create-news'.
-    navigate('/create-news'); // Exemplo de rota para o formulário de criação de notícia
-  };
-
-  if (loadingUser) {
-    return <p>Carregando notícias e verificando permissões...</p>;
-  }
+  // Agrupa as notícias usando useMemo para melhor performance
+  const groupedNews = useMemo(() => groupNewsByDate(newsData), [newsData]);
 
   return (
-    <div className="noticias-page">
-      <h2>Notícias e Eventos</h2>
+    <div className={styles.pageContainer}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Notícias e Eventos</h1>
+        {/* Mostra o botão apenas se não estiver a carregar o user e se for coach */}
+        {!loadingUser && canPostNews && (
+          <button onClick={() => navigate('/create-news')} className={styles.addButton}>
+            + Publicar Notícia
+          </button>
+        )}
+      </header>
 
-      {/* BOTÃO PARA ADICIONAR NOTÍCIA - RENDERIZAÇÃO CONDICIONAL */}
-      {/* O botão só aparece se 'canPostNews' for true (ou seja, se o usuário for 'coach') */}
-      {canPostNews && (
-        <button
-          onClick={handleAddNewsClick}
-          style={{
-            marginBottom: '20px',
-            padding: '10px 20px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-          }}
-        >
-          Adicionar Nova Notícia / Evento
-        </button>
+      {loadingNews ? (
+        <p>A carregar notícias...</p>
+      ) : (
+        // Mapeia cada grupo de notícias (Hoje, Ontem, etc.)
+        Object.keys(groupedNews).map(groupTitle => (
+          // Só renderiza a secção se houver notícias nesse grupo
+          groupedNews[groupTitle].length > 0 && (
+            <section key={groupTitle} className={styles.newsSection}>
+              <h2 className={styles.sectionTitle}>{groupTitle}</h2>
+              <div className={styles.newsGrid}>
+                {groupedNews[groupTitle].map((news) => (
+                  <NewsCard
+                    key={news.id}
+                    imageUrl={news.imageUrl}
+                    title={news.title}
+                    summary={news.summary}
+                    publicationDate={news.publicationDate}
+                    onClick={() => navigate(`/noticias/${news.id}`)}
+                  />
+                ))}
+              </div>
+            </section>
+          )
+        ))
       )}
-
-      <div className="news-grid">
-        {newsData.map((news) => (
-          <NewsCard
-            key={news.id}
-            imageUrl={news.imageUrl}
-            title={news.title}
-            onClick={() => handleNewsClick(news)}
-          />
-        ))}
-      </div>
-      {selectedNews && <NewsPopup {...selectedNews} onClose={handleClosePopup} />}
     </div>
   );
 };

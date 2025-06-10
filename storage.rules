@@ -1,0 +1,23 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Regra para fotos de perfil
+    match /profile_pictures/{userId}/{allPaths=**} {
+      allow read: if true; // Qualquer pessoa pode ver fotos de perfil (CORRIGIDO: adicionado 'if')
+      allow write: if request.auth != null && request.resource.size < 5 * 1024 * 1024
+                         && request.resource.contentType.matches('image/.*');
+    }
+
+    // Regra para os screenshots das partidas (para a extensão de OCR)
+    match /match_screenshots_raw/{imageId}/{allPaths=**} {
+      allow read, write: if request.auth != null; // Apenas utilizadores logados podem carregar screenshots
+    }
+
+    // Se você tiver outras pastas no Storage, considere adicionar regras para elas
+    // ou uma regra catch-all para negar o acesso a tudo mais por padrão, como:
+    // match /{allPaths=**} {
+    //   allow read, write: if false;
+    // }
+  }
+}

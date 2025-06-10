@@ -1,23 +1,29 @@
 // src/types/User.ts
 
-// Definindo o tipo para os itens do histórico de partidas
 export interface MatchHistoryItem {
-    id: string; // ID único da partida (pode ser gerado automaticamente ou do backend)
-    date: string; // Data da partida (ex: 'YYYY-MM-DD' ou um timestamp)
-    champion: string; // Campeão jogado
-    outcome: 'Victory' | 'Defeat' | 'Draw'; // Resultado da partida (adicionei 'Draw' como opção)
-    score: string; // Placar (ex: 'KDA: 10/2/5' ou outros detalhes)
-    screenshotUrl?: string | null; // URL da imagem da tela de final de partida (opcional, pode ser null)
+  // ...nenhuma alteração aqui
+  id: string;
+  date: string; 
+  outcome: 'Vitória' | 'Derrota' | 'Indefinido';
+  champion: string; 
+  score: string;
+  damageDealt?: string;
+  damageTaken?: string;
+  towerDamage?: string;
+  killParticipation?: string;
+  gold?: string;
+  screenshotUrl?: string | null;
 }
 
-// Seu UserProfile atualizado
 export interface UserProfile {
-    uid: string;
-    nick: string;
-    email: string;
-    lane: string; // A lane pode ser uma string vazia para treinadores
-    status: 'Online' | 'Offline' | 'Ativo' | 'In-Game' | 'Away'; // Adicionei mais opções para status
-    fotoPerfil?: string | null; // URL da foto de perfil (opcional, pode ser null)
-    role: 'member' | 'coach';
-    matchHistory?: MatchHistoryItem[]; // <--- ADICIONE ESTA LINHA! (Array de histórico de partidas)
+  uid: string;
+  nick: string;
+  inGameName?: string; // NOVO CAMPO: Nome exato como aparece no jogo
+  email: string;
+  lane?: 'Top' | 'Jungle' | 'Mid' | 'Adc' | 'Support' | null;
+  status?: 'Online' | 'Offline' | 'Ativo' | 'In-Game' | 'Away';
+  fotoURL?: string | null;
+  role: 'member' | 'coach';
+  teamId?: string | null;
+  matchHistory?: MatchHistoryItem[];
 }
