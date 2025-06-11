@@ -1,21 +1,46 @@
 // src/types/Team.ts
 
-export interface Team {
-  id?: string; // O ID será gerado pelo banco de dados
-  name: string;
-  tag?: string; // Tag da equipe (opcional)
-  logoURL?: string | null; // URL da logo da equipe (opcional)
-  contactEmail: string; // E-mail de contato da equipe
-  leaderNickname: string; // Nickname do líder da equipe
-  members: TeamMember[]; // Array de membros da equipe
-  description?: string; // Descrição da equipe (opcional)
-  region?: string; // Região da equipe (opcional)
-  registrationDate?: Date; // Data de registro (será gerada no backend/database)
-  // Adicione outros campos conforme necessário
+// --- TIPO DE STATUS ---
+// Pode ser mantido aqui se usado amplamente para TeamMembers, ou importado de User.ts se UserProfile for a fonte principal
+export type UserStatus = 'Online' | 'Offline' | 'In-Game' | 'Away' | 'Ativo';
+
+export interface TeamMemberProfile {
+  uid: string;
+  nick: string;
+  email: string;
+  role: 'coach' | 'member';
+  lane?: string | null; // Consistentemente opcional e permite null/undefined
+  teamId?: string | null; // Consistentemente opcional e permite null/undefined
+  status?: UserStatus; // Consistentemente opcional
+  fotoURL?: string | null; // Consistentemente opcional e permite null/undefined
 }
 
-export interface TeamMember {
+export interface Team {
+  id: string;
+  name: string;
+  tag: string | null; // Pode ser nulo
+  logoURL: string | null;
+  contactEmail: string;
+  leaderNickname: string;
+  description: string | null; // Pode ser nulo
+  region: string | null; // Pode ser nulo
+  coachId: string;
+  members: TeamMemberInTeamDoc[];
+  registrationDate: Date; // Usar Date consistentemente
+}
+
+export interface TeamMemberInTeamDoc {
   nickname: string;
-  lane?: string; // Lane principal do membro (opcional)
-  // Adicione outros detalhes do membro se precisar
+  lane: string | null; // Pode ser nulo
+  email: string;
+}
+
+export interface NewTeamMemberFormData extends TeamMemberInTeamDoc {
+  password?: string;
+}
+
+export interface Champion {
+  id: string;
+  name: string;
+  // ...
 }

@@ -1,90 +1,86 @@
-// Home.tsx
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
-import AuthArea from '../components/AuthArea'; // Continuamos a importar a AuthArea
-import NewsCard from '../components/NewsCard';
-import { useLocation } from 'react-router-dom';
-import { getLatestNews } from '../services/database';
-import styles from '../styles/Home.module.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+// Funções e configurações do Firebase
+import { auth } from '../services/firebaseConfig';
+import { listenToAllNews } from '../services/database';
+
+// Tipos e Estilos
 import type { News } from '../types/News';
+import NewsCard from '../components/NewsCard';
+import styles from '../styles/Home.module.css';
 
 const Home: React.FC = () => {
+  const [user, loadingAuth] = useAuthState(auth);
   const [latestNews, setLatestNews] = useState<News[]>([]);
-  const location = useLocation();
-  const isHomePage = location.pathname === '/';
+  const [loadingNews, setLoadingNews] = useState(true);
+  const navigate = useNavigate();
 
+  // Efeito para carregar as notícias em tempo real
   useEffect(() => {
-    const fetchLatestNews = async () => {
-      const news = await getLatestNews();
-      setLatestNews(news);
-    };
-    fetchLatestNews();
-  }, []);
+    setLoadingNews(true);
+    const unsubscribe = listenToAllNews(allNews => {
+      // Pegamos apenas as 3 notícias mais recentes para mostrar na Home
+      setLatestNews(allNews.slice(0, 3));
+      setLoadingNews(false);
+    });
 
-  const nextEvent = {
-    id: 'event-1',
-    imageUrl: '/assets/images/event-promo.jpg',
-    title: 'Torneio Épico da Temporada 2025!',
-    description: 'Prepare-se para o maior evento de MLBB do ano. Prémios incríveis esperam por si!',
-    date: '2025-06-15'
-  };
+    // Limpa o listener quando o componente é desmontado
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className={styles.container}>
-      {/* O header agora conterá a Navbar E a AuthArea para o lado direito */}
-      {isHomePage && (
-        <header className={styles.homeHeader}> {/* Nova classe para o header da Home */}
-          <Navbar />
- 
-        </header>
-      )}
-
-      {/* O resto da sua HeroSection e Main Content permanece como está */}
-      <div className={styles.heroSection}>
+      <header className={styles.heroSection}>
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>Bem-vindo ao MBL <br /> Mundo das Notícias</h1>
+          <h1 className={styles.heroTitle}>Bem-vindo ao MBL</h1>
           <p className={styles.heroSubtitle}>
-            Aqui encontra as notícias mais fresquinhas, dicas, eventos e tudo que rola de mais legal no nosso universo. Fique ligado e não perca nenhuma novidade!
+            A sua central de notícias, estatísticas e agendamento de treinos.
           </p>
         </div>
-      </div>
+      </header>
 
       <main className={styles.mainContent}>
-        {latestNews.length > 0 && (
-          <section className={styles.eventSection}>
-            <h2 className={styles.sectionTitle}>Próximo Grande Evento</h2>
-            <div className={styles.eventCard}>
-              <img src={nextEvent.imageUrl} alt={nextEvent.title} className={styles.eventImage} />
-              <div className={styles.eventDetails}>
-                <h3>{nextEvent.title}</h3>
-                <p>{nextEvent.description}</p>
-                <span className={styles.eventDate}>Data: {nextEvent.date}</span>
-                <button className={styles.eventCtaBtn} onClick={() => alert('Detalhes do Evento!')}>Ver Detalhes</button>
-              </div>
-            </div>
+        
+        {!loadingAuth && user && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Agenda da Equipa</h2>
+            <p>Aceda à agenda da sua equipa para marcar e ver os próximos treinos.</p>
+            <button className={styles.ctaButton} onClick={() => navigate('/treinos')}>
+              Ver Agenda de Treinos
+            </button>
           </section>
         )}
 
-        {latestNews.length > 0 ? (
-          <section className={styles.latestNewsSection}>
-            <h2 className={styles.sectionTitle}>Últimas Notícias</h2>
-            <div className={styles.newsGrid}>
-              {latestNews.slice(0, 6).map((newsItem) => (
-                <NewsCard
-                  key={newsItem.id}
-                  imageUrl={newsItem.imageUrl || '/assets/default-news.jpg'}
-                  title={newsItem.title}
-                  onClick={() => console.log('Abrir notícia', newsItem.id)}
-                />
-              ))}
-            </div>
-            <button className={styles.loadMoreBtn} onClick={() => alert('Mais notícias em breve!')}>
-              Ver Todas as Notícias
-            </button>
-          </section>
-        ) : (
-          <p>Carregando as últimas notícias, aguarde....</p>
-        )}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Últimas Notícias</h2>
+          {loadingNews ? (
+            <p>A carregar notícias...</p>
+          ) : latestNews.length > 0 ? (
+            <>
+              <div className={styles.newsGrid}>
+                {latestNews.map((newsItem) => (
+                  <NewsCard
+                    key={newsItem.id}
+                    imageUrl={newsItem.imageUrl}
+                    title={newsItem.title}
+                    summary={newsItem.summary}
+                    // ===== CORREÇÃO AQUI =====
+                    // Adicionada a propriedade 'publicationDate' que estava em falta
+                    publicationDate={newsItem.publicationDate}
+                    onClick={() => navigate(`/noticias/${newsItem.id}`)} 
+                  />
+                ))}
+              </div>
+              <Link to="/noticias" className={styles.seeAllLink}>
+                Ver Todas as Notícias
+              </Link>
+            </>
+          ) : (
+            <p>Nenhuma notícia disponível no momento.</p>
+          )}
+        </section>
       </main>
     </div>
   );

@@ -1,269 +1,401 @@
-/* styles/Treinos.module.css */
+/* src/styles/Treinos.module.css */
+
+:root {
+  /* Cores base para o tema escuro */
+  --dark-bg: #1A1A1A; /* Fundo principal muito escuro */
+  --dark-surface: #2C2C2C; /* Fundo para cards e elementos de superfície */
+  --dark-border: #444444; /* Borda mais escura */
+  --dark-text: #E0E0E0; /* Texto claro para contraste no fundo escuro */
+  --dark-text-light: #B0B0B0; /* Texto secundário ou mais suave */
+
+  /* Cores de contraste e acento vibrantes */
+  --accent-blue: #66CCFF; /* Azul ciano vibrante para destaque */
+  --accent-green: #00FF99; /* Verde neon para sucesso/disponibilidade */
+  --accent-orange: #FFD700; /* Laranja dourado para avisos */
+  --accent-red: #FF6B6B; /* Vermelho vibrante para perigo/remover */
+
+  /* Cores para sombras coloridas (mais intensas no hover) */
+  --shadow-blue: rgba(102, 204, 255, 0.4); /* Sombra azul para hover */
+  --shadow-green: rgba(0, 255, 153, 0.3); /* Sombra verde para sucesso */
+  --shadow-orange: rgba(255, 215, 0, 0.3); /* Sombra laranja para avisos */
+  --shadow-red: rgba(255, 107, 107, 0.3); /* Sombra vermelha para perigo */
+
+  /* Cores dinâmicas para os estados dos dias (baseadas nas cores de acento) */
+  --day-low-occupancy-bg: #2C3A2C; /* Fundo escuro com toque verde */
+  --day-low-occupancy-border: var(--accent-green);
+  --day-medium-occupancy-bg: #3A3A2C; /* Fundo escuro com toque laranja */
+  --day-medium-occupancy-border: var(--accent-orange);
+  --day-high-occupancy-bg: #3A2C2C; /* Fundo escuro com toque vermelho */
+  --day-high-occupancy-border: var(--accent-red);
+  --day-empty-bg: #222222; /* Fundo para dias vazios */
+  --day-empty-border: #555555; /* Borda para dias vazios */
+
+  /* Cores para botões e interações */
+  --button-confirm-bg: var(--accent-green);
+  --button-confirm-hover: #00CC7A;
+  --button-cancel-bg: var(--dark-border);
+  --button-cancel-hover: #555555;
+  --button-remove-color: var(--accent-red);
+  --button-remove-hover-color: #FF4D4D;
+}
 
 .container {
-  max-width: 1200px; /* Largura máxima para centralizar o conteúdo */
-  margin: 60px auto; /* Margem superior/inferior para espaçamento, centralizado horizontalmente */
-  padding: 30px;
-  background-color: var(--navbar-background); /* Fundo do container principal, mais escuro para destaque */
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  color: var(--dark-text);
+  background-color: var(--dark-bg);
   border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Sombra mais suave e visível */
-  color: var(--primary-text); /* Cor de texto principal (branco) */
-  text-align: center; /* Centraliza o texto dentro do container */
-  display: flex;
-  flex-direction: column;
-  gap: 30px; /* Espaçamento entre os elementos principais do container */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
 .title {
-  font-size: 3rem; /* Título maior */
-  color: var(--secondary-color-a); /* Cor de destaque para o título */
-  margin-bottom: 10px;
-  text-transform: uppercase; /* Título em maiúsculas */
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Pequena sombra no texto para pop */
-}
-
-.description {
-  font-size: 1.1rem;
-  color: rgba(var(--primary-text), 0.7); /* Texto ligeiramente mais suave */
-  margin-bottom: 25px;
-  line-height: 1.6;
-}
-
-.warning, .loading {
-  font-size: 1.2rem;
-  color: var(--subtle-accent); /* Ou uma cor mais viva para avisos, tipo laranja */
   text-align: center;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: rgba(var(--navbar-background), 0.7);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  color: var(--accent-blue);
+  margin-bottom: 30px;
+  font-size: 2.8em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 15px var(--shadow-blue);
 }
 
-/* Estilos para a grelha da semana */
 .week {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Grelha responsiva */
-  gap: 25px; /* Espaço entre os dias */
-  padding: 15px; /* Padding ao redor da grelha */
+  /* Por padrão, tente 3 colunas em telas maiores para um layout mais equilibrado */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 50px;
+  justify-content: center; /* Centraliza a grade horizontalmente */
+  align-items: stretch; /* Garante que os itens se estiquem para ter a mesma altura */
 }
 
+/* Media queries para ajustar o layout em diferentes tamanhos de tela */
+
+/* Para telas muito grandes (desktop widescreen) */
+@media (min-width: 1200px) {
+  .week {
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas para telas muito largas */
+  }
+}
+
+/* Para telas de desktop padrão e tablets maiores */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .week {
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+  }
+}
+
+/* Para tablets menores e smartphones em paisagem */
+@media (min-width: 480px) and (max-width: 767px) {
+  .week {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    gap: 20px;
+  }
+}
+
+/* Para smartphones (padrão 1 coluna já está coberto por minmax(280px, 1fr) se a tela for menor) */
+/* Mas podemos ser explícitos ou ajustar o minmax para garantir */
+@media (max-width: 479px) {
+  .week {
+    grid-template-columns: 1fr; /* 1 coluna */
+    gap: 15px;
+  }
+}
+
+
 .day {
-  background-color: var(--primary-background); /* Fundo dos cartões de dia */
+  border: 1px solid var(--dark-border);
+  border-radius: 12px;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra nos cartões de dia */
+  background-color: var(--dark-surface);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
-  border: 2px solid transparent; /* Borda transparente para o hover */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  min-height: 250px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 180px; /* Altura mínima para os cartões ficarem mais uniformes */
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.day::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 12px;
+  z-index: 0;
 }
 
 .day:hover {
-  transform: translateY(-5px); /* Efeito de "levantar" no hover */
-  box-shadow: 0 8px 25px rgba(var(--secondary-color-a), 0.3); /* Brilho azul no hover */
-  border-color: var(--secondary-color-a); /* Borda azul no hover */
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px var(--shadow-blue);
+  border-color: var(--accent-blue);
 }
 
 .day h3 {
-  font-size: 1.5rem;
-  color: var(--secondary-color-b); /* Cor para os nomes dos dias */
-  margin-bottom: 15px;
-  border-bottom: 2px solid rgba(var(--primary-text), 0.1); /* Linha subtil abaixo do dia */
-  padding-bottom: 10px;
-  width: 100%;
+  text-align: center;
+  margin-top: 0;
+  color: var(--accent-blue);
+  margin-bottom: 20px;
+  font-size: 1.6em;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 8px rgba(102, 204, 255, 0.5);
 }
 
 .empty {
+  text-align: center;
+  color: var(--dark-text-light);
   font-style: italic;
-  color: rgba(var(--primary-text), 0.5);
-  margin-top: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: var(--day-empty-bg);
+  border: 1px dashed var(--day-empty-border);
+  position: relative;
+  z-index: 1;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .timeSlot {
-  background-color: rgba(var(--primary-text), 0.05); /* Fundo para cada slot de tempo */
-  border-radius: 5px;
-  padding: 8px 12px;
-  margin-top: 10px; /* Espaço entre os time slots */
+  background-color: #3A3A3A;
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
-  color: var(--primary-text);
-  width: 100%;
-  border: 1px solid rgba(var(--secondary-color-a), 0.2); /* Borda subtil para os slots */
+  font-size: 1em;
+  word-break: break-word;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  z-index: 1;
+  color: var(--dark-text);
 }
+
+.timeSlot:hover {
+  background-color: #4A4A4A;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Cores dinâmicas para o sistema de marcação de dias --- */
+
+.day.low-occupancy {
+  background-color: var(--day-low-occupancy-bg);
+  border-color: var(--day-low-occupancy-border);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 15px var(--shadow-green);
+}
+
+.day.low-occupancy h3 {
+  color: var(--accent-green);
+  text-shadow: 0 0 10px rgba(0, 255, 153, 0.6);
+}
+
+.day.low-occupancy:hover {
+  box-shadow: 0 15px 35px var(--shadow-green);
+  border-color: var(--accent-green);
+}
+
+.day.medium-occupancy {
+  background-color: var(--day-medium-occupancy-bg);
+  border-color: var(--day-medium-occupancy-border);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 15px var(--shadow-orange);
+}
+
+.day.medium-occupancy h3 {
+  color: var(--accent-orange);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.day.medium-occupancy:hover {
+  box-shadow: 0 15px 35px var(--shadow-orange);
+  border-color: var(--accent-orange);
+}
+
+.day.high-occupancy {
+  background-color: var(--day-high-occupancy-bg);
+  border-color: var(--day-high-occupancy-border);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 15px var(--shadow-red);
+}
+
+.day.high-occupancy h3 {
+  color: var(--accent-red);
+  text-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+}
+
+.day.high-occupancy:hover {
+  box-shadow: 0 15px 35px var(--shadow-red);
+  border-color: var(--accent-red);
+}
+
+/* --- Botões e Formulário --- */
 
 .removeButton {
   background: none;
   border: none;
-  color: var(--subtle-accent); /* Cor para o 'X' */
   cursor: pointer;
-  font-size: 1rem;
-  margin-left: 10px;
-  transition: color 0.2s ease, transform 0.1s ease;
+  font-size: 1.3em;
+  padding: 0;
+  margin-left: 8px;
+  color: var(--button-remove-color);
+  transition: transform 0.1s ease-in-out, color 0.2s ease;
+  z-index: 2;
 }
 
 .removeButton:hover {
-  color: red; /* Vermelho mais forte no hover */
-  transform: scale(1.2);
+  transform: scale(1.3);
+  color: var(--button-remove-hover-color);
+  text-shadow: 0 0 5px var(--button-remove-hover-color);
 }
 
 .cancelAllButton {
-  background-color: var(--secondary-background); /* Cor para o botão de cancelar tudo */
-  color: var(--primary-text);
+  margin-top: 20px;
+  background-color: var(--button-remove-color);
+  color: white;
   border: none;
-  padding: 8px 15px;
   border-radius: 8px;
+  padding: 12px 20px;
   cursor: pointer;
-  margin-top: 15px;
-  font-size: 0.85rem;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  width: 90%; /* Ocupa quase toda a largura do dia */
-  text-align: center;
+  font-size: 0.95em;
+  align-self: center;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .cancelAllButton:hover {
-  background-color: var(--button-hover-color); /* Escurece ligeiramente no hover */
-  box-shadow: 0 0 10px rgba(var(--subtle-accent), 0.5);
+  background-color: var(--button-remove-hover-color);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--shadow-red);
 }
 
-/* Cores dos dias baseadas na ocupação */
-.red {
-  border-color: var(--subtle-accent); /* Borda vermelha para poucos treinos */
-  box-shadow: 0 4px 15px rgba(var(--subtle-accent), 0.3);
-}
-
-.green {
-  border-color: var(--secondary-color-b); /* Borda verde para treinos preenchidos */
-  box-shadow: 0 4px 15px rgba(var(--secondary-color-b), 0.3);
-}
-
-.yellow {
-  border-color: var(--auth-area-glow); /* Borda amarela para horários variáveis */
-  box-shadow: 0 4px 15px rgba(var(--auth-area-glow), 0.3);
-}
-
-/* Overlay e Modal para o relógio */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente escuro */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Garante que fica por cima de tudo */
-  backdrop-filter: blur(5px); /* Efeito de blur no fundo */
-}
-
-.modal {
-  background-color: var(--primary-background); /* Fundo do modal */
+.form {
+  background-color: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: 12px;
   padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  max-width: 450px; /* Largura máxima do modal */
-  width: 90%;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  border: 1px solid var(--secondary-color-a); /* Borda para o modal */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-.modal h3 {
-  color: var(--secondary-color-a);
-  font-size: 1.8rem;
-  margin-bottom: 15px;
+.form h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--accent-blue);
+  font-size: 2em;
+  font-weight: 800;
+  text-shadow: 0 0 10px var(--shadow-blue);
 }
 
-.confirmButton, .cancelButton {
-  padding: 12px 25px;
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: var(--dark-text);
+  font-size: 1em;
+}
+
+.form select,
+.form input[type="text"],
+.form input[type="time"] {
+  padding: 12px;
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 100%;
+  font-size: 1em;
+  color: var(--dark-text);
+  background-color: #3A3A3A;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form select:focus,
+.form input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 4px rgba(102, 204, 255, 0.3);
+}
+
+.form button {
+  padding: 14px 25px;
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
-  width: 100%;
+  font-size: 1.1em;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .confirmButton {
-  background-color: var(--secondary-color-a);
-  color: var(--primary-text);
-  margin-top: 20px;
+  background-color: var(--button-confirm-bg);
+  color: var(--dark-bg);
 }
 
 .confirmButton:hover {
-  background-color: var(--button-hover-color);
-  box-shadow: 0 0 12px rgba(var(--secondary-color-a), 0.6);
-  transform: translateY(-2px);
+  background-color: var(--button-confirm-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--shadow-green);
+}
+
+.confirmButton:disabled {
+  background-color: #555555;
+  color: #888888;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .cancelButton {
-  background-color: var(--subtle-accent); /* Uma cor secundária mais neutra */
-  color: var(--primary-text);
-  margin-top: 10px;
+  background-color: var(--button-cancel-bg);
+  color: var(--dark-text);
 }
 
 .cancelButton:hover {
-  background-color: rgba(var(--subtle-accent), 0.8);
-  box-shadow: 0 0 12px rgba(var(--subtle-accent), 0.4);
-  transform: translateY(-2px);
+  background-color: var(--button-cancel-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-
-/* Media Queries para Responsividade */
-@media (max-width: 768px) {
-  .container {
-    margin: 40px 15px;
-    padding: 20px;
-  }
-  .title {
-    font-size: 2.5rem;
-  }
-  .description {
-    font-size: 1rem;
-  }
-  .week {
-    grid-template-columns: 1fr; /* Uma coluna em ecrãs pequenos */
-    gap: 20px;
-  }
-  .day {
-    min-height: auto; /* Remove altura mínima em mobile */
-  }
-  .modal {
-    padding: 20px;
-  }
-  .modal h3 {
-    font-size: 1.5rem;
-  }
+.warning, .loading {
+  text-align: center;
+  font-size: 1.4em;
+  padding: 30px;
+  margin-top: 50px;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-@media (max-width: 480px) {
-  .container {
-    margin: 20px 10px;
-    padding: 15px;
-  }
-  .title {
-    font-size: 2rem;
-  }
-  .day h3 {
-    font-size: 1.3rem;
-  }
-  .timeSlot {
-    font-size: 0.85rem;
-    padding: 6px 10px;
-  }
-  .confirmButton, .cancelButton {
-    padding: 10px 20px;
-    font-size: 0.9rem;
-  }
+.warning {
+  color: var(--accent-red);
+  background-color: #3A2C2C;
+  border: 1px solid var(--accent-red);
+  text-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+}
+
+.loading {
+  color: var(--accent-blue);
+  background-color: #2C3A3A;
+  border: 1px solid var(--accent-blue);
+  text-shadow: 0 0 8px rgba(102, 204, 255, 0.5);
 }

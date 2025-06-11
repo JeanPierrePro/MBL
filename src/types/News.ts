@@ -2,8 +2,9 @@
 export interface News {
   id: string; // The Firestore document ID
   title: string;
-  description: string;
+  description: string; // Mantido
+  summary: string;     // Adicionado
+  content: string;     // Adicionado
   imageUrl: string;
-  publicationDate: Date; // The date the news was published
-  // Additional fields for events can be added here
+  publicationDate: Date; // Usar Date consistentemente
 }

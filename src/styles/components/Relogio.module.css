@@ -1,145 +1,489 @@
-/* styles/Relogio.module.css */
+/* src/styles/AuthForm.module.css */
 
-.relogioContainer {
-  width: 150px; /* Mantém o tamanho (150px) */
-  height: 150px;
-  border-radius: 50%;
-  background-color: var(--secondary-background);
-  position: relative;
-  margin: 20px auto;
-  box-shadow: 0 0 8px var(--box-shadow-color);
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/*
+ * NOTA: As variáveis de cor são esperadas do seu arquivo global.css ou _app.tsx
+ * Certifique-se de que estão bem definidas para um tema consistente.
+ * Variáveis necessárias:
+ * --primary-background, --primary-background-rgb (ex: #1a1a2e ou 26,26,46)
+ * --primary-text, --primary-text-rgb (ex: #e0e0e0 ou 224,224,224)
+ * --subtle-accent, --subtle-accent-rgb (ex: #ffd700 para dourado ou 255,215,0)
+ * --navbar-background, --navbar-background-rgb (ex: #2a2a4a ou 42,42,74)
+ * --navbar-shadow-color, --navbar-shadow-color-rgb (ex: #00bcd4 para ciano ou 0,188,212)
+ * --secondary-color-a, --secondary-color-a-rgb (ex: #8a2be2 para violeta ou 138,43,226)
+ * --auth-area-glow, --auth-area-glow-rgb (ex: #00ffff para ciano elétrico ou 0,255,255)
+ */
+
+/* Recomendações de fontes (importar no global.css ou _app.tsx): */
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Roboto:wght@300;400;700&display=swap'); */
+
+/* Base e Cores */
+
+    /* Exemplo de fallback/default para as variáveis, caso não estejam no global.css */
+    /* --primary-background: #1a1a2e; */
+    /* --primary-background-rgb: 26,26,46; */
+    /* --primary-text: #e0e0e0; */
+    /* --primary-text-rgb: 224,224,224; */
+    /* --subtle-accent: #ffd700; */
+    /* --subtle-accent-rgb: 255,215,0; */
+    /* --navbar-background: #2a2a4a; */
+    /* --navbar-background-rgb: 42,42,74; */
+    /* --navbar-shadow-color: #00bcd4; */
+    /* --navbar-shadow-color-rgb: 0,188,212; */
+    /* --secondary-color-a: #8a2be2; */
+    /* --secondary-color-a-rgb: 138,43,226; */
+    /* --auth-area-glow: #00ffff; */
+    /* --auth-area-glow-rgb: 0,255,255; */
+       
+
+/* --- Container Principal do Formulário --- */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - var(--navbar-height, 80px));
+    padding: 20px;
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden; /* Previne scroll horizontal em telas pequenas */
 }
 
-.relogioSvg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible; /* Permite que os números e ponteiros saiam ligeiramente da área se necessário */
+/* --- Título do Formulário --- */
+.centeredHeading { /* Renomeado de .container h2 para ser mais genérico e reutilizável */
+    text-align: center;
+    color: var(--subtle-accent);
+    margin-bottom: 30px;
+    font-size: 2.8em;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 8px var(--navbar-shadow-color), 0 0 15px rgba(var(--subtle-accent-rgb), 0.7);
+    letter-spacing: 1.5px;
+    animation: fadeInDown 1s ease-out forwards;
+    padding: 0 10px; /* Evita que o texto encoste nas bordas em telas pequenas */
 }
 
-/* Estilo para os números do relógio */
-.numeroRelogio {
-  font-size: 0.5rem; /* AUMENTADO: Tornar os números ainda mais visíveis e proporcionais */
-  font-weight: bold;
-  pointer-events: none; /* Ignora eventos de ponteiro para facilitar o arrastar dos ponteiros */
-  user-select: none; /* Impede a seleção de texto */
-  fill: var(--primary-text); /* Cor para os números (branco) */
+/* --- Formulário em si --- */
+.form {
+    background-color: var(--navbar-background);
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(var(--navbar-shadow-color-rgb), 0.6);
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.2);
+    transition: all 0.4s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 650px; /* Aumentei ligeiramente a largura máxima para acomodar melhor as seções */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Aumentei o espaçamento entre os grupos e seções principais */
+    z-index: 1;
 }
 
-/* Estilo geral para os ponteiros */
-.ponteiro {
-  transform-origin: 50% 50%; /* Rotação a partir do centro */
-  stroke-linecap: round;
-  transition: transform 0.05s linear;
-  cursor: grab; /* Cursor de "agarrar" */
-  /* Não adicionei pointer-events: all; aqui porque "grab" já implica que é interativo. */
+/* Efeito de brilho de fundo no formulário ao passar o mouse */
+.form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center,
+        rgba(var(--auth-area-glow-rgb), 0.15) 0%, /* Brilho um pouco mais intenso */
+        transparent 70%
+    );
+    transform: rotate(0deg);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out, transform 0.8s ease-in-out;
+    z-index: 0;
 }
 
-/* Esta classe é a que ajuda a "pegar" o ponteiro, tornando a área de interação maior e invisível */
-.ponteiroClickArea {
-  fill: transparent; /* Invisível */
-  cursor: grab; /* Cursor de "agarrar" */
-  pointer-events: all; /* Garante que os eventos são detetados sobre esta área */
+.form:hover::before {
+    opacity: 1;
+    transform: rotate(360deg);
 }
 
-.ponteiro.hora {
-  stroke-width: 5;
-  stroke: var(--secondary-color-b);
+.form:hover {
+    box-shadow: 0 10px 25px rgba(var(--navbar-shadow-color-rgb), 0.8), 0 0 40px rgba(var(--auth-area-glow-rgb), 0.6); /* Sombra e brilho mais intensos no hover */
+    border-color: var(--secondary-color-a);
 }
 
-.ponteiro.minuto {
-  stroke-width: 4; /* Ligeiramente aumentado, mas ainda mais fino que a hora */
-  stroke: var(--secondary-color-b); /* COR DISTINTA: Usar a cor roxa para o minuto */
+/* --- Seções do Formulário (Ex: Detalhes da Equipa, Membros da Equipa) --- */
+.formSection {
+    border: 1px solid rgba(var(--secondary-color-a-rgb), 0.3); /* Borda mais consistente */
+    border-radius: 10px; /* Cantos arredondados */
+    padding: 25px;
+    margin-bottom: 20px; /* Espaço entre as seções */
+    background-color: rgba(var(--primary-background-rgb), 0.7); /* Fundo semi-transparente */
+    box-shadow: inset 0 0 15px rgba(var(--navbar-shadow-color-rgb), 0.1); /* Brilho interno sutil */
+    transition: all 0.3s ease;
 }
 
-.pinoCentral {
-  fill: var(--primary-text); /* Cor do pino central */
-  r: 3; /* LIGEIRAMENTE REDUZIDO: Raio do pino central para não cobrir a base dos ponteiros */
+.formSection:last-child {
+    margin-bottom: 0; /* Remove a margem do último para não adicionar espaço extra */
 }
 
-/* Digital Inputs and AM/PM buttons */
-.relogioDigitalContainer {
-  text-align: center;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+.formSection:hover {
+    border-color: var(--subtle-accent);
+    box-shadow: inset 0 0 20px rgba(var(--auth-area-glow-rgb), 0.2), 0 0 10px rgba(var(--secondary-color-a-rgb), 0.3);
 }
 
-.digitalInput {
-  width: 40px;
-  padding: 8px;
-  font-size: 1rem;
-  background-color: var(--input-background);
-  color: var(--primary-text);
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  text-align: center;
-  outline: none;
-  -moz-appearance: textfield;
+/* Título da Seção */
+.sectionTitle {
+    text-align: center;
+    color: var(--secondary-color-a); /* Cor de acento secundária */
+    margin-top: -10px; /* Puxa um pouco para cima do border */
+    margin-bottom: 25px; /* Mais espaço abaixo do título da seção */
+    font-size: 1.8em; /* Levemente maior */
+    font-weight: 700; /* Mais negrito */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 5px rgba(var(--secondary-color-a-rgb), 0.5);
 }
 
-.digitalInput::-webkit-outer-spin-button,
-.digitalInput::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+/* --- Grupo de Formulário (label + input/select) --- */
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre label e input */
+    position: relative;
+    z-index: 1;
+    margin-bottom: 18px; /* Adicionado para uniformidade */
 }
 
-.digitalInput:focus {
-  border-color: var(--input-focus-border);
-  box-shadow: 0 0 6px var(--input-focus-border);
+/* Label */
+.label {
+    font-size: 1.1em; /* Levemente menor para não competir com o título da seção */
+    color: var(--subtle-accent);
+    font-weight: bold;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-shadow: 0 0 4px rgba(var(--subtle-accent-rgb), 0.4);
 }
 
-.amPmContainer {
-  display: flex;
-  gap: 5px;
+/* Input, Select, Textarea */
+.input,
+.select,
+.textarea {
+    padding: 14px 18px; /* Padding ajustado */
+    border-radius: 8px;
+    border: 2px solid rgba(var(--secondary-color-a-rgb), 0.4);
+    background-color: rgba(var(--primary-background-rgb), 0.8); /* Fundo um pouco mais opaco */
+    color: var(--primary-text);
+    font-size: 1.1em;
+    font-family: 'Roboto', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box; /* Essencial para padding e border não quebrarem a largura */
 }
 
-.amPmContainer button {
-  padding: 8px 12px;
-  background-color: var(--button-color); /* Mantém o que estava */
-  color: var(--primary-text); /* Mantém o que estava */
-  border: none; /* Mantém o que estava */
-  border-radius: 4px; /* Mantém o que estava */
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+.textarea {
+    min-height: 100px; /* Altura mínima para a textarea */
+    resize: vertical;
 }
 
-.amPmContainer button.selected {
-  background-color: var(--accent-color); /* Mantém o que estava */
+.select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Ícone SVG para a seta do select - cor ajustada para ser visível no tema escuro */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b0b0b0%22%20d%3D%22M287%2C197.393a15.8%2C15.8%2C0%2C0%2C1%2C-15.8-15.8l-128.5-128.5a15.8%2C15.8%2C0%2C0%2C1%2C-22.3%2C0L15.8%2C181.593a15.8%2C15.8%2C0%2C0%2C1%2C0%2C22.3c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0l117.2-117.2l117.2%2C117.2c6.1%2C6.1%2C15.8%2C6.1%2C22.3%2C0C290.4%2C207.393%2C290.4%2C200.793%2C287%2C197.393Z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 18px; /* Levemente maior */
+    padding-right: 45px;
+    cursor: pointer;
 }
 
-.amPmContainer button:hover {
-  background-color: var(--button-hover-color); /* Mantém o que estava */
+.input:hover,
+.select:hover,
+.textarea:hover {
+    border-color: var(--secondary-color-a);
+    background-color: rgba(var(--primary-background-rgb), 0.95);
+    color: var(--subtle-accent);
 }
 
-/* Media Queries para Responsividade */
+.input:focus,
+.select:focus,
+.textarea:focus {
+    border-color: var(--auth-area-glow); /* Cor de foco mais vibrante */
+    box-shadow: 0 0 0 4px rgba(var(--auth-area-glow-rgb), 0.6);
+    background-color: var(--primary-background); /* Fundo sólido no foco */
+    color: var(--subtle-accent);
+}
+
+/* Estilo para as opções dentro do select */
+.select option {
+    background-color: var(--navbar-background); /* Fundo das opções do select */
+    color: var(--primary-text);
+    padding: 10px;
+}
+
+.select option:hover {
+    background-color: var(--secondary-color-a);
+    color: white; /* Texto branco no hover da opção */
+}
+
+/* --- Botões --- */
+.buttonGroup { /* Nova classe para agrupar botões */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaçamento entre os botões */
+    margin-top: 30px;
+}
+
+.button {
+    padding: 15px 30px;
+    background-color: var(--subtle-accent);
+    color: var(--primary-background); /* Texto escuro no botão vibrante */
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(var(--subtle-accent-rgb), 0.4);
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    width: 100%; /* Garante que ocupam a largura total do buttonGroup */
+}
+
+.button:hover {
+    background-color: var(--secondary-color-a);
+    box-shadow: 0 6px 15px rgba(var(--secondary-color-a-rgb), 0.6), 0 0 20px rgba(var(--auth-area-glow-rgb), 0.8);
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(var(--secondary-color-a-rgb), 0.4);
+}
+
+.button:disabled {
+    background-color: rgba(var(--primary-text-rgb), 0.2); /* Cinza translúcido */
+    color: rgba(var(--primary-text-rgb), 0.5); /* Texto mais fraco */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.buttonSecondary {
+    background-color: rgba(var(--navbar-shadow-color-rgb), 0.3); /* Cor secundária translúcida */
+    color: var(--navbar-shadow-color); /* Texto com a cor da sombra da navbar */
+    border: 1px solid var(--navbar-shadow-color); /* Borda para contraste */
+    box-shadow: 0 2px 8px rgba(var(--navbar-shadow-color-rgb), 0.2);
+}
+
+.buttonSecondary:hover {
+    background-color: rgba(var(--navbar-shadow-color-rgb), 0.5); /* Mais opaco no hover */
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--navbar-shadow-color-rgb), 0.4), 0 0 15px rgba(var(--navbar-shadow-color-rgb), 0.6);
+}
+
+.buttonSecondary:active {
+    transform: translateY(0);
+}
+
+/* --- Mensagens de Erro/Sucesso --- */
+.errorMessage {
+    color: #ff6b6b; /* Um vermelho mais vibrante para erro */
+    background-color: rgba(255, 107, 107, 0.15); /* Fundo translúcido */
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 15px; /* Espaço para não ficar colado */
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1em;
+    border: 1px solid #ff6b6b;
+    box-shadow: 0 0 12px rgba(255, 107, 107, 0.5);
+    animation: fadeIn 0.5s ease-out forwards;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+}
+
+.successMessage {
+    color: #4CAF50; /* Verde clássico de sucesso */
+    background-color: rgba(76, 175, 80, 0.15);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1em;
+    border: 1px solid #4CAF50;
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.5);
+    animation: fadeIn 0.5s ease-out forwards;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+}
+
+/* --- Links de Navegação --- */
+.linkText {
+    margin-top: 25px;
+    font-size: 1.05em;
+    color: var(--primary-text);
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.link {
+    color: var(--secondary-color-a);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.link:hover {
+    color: var(--subtle-accent);
+    text-shadow: 0 0 10px rgba(var(--auth-area-glow-rgb), 0.8); /* Brilho mais forte no hover */
+}
+
+/* --- Animações --- */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px); /* Desce de mais alto */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+    .centeredHeading {
+        font-size: 2.2em;
+        margin-bottom: 25px;
+    }
+
+    .form {
+        padding: 30px 25px;
+        max-width: 500px; /* Ajuste para telas menores */
+        gap: 20px;
+    }
+
+    .formSection {
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+
+    .sectionTitle {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .label {
+        font-size: 1em;
+    }
+
+    .input,
+    .select,
+    .textarea {
+        padding: 12px 15px;
+        font-size: 1em;
+    }
+
+    .select {
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 40px;
+    }
+
+    .button {
+        padding: 12px 25px;
+        font-size: 1.1em;
+    }
+
+    .buttonGroup {
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .linkText {
+        font-size: 0.95em;
+    }
+
+    .errorMessage, .successMessage {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+}
+
 @media (max-width: 480px) {
-  .relogioContainer {
-    width: 120px;
-    height: 120px;
-  }
-  .relogioSvg .numeroRelogio {
-    font-size: 0.45rem; /* Ajustar mais o tamanho da fonte dos números em mobile */
-  }
-  .digitalInput {
-    width: 35px;
-    font-size: 0.9rem;
-    padding: 5px 2px;
-  }
-  .amPmContainer {
-    margin-left: 8px;
-  }
-  .amPmContainer button {
-    padding: 5px 8px;
-    font-size: 0.8rem;
-  }
+    .container {
+        padding: 10px;
+    }
+    .centeredHeading {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .form {
+        padding: 25px 15px;
+        max-width: 100%; /* Permite que o formulário ocupe mais espaço em telas muito pequenas */
+        gap: 15px;
+        border-radius: 10px;
+    }
+
+    .formSection {
+        padding: 15px;
+    }
+
+    .sectionTitle {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .label {
+        font-size: 0.95em;
+    }
+
+    .input,
+    .select,
+    .textarea {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .select {
+        background-position: right 8px center;
+        background-size: 14px;
+        padding-right: 35px;
+    }
+
+    .button {
+        padding: 10px 20px;
+        font-size: 1em;
+        letter-spacing: 0.8px;
+    }
+
+    .buttonGroup {
+        margin-top: 20px;
+    }
+
+    .linkText {
+        font-size: 0.85em;
+    }
+
+    .errorMessage, .successMessage {
+        padding: 8px 12px;
+        font-size: 0.85em;
+        border-radius: 6px;
+    }
 }
